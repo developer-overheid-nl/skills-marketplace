@@ -11,8 +11,8 @@
   "plugins": [
     {
       "name": "logius-standaarden",
-      "description": "Skills voor Nederlandse overheidsstandaarden (Digikoppeling, API Design Rules, OAuth NL, FSC, CloudEvents, BOMOS, en meer)",
-      "version": "1.2.0",
+      "description": "Plugin voor het werken met Logius standaarden voor Nederlandse overheidsinteroperabiliteit. Bevat skills voor 77 GitHub repositories verdeeld over 9 domeinen: API Design Rules, Digikoppeling, Identity & Access Management, FSC, Logboek Dataverwerkingen, CloudEvents & Notificaties, BOMOS governance, E-Government services, en Publicatie & Tooling.",
+      "version": "1.3.4",
       "author": {
         "name": "MinBZK",
         "email": "standaarden@logius.nl"
@@ -22,11 +22,17 @@
         "repo": "MinBZK/logius-standaarden-plugin"
       },
       "category": "productivity",
-      "tags": ["overheid", "standaarden", "interoperabiliteit", "api", "digikoppeling"]
+      "tags": [
+        "overheid",
+        "standaarden",
+        "interoperabiliteit",
+        "api",
+        "digikoppeling"
+      ]
     },
     {
       "name": "zad-actions",
-      "description": "Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment",
+      "description": "Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
       "version": "1.2.0",
       "author": {
         "name": "Rijks ICT Gilde",
@@ -37,11 +43,19 @@
         "repo": "RijksICTGilde/zad-actions"
       },
       "category": "productivity",
-      "tags": ["zad", "deployment", "github-actions", "linting", "release", "debugging", "workflow"]
+      "tags": [
+        "zad",
+        "deployment",
+        "github-actions",
+        "linting",
+        "release",
+        "debugging",
+        "workflow"
+      ]
     },
     {
       "name": "developer-overheid",
-      "description": "Kennisbank van developer.overheid.nl: richtlijnen en standaarden voor overheidssoftwareontwikkeling (API's, data, frontend, infra, security, open source)",
+      "description": "Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
       "version": "0.1.0",
       "author": {
         "name": "David Stotijn",
@@ -52,11 +66,19 @@
         "repo": "dstotijn/developer-overheid-nl-agent-skills"
       },
       "category": "productivity",
-      "tags": ["overheid", "developer", "api", "security", "open-source", "nl-design-system", "standaarden"]
+      "tags": [
+        "overheid",
+        "developer",
+        "api",
+        "security",
+        "open-source",
+        "nl-design-system",
+        "standaarden"
+      ]
     },
     {
       "name": "nerds",
-      "description": "Skills voor de Nederlandse Richtlijn Digitale Systemen (NeRDS): 13 richtlijnen voor het ontwerpen, ontwikkelen en inkopen van digitale systemen bij de overheid (gebruikersbehoeften, toegankelijkheid, open source, cloud, veiligheid, privacy, en meer)",
+      "description": "Plugin voor de Nederlandse Richtlijn Digitale Systemen (NeRDS). Bevat skills voor 13 richtlijnen die richting geven aan het ontwerpen, ontwikkelen en inkopen van digitale systemen binnen de Nederlandse overheid: gebruikersbehoeften, toegankelijkheid, open source, open standaarden, cloud, veiligheid, privacy, samenwerking, integratie, data, algoritmen, inkoop en duurzaamheid.",
       "version": "0.1.1",
       "author": {
         "name": "MinBZK",
@@ -67,7 +89,17 @@
         "repo": "MinBZK/NeRDS"
       },
       "category": "productivity",
-      "tags": ["overheid", "richtlijnen", "nerds", "toegankelijkheid", "open-source", "cloud", "privacy", "veiligheid", "duurzaamheid"]
+      "tags": [
+        "overheid",
+        "richtlijnen",
+        "nerds",
+        "toegankelijkheid",
+        "open-source",
+        "cloud",
+        "privacy",
+        "veiligheid",
+        "duurzaamheid"
+      ]
     }
   ]
 }
