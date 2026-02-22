@@ -1,25 +1,30 @@
 ---
 name: bio-security-baseline
 description: >-
-  Gebruik deze skill wanneer de gebruiker vraagt over 'BIO', 'BIO2',
-  'Baseline Informatiebeveiliging Overheid', 'informatiebeveiliging overheid',
-  'overheidsbeveiliging', 'government security baseline', 'information security',
-  'cybersecurity overheid', 'NIS2', 'Cyberbeveiligingswet', 'ISO 27001 overheid',
-  'ISO 27002 overheid', 'beveiligingsmaatregelen overheid', 'ISMS overheid',
-  'security controls', 'overheidsmaatregelen beveiliging', 'BIO-compliance',
-  'BIO toetsing', 'security audit overheid', 'penetratietest overheid',
-  'logging overheid', 'toegangsbeheer overheid', 'cryptografie overheid',
-  'kwetsbaarhedenbeheer overheid', 'patch management overheid',
-  'security by design overheid', 'MFA overheid', 'HTTPS overheid', 'TLS overheid',
-  'DNSSEC', 'DMARC', 'DKIM', 'SPF', 'DANE', 'RPKI', 'internet.nl',
-  'Forum Standaardisatie standaarden', 'verplichte standaarden overheid',
-  'NCSC richtlijnen', 'NCSC TLS', 'NCSC webapplicaties',
-  'DigiToegankelijk', 'WCAG overheid', 'toegankelijkheid overheid',
-  'digitale toegankelijkheid', 'EN 301 549', 'ENSIA', 'DigiD normenkader',
-  'OAuth overheid', 'OpenID NLGov', 'SAML overheid', 'API Design Rules',
-  'Wet digitale overheid', 'NORA', 'pas toe of leg uit',
-  'Cyber Resilience Act', 'CRA overheid', 'AI Act overheid', 'eIDAS',
-  'EUDI Wallet', 'SBOM overheid', 'security.txt',
+  Helpt bij het implementeren van informatiebeveiliging conform de Baseline
+  Informatiebeveiliging Overheid 2 (BIO2) voor Nederlandse overheidsorganisaties.
+  Biedt verplichte beveiligingsmaatregelen, implementatie-checklists, Forum
+  Standaardisatie-standaarden, NCSC-richtlijnen en compliance-informatie voor
+  security by design, toegangsbeheer, logging, cryptografie, kwetsbaarhedenbeheer,
+  pentesting, incidentmanagement en meer. Gebruik deze skill wanneer de gebruiker
+  vraagt over 'BIO', 'BIO2', 'Baseline Informatiebeveiliging Overheid',
+  'informatiebeveiliging overheid', 'overheidsbeveiliging', 'government security
+  baseline', 'information security', 'cybersecurity overheid', 'NIS2',
+  'Cyberbeveiligingswet', 'ISO 27001 overheid', 'ISO 27002 overheid',
+  'beveiligingsmaatregelen overheid', 'ISMS overheid', 'security controls',
+  'BIO-compliance', 'BIO toetsing', 'security audit overheid',
+  'penetratietest overheid', 'logging overheid', 'toegangsbeheer overheid',
+  'cryptografie overheid', 'kwetsbaarhedenbeheer overheid',
+  'patch management overheid', 'security by design overheid', 'MFA overheid',
+  'HTTPS overheid', 'TLS overheid', 'DNSSEC', 'DMARC', 'DKIM', 'SPF', 'DANE',
+  'RPKI', 'internet.nl', 'Forum Standaardisatie standaarden',
+  'verplichte standaarden overheid', 'NCSC richtlijnen', 'NCSC TLS',
+  'NCSC webapplicaties', 'DigiToegankelijk', 'WCAG overheid',
+  'toegankelijkheid overheid', 'digitale toegankelijkheid', 'EN 301 549',
+  'ENSIA', 'DigiD normenkader', 'OAuth overheid', 'OpenID NLGov',
+  'SAML overheid', 'API Design Rules', 'Wet digitale overheid', 'NORA',
+  'pas toe of leg uit', 'Cyber Resilience Act', 'CRA overheid',
+  'AI Act overheid', 'eIDAS', 'EUDI Wallet', 'SBOM overheid', 'security.txt',
   of wanneer de gebruiker een systeem wil laten voldoen aan de BIO2-normen
   of andere verplichte overheidsstandaarden.
 model: sonnet
@@ -31,35 +36,22 @@ allowed-tools:
 
 # Baseline Informatiebeveiliging Overheid 2 (BIO2)
 
-**Agent-instructie:** Deze skill helpt bij het implementeren van informatiebeveiliging conform de BIO2. Gebruik deze skill om code, architectuur en processen te toetsen aan de verplichte overheidsmaatregelen. De BIO2 is de verplichte beveiligingsbaseline voor alle Nederlandse overheidsorganisaties.
-
-De BIO2 (versie 1.2, september 2025) is opgebouwd uit drie delen:
+Toets code, architectuur en processen aan de verplichte BIO2-overheidsmaatregelen. De BIO2 (v1.2, september 2025) is de verplichte beveiligingsbaseline voor alle Nederlandse overheidsorganisaties, opgebouwd uit:
 
 - **Deel 1 — BIO2-Kader**: context, toepassingsgebied, risicomanagement
 - **Deel 2 — Overheidsmaatregelen**: verplichte maatregelen bovenop ISO/IEC 27001/27002
 - **Deel 3 — Handreiking**: praktische implementatieondersteuning
 
-Alle overheidsorganisaties moeten een werkend Information Security Management System (ISMS) conform NEN-EN-ISO/IEC 27001 inrichten en de BIO2-overheidsmaatregelen implementeren.
-
 Bron: [GitHub — MinBZK/Baseline-Informatiebeveiliging-Overheid](https://github.com/MinBZK/Baseline-Informatiebeveiliging-Overheid) | [BIO2 v1.2 PDF](https://www.bio-overheid.nl/media/cs5ctudu/20250924-baseline-informatiebeveiliging-overheid-2-bio2-v12-deff.pdf) | [bio-overheid.nl](https://www.bio-overheid.nl/category/producten/bio)
 
 ### Belangrijke wijzigingen t.o.v. BIO 1.04zv
 
-- De drie basisbetrouwbaarheidsniveaus (BBN1/BBN2/BBN3) zijn **afgeschaft** — volledig risicomanagement is nu leidend
-- Nieuwe structuur op basis van NEN-EN-ISO/IEC 27002:2022 (vervangt de oude 27002:2013-structuur)
+- BBN1/BBN2/BBN3 zijn **afgeschaft** — volledig risicomanagement is nu leidend
+- Nieuwe structuur op basis van NEN-EN-ISO/IEC 27002:2022
 - Publicatie van ISMS-reikwijdte en Verklaring van Toepasselijkheid (VvT) is **verplicht**
-- Afgestemd op NIS2-richtlijn (Artikel 21 over cyberbeveiligingsmaatregelen)
-- BIO2 vereist geen ISO 27001-certificering, maar wel toepassing van de standaard
-- Provincies, waterschappen en Rijksoverheid: BIO2 als verplichtende zelfregulering sinds september 2025
-- Gemeenten: BIO 1.04zv blijft van kracht maar BIO2 als leidraad tijdens transitie
-
-## Wanneer deze skill gebruiken
-
-- Bij het ontwerpen of reviewen van systemen voor de Nederlandse overheid
-- Bij het toetsen van code of architectuur aan BIO2-eisen
-- Bij het opstellen van beveiligingsbeleid of risicobeoordeling
-- Bij vragen over specifieke BIO2-maatregelen en hun implementatie
-- Bij het voorbereiden van audits of compliance-checks
+- Afgestemd op NIS2-richtlijn (Artikel 21)
+- Provincies, waterschappen en Rijksoverheid: BIO2 verplicht sinds september 2025
+- Gemeenten: BIO 1.04zv blijft van kracht; BIO2 als leidraad tijdens transitie
 
 ## Kerndomeinen en maatregelen
 
