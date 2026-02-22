@@ -33,6 +33,7 @@ jobs:
           for plugin in data.get('plugins', []):
               name = plugin.get('name', '?')
               local_version = plugin.get('version', '')
+              local_description = plugin.get('description', '')
               source = plugin.get('source', {})
 
               # Bepaal repo
@@ -69,21 +70,34 @@ jobs:
                   content = base64.b64decode(result.stdout.strip()).decode('utf-8')
                   upstream = json.loads(content)
                   upstream_version = upstream.get('version', '')
+                  upstream_description = upstream.get('description', '')
               except (json.JSONDecodeError, ValueError) as e:
                   msg = f"WAARSCHUWING: {name} - kan plugin.json niet parsen: {e}"
                   print(msg)
                   summary_lines.append(msg)
                   continue
 
-              if upstream_version and upstream_version != local_version:
-                  msg = f"UPDATE: {name} {local_version} -> {upstream_version}"
+              version_changed = upstream_version and upstream_version != local_version
+              description_changed = upstream_description and upstream_description != local_description
+
+              if version_changed or description_changed:
+                  changes = []
+                  if version_changed:
+                      changes.append(f"versie {local_version} -> {upstream_version}")
+                  if description_changed:
+                      changes.append("description gewijzigd")
+                  msg = f"UPDATE: {name} ({', '.join(changes)})"
                   print(msg)
                   summary_lines.append(msg)
                   updates.append({
                       'name': name,
                       'repo': repo,
                       'old_version': local_version,
-                      'new_version': upstream_version,
+                      'new_version': upstream_version if version_changed else local_version,
+                      'old_description': local_description,
+                      'new_description': upstream_description if description_changed else local_description,
+                      'version_changed': version_changed,
+                      'description_changed': description_changed,
                   })
               else:
                   msg = f"OK: {name} v{local_version}"
@@ -129,7 +143,10 @@ jobs:
           for update in updates:
               for plugin in data['plugins']:
                   if plugin['name'] == update['name']:
-                      plugin['version'] = update['new_version']
+                      if update['version_changed']:
+                          plugin['version'] = update['new_version']
+                      if update['description_changed']:
+                          plugin['description'] = update['new_description']
 
           with open(marketplace_path, 'w') as f:
               json.dump(data, f, indent=2, ensure_ascii=False)
@@ -143,28 +160,42 @@ jobs:
           if len(updates) == 1:
               u = updates[0]
               safe_name = sanitize_branch(u['name'])
-              safe_version = sanitize_branch(u['new_version'])
-              branch = f"automated/bump-{safe_name}-v{safe_version}"
-              title = f"Bump {u['name']} plugin naar v{u['new_version']}"
+              changes = []
+              if u['version_changed']:
+                  changes.append(f"v{u['new_version']}")
+              if u['description_changed']:
+                  changes.append("description")
+              safe_changes = sanitize_branch("-".join(changes))
+              branch = f"automated/bump-{safe_name}-{safe_changes}"
+              title = f"Update {u['name']} plugin: {', '.join(changes)}"
           else:
               names_hash = hashlib.sha1(
                   "-".join(sorted(f"{u['name']}-{u['new_version']}" for u in updates)).encode()
               ).hexdigest()[:8]
-              branch = f"automated/bump-plugin-versies-{names_hash}"
-              title = f"Bump {len(updates)} plugin versies"
+              branch = f"automated/bump-plugins-{names_hash}"
+              title = f"Update {len(updates)} plugins"
 
           # Maak PR body
-          body_lines = ["## Automatische versie-update\n"]
-          body_lines.append("| Plugin | Oud | Nieuw | Repo |")
-          body_lines.append("|--------|-----|-------|------|")
+          body_lines = ["## Automatische plugin-update\n"]
+          body_lines.append("| Plugin | Veld | Oud | Nieuw | Repo |")
+          body_lines.append("|--------|------|-----|-------|------|")
           for u in updates:
               repo_url = f"https://github.com/{u['repo']}"
               changelog_url = f"{repo_url}/releases"
-              body_lines.append(
-                  f"| {u['name']} | {u['old_version']} | "
-                  f"[{u['new_version']}]({changelog_url}) | "
-                  f"[{u['repo']}]({repo_url}) |"
-              )
+              if u['version_changed']:
+                  body_lines.append(
+                      f"| {u['name']} | versie | {u['old_version']} | "
+                      f"[{u['new_version']}]({changelog_url}) | "
+                      f"[{u['repo']}]({repo_url}) |"
+                  )
+              if u['description_changed']:
+                  old_desc = u['old_description'][:60] + '...' if len(u['old_description']) > 60 else u['old_description']
+                  new_desc = u['new_description'][:60] + '...' if len(u['new_description']) > 60 else u['new_description']
+                  body_lines.append(
+                      f"| {u['name']} | description | {old_desc} | "
+                      f"{new_desc} | "
+                      f"[{u['repo']}]({repo_url}) |"
+                  )
           body_lines.append("")
           body_lines.append("### Review checklist")
           body_lines.append("- [ ] Versie-nummers kloppen met upstream")
@@ -172,8 +203,8 @@ jobs:
           body_lines.append("- [ ] Changelog upstream bekeken")
           body_lines.append("- [ ] Plugin-inhoud in marketplace komt overeen met upstream")
           body_lines.append("")
-          body_lines.append("> **Let op:** Deze PR werkt alleen het versienummer in "
-                            "marketplace.json bij. Controleer of de plugin-inhoud "
+          body_lines.append("> **Let op:** Deze PR werkt alleen versienummer en description in "
+                            "marketplace.json bij. Controleer of de overige plugin-inhoud "
                             "(skills, commands, etc.) ook actueel is.")
           body_lines.append("")
           body_lines.append("---")
@@ -193,10 +224,10 @@ jobs:
 
           if len(updates) == 1:
               u = updates[0]
-              commit_msg = f"Bump {u['name']} plugin naar v{u['new_version']}"
+              commit_msg = title
           else:
               names = ", ".join(u['name'] for u in updates)
-              commit_msg = f"Bump plugin versies: {names}"
+              commit_msg = f"Update plugins: {names}"
 
           subprocess.run(['git', 'commit', '-m', commit_msg], check=True)
 
