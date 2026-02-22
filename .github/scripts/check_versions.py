@@ -451,7 +451,19 @@ def create_pr(
         print(f"FOUT: PR aanmaken mislukt: {result.stderr}")
         sys.exit(1)
 
-    return result.stdout.strip()
+    pr_url = result.stdout.strip()
+
+    # Trigger the validate workflow on the PR branch so CI status is reported.
+    # Workflows created by GITHUB_TOKEN don't trigger other workflows, so we
+    # need to explicitly dispatch the validation workflow on this branch.
+    subprocess.run(
+        ["gh", "workflow", "run", "validate.yml", "--ref", branch],
+        capture_output=True,
+        text=True,
+        timeout=SUBPROCESS_TIMEOUT,
+    )
+
+    return pr_url
 
 
 def main() -> None:

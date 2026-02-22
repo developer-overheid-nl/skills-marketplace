@@ -731,6 +731,28 @@ class TestCreatePr:
             assert "timeout" in kwargs, f"Missing timeout in call: {call}"
 
     @patch("check_versions.subprocess.run")
+    def test_triggers_validate_workflow(self, mock_run, tmp_path):
+        marketplace = tmp_path / "marketplace.json"
+        marketplace.write_text('{"plugins": []}')
+
+        mock_run.return_value = MagicMock(returncode=0, stdout="url\n", stderr="")
+
+        data = {"plugins": []}
+        create_pr(str(marketplace), data, [{"name": "x"}], "my-branch", "title", "body")
+
+        # Find the workflow dispatch call
+        workflow_calls = [
+            call
+            for call in mock_run.call_args_list
+            if call[0][0][:3] == ["gh", "workflow", "run"]
+        ]
+        assert len(workflow_calls) == 1
+        cmd = workflow_calls[0][0][0]
+        assert "validate.yml" in cmd
+        assert "--ref" in cmd
+        assert "my-branch" in cmd
+
+    @patch("check_versions.subprocess.run")
     def test_multi_update_commit_message(self, mock_run, tmp_path):
         marketplace = tmp_path / "marketplace.json"
         marketplace.write_text('{"plugins": []}')
