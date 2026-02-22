@@ -485,6 +485,21 @@ class TestDetectUpdates:
         assert any("SKIP" in s for s in summary)
 
     @patch("check_versions.fetch_upstream_plugin")
+    def test_description_whitespace_not_false_positive(self, mock_fetch):
+        mock_fetch.return_value = {"version": "1.0.0", "description": "desc  "}
+        plugins = [
+            {
+                "name": "test",
+                "version": "1.0.0",
+                "description": "desc",
+                "source": {"source": "github", "repo": "org/test"},
+            }
+        ]
+        updates, _, failures = detect_updates(plugins)
+        assert len(updates) == 0
+        assert failures == 0
+
+    @patch("check_versions.fetch_upstream_plugin")
     def test_multiple_failures_counted(self, mock_fetch):
         mock_fetch.return_value = None
         plugins = [
@@ -539,10 +554,9 @@ class TestFetchUpstreamPlugin:
         assert kwargs.get("timeout") == 60
 
     @patch("check_versions.subprocess.run")
-    def test_timeout_raises(self, mock_run):
+    def test_timeout_returns_none(self, mock_run):
         mock_run.side_effect = subprocess.TimeoutExpired(cmd="gh", timeout=60)
-        with pytest.raises(subprocess.TimeoutExpired):
-            fetch_upstream_plugin("org/repo")
+        assert fetch_upstream_plugin("org/repo") is None
 
 
 class TestCheckExistingBumpPr:
@@ -649,12 +663,8 @@ class TestCreatePr:
         marketplace = tmp_path / "marketplace.json"
         marketplace.write_text('{"plugins": []}')
 
-        call_count = [0]
-        push_cmd_index = 5  # config name, config email, checkout, add, commit, push
-
-        def side_effect(*args, **kwargs):
-            call_count[0] += 1
-            if call_count[0] == push_cmd_index + 1:
+        def side_effect(cmd, **kwargs):
+            if cmd[:2] == ["git", "push"]:
                 return MagicMock(returncode=1, stderr="push failed", stdout="")
             return MagicMock(returncode=0, stdout="", stderr="")
 
@@ -672,14 +682,29 @@ class TestCreatePr:
         marketplace = tmp_path / "marketplace.json"
         marketplace.write_text('{"plugins": []}')
 
-        call_count = [0]
-        pr_cmd_index = 7  # config name, config email, checkout, add, commit, push, label, pr create
-
-        def side_effect(*args, **kwargs):
-            call_count[0] += 1
-            if call_count[0] == pr_cmd_index + 1:
+        def side_effect(cmd, **kwargs):
+            if cmd[:3] == ["gh", "pr", "create"]:
                 return MagicMock(returncode=1, stderr="pr create failed", stdout="")
             return MagicMock(returncode=0, stdout="url", stderr="")
+
+        mock_run.side_effect = side_effect
+
+        data = {"plugins": []}
+        with pytest.raises(SystemExit) as exc:
+            create_pr(
+                str(marketplace), data, [{"name": "x"}], "branch", "title", "body"
+            )
+        assert exc.value.code == 1
+
+    @patch("check_versions.subprocess.run")
+    def test_git_config_failure_exits(self, mock_run, tmp_path):
+        marketplace = tmp_path / "marketplace.json"
+        marketplace.write_text('{"plugins": []}')
+
+        def side_effect(cmd, **kwargs):
+            if cmd[:2] == ["git", "config"]:
+                return MagicMock(returncode=1, stderr="config failed", stdout="")
+            return MagicMock(returncode=0, stdout="", stderr="")
 
         mock_run.side_effect = side_effect
 

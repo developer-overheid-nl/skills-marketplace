@@ -100,20 +100,24 @@ def resolve_repo(plugin: dict) -> str | None:
 def fetch_upstream_plugin(repo: str) -> dict | None:
     """Fetch and parse the upstream plugin.json from a GitHub repo.
 
-    Returns parsed dict or None on failure.
+    Returns parsed dict or None on failure (including timeout).
     """
-    result = subprocess.run(
-        [
-            "gh",
-            "api",
-            f"repos/{repo}/contents/.claude-plugin/plugin.json",
-            "--jq",
-            ".content",
-        ],
-        capture_output=True,
-        text=True,
-        timeout=SUBPROCESS_TIMEOUT,
-    )
+    try:
+        result = subprocess.run(
+            [
+                "gh",
+                "api",
+                f"repos/{repo}/contents/.claude-plugin/plugin.json",
+                "--jq",
+                ".content",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=SUBPROCESS_TIMEOUT,
+        )
+    except subprocess.TimeoutExpired:
+        print(f"WAARSCHUWING: timeout bij ophalen plugin.json uit {repo}")
+        return None
     if result.returncode != 0:
         return None
 
@@ -165,7 +169,8 @@ def detect_updates(
             upstream_version and not versions_equal(upstream_version, local_version)
         )
         description_changed = bool(
-            upstream_description and upstream_description != local_description
+            upstream_description
+            and upstream_description.strip() != local_description.strip()
         )
 
         if version_changed or description_changed:
@@ -360,34 +365,28 @@ def create_pr(
     with open(marketplace_path) as f:
         json.load(f)
 
-    # Git configuration
-    subprocess.run(
-        ["git", "config", "user.name", "github-actions[bot]"],
-        check=True,
-        timeout=SUBPROCESS_TIMEOUT,
-    )
-    subprocess.run(
-        [
-            "git",
-            "config",
-            "user.email",
-            "github-actions[bot]@users.noreply.github.com",
-        ],
-        check=True,
-        timeout=SUBPROCESS_TIMEOUT,
-    )
-
-    # Create branch and commit
-    subprocess.run(
-        ["git", "checkout", "-b", branch],
-        check=True,
-        timeout=SUBPROCESS_TIMEOUT,
-    )
-    subprocess.run(
-        ["git", "add", marketplace_path],
-        check=True,
-        timeout=SUBPROCESS_TIMEOUT,
-    )
+    # Git configuration and branch setup — fail fast with clear messages
+    git_steps = [
+        (["git", "config", "user.name", "github-actions[bot]"], "git config user.name"),
+        (
+            [
+                "git",
+                "config",
+                "user.email",
+                "github-actions[bot]@users.noreply.github.com",
+            ],
+            "git config user.email",
+        ),
+        (["git", "checkout", "-b", branch], "git checkout -b"),
+        (["git", "add", marketplace_path], "git add"),
+    ]
+    for cmd, label in git_steps:
+        r = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=SUBPROCESS_TIMEOUT
+        )
+        if r.returncode != 0:
+            print(f"FOUT: {label} mislukt: {r.stderr}")
+            sys.exit(1)
 
     if len(updates) == 1:
         commit_msg = title
@@ -435,6 +434,8 @@ def create_pr(
             "gh",
             "pr",
             "create",
+            "--base",
+            "main",
             "--title",
             title,
             "--body",
