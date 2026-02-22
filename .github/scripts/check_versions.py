@@ -182,7 +182,9 @@ def detect_updates(
                     "name": name,
                     "repo": repo,
                     "old_version": local_version,
-                    "new_version": upstream_version if version_changed else local_version,
+                    "new_version": upstream_version
+                    if version_changed
+                    else local_version,
                     "old_description": local_description,
                     "new_description": (
                         upstream_description

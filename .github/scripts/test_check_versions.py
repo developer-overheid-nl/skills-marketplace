@@ -4,12 +4,11 @@ import base64
 import json
 import os
 import subprocess
-from unittest.mock import MagicMock, mock_open, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
 from check_versions import (
-    MARKETPLACE_PATH,
     apply_updates,
     build_branch_and_title,
     build_pr_body,
@@ -173,9 +172,7 @@ class TestResolveRepo:
         assert resolve_repo(plugin) == "MinBZK/test-repo"
 
     def test_url_source_non_github(self):
-        plugin = {
-            "source": {"source": "url", "url": "https://gitlab.com/org/repo"}
-        }
+        plugin = {"source": {"source": "url", "url": "https://gitlab.com/org/repo"}}
         assert resolve_repo(plugin) is None
 
     def test_unknown_source_type(self):
@@ -191,9 +188,7 @@ class TestResolveRepo:
         assert resolve_repo(plugin) is None
 
     def test_url_source_single_segment(self):
-        plugin = {
-            "source": {"source": "url", "url": "https://github.com/onlyone"}
-        }
+        plugin = {"source": {"source": "url", "url": "https://github.com/onlyone"}}
         assert resolve_repo(plugin) is None
 
 
@@ -244,7 +239,9 @@ class TestApplyUpdates:
         assert data["plugins"][0]["description"] == "new desc"
 
     def test_no_match(self):
-        data = {"plugins": [{"name": "other", "version": "1.0.0", "description": "old"}]}
+        data = {
+            "plugins": [{"name": "other", "version": "1.0.0", "description": "old"}]
+        }
         updates = [
             {
                 "name": "test",
@@ -552,9 +549,7 @@ class TestCheckExistingBumpPr:
     @patch("check_versions.subprocess.run")
     def test_found(self, mock_run):
         prs = [{"number": 5, "title": "Bump plugin", "headRefName": "automated/bump-x"}]
-        mock_run.return_value = MagicMock(
-            returncode=0, stdout=json.dumps(prs)
-        )
+        mock_run.return_value = MagicMock(returncode=0, stdout=json.dumps(prs))
         result = check_existing_bump_pr()
         assert result is not None
         assert result["number"] == 5
@@ -580,9 +575,7 @@ class TestCheckExistingBumpPr:
         prs = [
             {"number": 7, "title": "Manual bump", "headRefName": "manual/some-branch"}
         ]
-        mock_run.return_value = MagicMock(
-            returncode=0, stdout=json.dumps(prs)
-        )
+        mock_run.return_value = MagicMock(returncode=0, stdout=json.dumps(prs))
         result = check_existing_bump_pr()
         assert result is not None
         assert result["number"] == 7
@@ -638,7 +631,12 @@ class TestCreatePr:
         updates = [{"name": "test", "new_version": "2.0.0"}]
 
         url = create_pr(
-            str(marketplace), data, updates, "automated/bump-test", "Update test", "body"
+            str(marketplace),
+            data,
+            updates,
+            "automated/bump-test",
+            "Update test",
+            "body",
         )
         assert url == "https://github.com/org/repo/pull/1"
 
@@ -664,7 +662,9 @@ class TestCreatePr:
 
         data = {"plugins": []}
         with pytest.raises(SystemExit) as exc:
-            create_pr(str(marketplace), data, [{"name": "x"}], "branch", "title", "body")
+            create_pr(
+                str(marketplace), data, [{"name": "x"}], "branch", "title", "body"
+            )
         assert exc.value.code == 1
 
     @patch("check_versions.subprocess.run")
@@ -685,7 +685,9 @@ class TestCreatePr:
 
         data = {"plugins": []}
         with pytest.raises(SystemExit) as exc:
-            create_pr(str(marketplace), data, [{"name": "x"}], "branch", "title", "body")
+            create_pr(
+                str(marketplace), data, [{"name": "x"}], "branch", "title", "body"
+            )
         assert exc.value.code == 1
 
     @patch("check_versions.subprocess.run")
@@ -711,7 +713,10 @@ class TestCreatePr:
         mock_run.return_value = MagicMock(returncode=0, stdout="url\n", stderr="")
 
         data = {"plugins": []}
-        updates = [{"name": "a", "new_version": "1.0"}, {"name": "b", "new_version": "2.0"}]
+        updates = [
+            {"name": "a", "new_version": "1.0"},
+            {"name": "b", "new_version": "2.0"},
+        ]
         create_pr(str(marketplace), data, updates, "branch", "Update 2 plugins", "body")
 
         # Find the commit call and check message
@@ -726,7 +731,9 @@ class TestMain:
     @patch("check_versions.check_existing_bump_pr")
     @patch("check_versions.fetch_upstream_plugin")
     @patch("builtins.open", create=True)
-    def test_all_up_to_date(self, mock_file_open, mock_fetch, mock_pr_check, mock_create):
+    def test_all_up_to_date(
+        self, mock_file_open, mock_fetch, mock_pr_check, mock_create
+    ):
         data = {
             "plugins": [
                 {
@@ -753,7 +760,9 @@ class TestMain:
     @patch("check_versions.write_job_summary")
     @patch("check_versions.fetch_upstream_plugin")
     @patch("builtins.open", create=True)
-    def test_all_fetches_fail_exits_with_error(self, mock_file_open, mock_fetch, mock_summary):
+    def test_all_fetches_fail_exits_with_error(
+        self, mock_file_open, mock_fetch, mock_summary
+    ):
         data = {
             "plugins": [
                 {
@@ -784,7 +793,9 @@ class TestMain:
     @patch("check_versions.check_existing_bump_pr", return_value=None)
     @patch("check_versions.fetch_upstream_plugin")
     @patch("builtins.open", create=True)
-    def test_creates_pr_on_drift(self, mock_file_open, mock_fetch, mock_pr_check, mock_create):
+    def test_creates_pr_on_drift(
+        self, mock_file_open, mock_fetch, mock_pr_check, mock_create
+    ):
         data = {
             "plugins": [
                 {
@@ -809,7 +820,9 @@ class TestMain:
     @patch("check_versions.check_existing_bump_pr")
     @patch("check_versions.fetch_upstream_plugin")
     @patch("builtins.open", create=True)
-    def test_skips_pr_if_existing(self, mock_file_open, mock_fetch, mock_pr_check, mock_create):
+    def test_skips_pr_if_existing(
+        self, mock_file_open, mock_fetch, mock_pr_check, mock_create
+    ):
         data = {
             "plugins": [
                 {
