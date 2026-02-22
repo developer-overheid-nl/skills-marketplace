@@ -10,6 +10,8 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 ### Toegevoegd
 
 - CI workflow voor automatische plugin versie-checks (dagelijks, maakt PR bij versie-drift)
+- Versie-vergelijking met normalisatie (v-prefix, trailing .0)
+- Tests voor check-versions script
 
 ## [1.0.0] - 2026-02-16
 
@@ -23,3 +25,6 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 - CI workflow voor validatie van marketplace.json
 - Issue template voor plugin-aanmeldingen
 - PR template
+
+[Unreleased]: https://github.com/MinBZK/overheid-claude-plugins/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/MinBZK/overheid-claude-plugins/releases/tag/v1.0.0
