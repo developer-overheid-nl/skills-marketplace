@@ -139,6 +139,21 @@
         "metadata",
         "nen3610"
       ]
+    },
+    {
+      "name": "bio-security-baseline",
+      "description": "Skill voor de Baseline Informatiebeveiliging Overheid 2 (BIO2): verplichte beveiligingsmaatregelen voor alle Nederlandse overheidsorganisaties (informatiebeveiliging, toegangsbeheer, kwetsbaarhedenbeheer, logging, cryptografie, en meer)",
+      "version": "0.1.0",
+      "author": {
+        "name": "MinBZK",
+        "email": ""
+      },
+      "source": {
+        "source": "github",
+        "repo": "djimit/overheid-claude-plugins"
+      },
+      "category": "security",
+      "tags": ["overheid", "beveiliging", "informatiebeveiliging", "BIO", "BIO2", "ISO27001", "NIS2", "cybersecurity", "security-baseline", "compliance"]
     }
   ]
 }
