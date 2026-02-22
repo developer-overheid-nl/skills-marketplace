@@ -4,13 +4,22 @@ description: >-
   Gebruik deze skill wanneer de gebruiker vraagt over 'BIO', 'BIO2',
   'Baseline Informatiebeveiliging Overheid', 'informatiebeveiliging overheid',
   'overheidsbeveiliging', 'government security baseline', 'information security',
-  'cybersecurity overheid', 'NIS2', 'ISO 27001 overheid', 'ISO 27002 overheid',
-  'beveiligingsmaatregelen overheid', 'ISMS overheid', 'security controls',
-  'overheidsmaatregelen beveiliging', 'BIO-compliance', 'BIO toetsing',
-  'security audit overheid', 'penetratietest overheid', 'logging overheid',
-  'toegangsbeheer overheid', 'cryptografie overheid', 'kwetsbaarhedenbeheer overheid',
-  'patch management overheid', 'security by design overheid', 'MFA overheid',
-  of wanneer de gebruiker een systeem wil laten voldoen aan de BIO2-normen.
+  'cybersecurity overheid', 'NIS2', 'Cyberbeveiligingswet', 'ISO 27001 overheid',
+  'ISO 27002 overheid', 'beveiligingsmaatregelen overheid', 'ISMS overheid',
+  'security controls', 'overheidsmaatregelen beveiliging', 'BIO-compliance',
+  'BIO toetsing', 'security audit overheid', 'penetratietest overheid',
+  'logging overheid', 'toegangsbeheer overheid', 'cryptografie overheid',
+  'kwetsbaarhedenbeheer overheid', 'patch management overheid',
+  'security by design overheid', 'MFA overheid', 'HTTPS overheid', 'TLS overheid',
+  'DNSSEC', 'DMARC', 'DKIM', 'SPF', 'DANE', 'RPKI', 'internet.nl',
+  'Forum Standaardisatie standaarden', 'verplichte standaarden overheid',
+  'NCSC richtlijnen', 'NCSC TLS', 'NCSC webapplicaties',
+  'DigiToegankelijk', 'WCAG overheid', 'toegankelijkheid overheid',
+  'digitale toegankelijkheid', 'EN 301 549', 'ENSIA', 'DigiD normenkader',
+  'OAuth overheid', 'OpenID NLGov', 'SAML overheid', 'API Design Rules',
+  'Wet digitale overheid', 'NORA', 'pas toe of leg uit',
+  of wanneer de gebruiker een systeem wil laten voldoen aan de BIO2-normen
+  of andere verplichte overheidsstandaarden.
 model: sonnet
 allowed-tools:
   - WebFetch(*)
@@ -30,7 +39,17 @@ De BIO2 (versie 1.2, september 2025) is opgebouwd uit drie delen:
 
 Alle overheidsorganisaties moeten een werkend Information Security Management System (ISMS) conform NEN-EN-ISO/IEC 27001 inrichten en de BIO2-overheidsmaatregelen implementeren.
 
-Bron: [GitHub — MinBZK/Baseline-Informatiebeveiliging-Overheid](https://github.com/MinBZK/Baseline-Informatiebeveiliging-Overheid)
+Bron: [GitHub — MinBZK/Baseline-Informatiebeveiliging-Overheid](https://github.com/MinBZK/Baseline-Informatiebeveiliging-Overheid) | [BIO2 v1.2 PDF](https://www.bio-overheid.nl/media/cs5ctudu/20250924-baseline-informatiebeveiliging-overheid-2-bio2-v12-deff.pdf) | [bio-overheid.nl](https://www.bio-overheid.nl/category/producten/bio)
+
+### Belangrijke wijzigingen t.o.v. BIO 1.04zv
+
+- De drie basisbetrouwbaarheidsniveaus (BBN1/BBN2/BBN3) zijn **afgeschaft** — volledig risicomanagement is nu leidend
+- Nieuwe structuur op basis van NEN-EN-ISO/IEC 27002:2022 (vervangt de oude 27002:2013-structuur)
+- Publicatie van ISMS-reikwijdte en Verklaring van Toepasselijkheid (VvT) is **verplicht**
+- Afgestemd op NIS2-richtlijn (Artikel 21 over cyberbeveiligingsmaatregelen)
+- BIO2 vereist geen ISO 27001-certificering, maar wel toepassing van de standaard
+- Provincies, waterschappen en Rijksoverheid: BIO2 als verplichtende zelfregulering sinds september 2025
+- Gemeenten: BIO 1.04zv blijft van kracht maar BIO2 als leidraad tijdens transitie
 
 ## Wanneer deze skill gebruiken
 
@@ -199,6 +218,219 @@ Bij het bouwen van systemen voor de overheid, controleer minimaal:
 - [ ] **DDoS-mitigatie**: bescherming op externe koppelingen (8.21.01)
 - [ ] **Incidentmelding**: meldprocedure en koppeling met nationaal CSIRT (5.24.07)
 
+## Cyberbeveiligingswet (Cbw) — NIS2-implementatie
+
+De Cyberbeveiligingswet is de Nederlandse implementatie van de EU NIS2-richtlijn. BIO2 dient als de sectorspecifieke invulling van de zorgplicht voor de overheidssector.
+
+| Aspect | Detail |
+|--------|--------|
+| **Status** | Wetsvoorstel ingediend bij Tweede Kamer op 4 juni 2025; verwachte inwerkingtreding Q2 2026 |
+| **Vervangt** | Wet beveiliging netwerk- en informatiesystemen (Wbni) |
+| **Verantwoordelijk** | NCTV / Ministerie van Justitie en Veiligheid |
+| **Reikwijdte** | ~8.000+ organisaties in essentiële en belangrijke sectoren |
+
+**Drie hoofdverplichtingen:**
+
+1. **Zorgplicht**: passende en proportionele technische, operationele en organisatorische maatregelen
+2. **Meldplicht**: eerste waarschuwing binnen 24 uur, volledig rapport binnen 72 uur, eindrapport binnen 1 maand
+3. **Bestuurlijke verantwoordelijkheid**: bestuur moet risicobeheersmaatregelen goedkeuren en kennis aantonen via opleiding
+
+**Regelgevingsstructuur:** Cyberbeveiligingswet (Cbw) → Cyberbeveiligingsbesluit (Cbb) → sectorale ministeriële regelingen (waaronder BIO2 voor de overheidssector)
+
+- [Digitale Overheid — Cyberbeveiligingswet](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cyberbeveiligingswet/)
+- [NCTV — Cyberbeveiligingswet](https://www.nctv.nl/onderwerpen/c/cyberbeveiligingswet)
+
+## Verplichte internetstandaarden (Forum Standaardisatie)
+
+BIO2-maatregel 5.14.01 vereist dat internetgerichte systemen en e-mail voldoen aan verplichte standaarden van Forum Standaardisatie. Dit zijn de specifieke standaarden:
+
+### Webbeveiliging
+
+| Standaard | Status | Toelichting |
+|-----------|--------|-------------|
+| **HTTPS en HSTS** | **Wettelijk verplicht** (AMvB sinds 1 juli 2023) | Alle publiek toegankelijke overheidswebsites; configuratie conform NCSC TLS-richtlijnen |
+| **TLS** | Verplicht (pas toe of leg uit) | TLS 1.3 = Goed; TLS 1.2 = Voldoende; TLS 1.0/1.1 = Onvoldoende (uitfaseren) |
+| **DNSSEC** | Verplicht (pas toe of leg uit) | Integriteit en authenticiteit van DNS-responses; voorkomt DNS-spoofing |
+| **IPv6** | Verplicht (pas toe of leg uit) | Naast IPv4 ondersteunen; RPKI vereist bij nieuwe IPv6-adressen |
+| **RPKI** | Verplicht (pas toe of leg uit) | Route origin validation voor BGP; voorkomt route-hijacking |
+
+### E-mailbeveiliging
+
+| Standaard | Status | Toelichting |
+|-----------|--------|-------------|
+| **DMARC** | Verplicht (pas toe of leg uit) | E-maildomeinauthenticatie; streefbeeld p=reject |
+| **DKIM** | Verplicht (pas toe of leg uit) | Cryptografische ondertekening van e-mailberichten |
+| **SPF** | Verplicht (pas toe of leg uit) | Bepaalt welke mailservers namens een domein mogen verzenden; streefbeeld -all |
+| **STARTTLS en DANE** | Verplicht (pas toe of leg uit) | Versleuteld e-mailtransport tussen mailservers; DANE pint TLS-certificaten via DNS |
+
+### Overige verplichte standaarden
+
+| Standaard | Status | Toelichting |
+|-----------|--------|-------------|
+| **STIX en TAXII** | Verplicht (pas toe of leg uit) | Gestandaardiseerd delen van cyber threat intelligence |
+| **NEN-ISO/IEC 27001** | Verplicht (pas toe of leg uit) | ISMS-raamwerk; BIO2 Deel 1 volgt deze structuur |
+| **NEN-ISO/IEC 27002** | Verplicht (pas toe of leg uit) | Beveiligingsmaatregelen; BIO2 Deel 2 voegt overheidsmaatregelen toe |
+| **AdES Baseline Profiles** | Verplicht (pas toe of leg uit) | Geavanceerde elektronische handtekeningen (eIDAS); vereist door BIO2 5.14.03 |
+| **ODF** | Verplicht (pas toe of leg uit) | Open Document Format voor uitwisselbare documenten |
+| **PDF/A** | Verplicht (pas toe of leg uit) | Documentarchivering en -uitwisseling |
+
+**Compliancetest:** [internet.nl](https://internet.nl) — test HTTPS, TLS, DNSSEC, DMARC, DKIM, SPF, STARTTLS, DANE, RPKI en IPv6 voor overheidsdomein.
+
+## NCSC-richtlijnen
+
+Het Nationaal Cyber Security Centrum (NCSC) publiceert gezaghebbende beveiligingsrichtlijnen. Sinds 1 januari 2026 zijn NCSC en DTC (Digital Trust Center) samengevoegd.
+
+### ICT-beveiligingsrichtlijnen voor TLS (versie 2025-05)
+
+Vier configuratieniveaus:
+
+| Protocol | Niveau | Actie |
+|----------|--------|-------|
+| TLS 1.3 | **Goed** | Voorkeur |
+| TLS 1.2 | **Voldoende** | Acceptabel (afgewaardeerd in 2025) |
+| TLS 1.1 | **Onvoldoende** | Uitfaseren |
+| TLS 1.0 | **Onvoldoende** | Uitfaseren |
+
+De versie 2025-05 adviseert **hybride (quantum-safe) oplossingen** ter voorbereiding op post-quantum cryptografiedreigingen.
+
+- [NCSC TLS-richtlijnen 2025-05](https://www.ncsc.nl/documenten/publicaties/2025/juni/01/ict-beveiligingsrichtlijnen-voor-transport-layer-security-2025-05)
+
+### ICT-beveiligingsrichtlijnen voor Webapplicaties
+
+Wettelijk verplicht voor alle via internet toegankelijke overheidswebsites. Dekt veilig ontwikkelen, beheren en aanbieden van webapplicaties en REST-API's.
+
+- [NCSC Webapplicatie-richtlijnen](https://www.ncsc.nl/onderwerpen/ict-beveiligingsrichtlijnen-voor-webapplicaties)
+
+### Basisprincipes voor Digitale Weerbaarheid (2025)
+
+Vijf principes (gebaseerd op NIST CSF en NIS2):
+
+1. **Breng de risico's in kaart** — Ken je risico's
+2. **Bevorder veilig gedrag** — Bewustwording en training
+3. **Bescherm je systemen** — Technische maatregelen
+4. **Beheer de toegang** — Identiteit en autorisatie
+5. **Bereid je voor op incidenten** — Detectie en respons
+
+- [NCSC Basisprincipes](https://www.ncsc.nl/basisprincipes)
+
+## DigiToegankelijk (WCAG)
+
+**Wettelijk verplicht** voor alle overheidswebsites, mobiele apps, intranets, extranets en cloudapplicaties op basis van het Besluit digitale toegankelijkheid overheid (Wet digitale overheid).
+
+| Aspect | Detail |
+|--------|--------|
+| **Standaard** | EN 301 549 met WCAG 2.1 level A en AA |
+| **WCAG 2.2** | Nog **niet** verplicht (EN 301 549 nog niet bijgewerkt); wel aanbevolen voor nieuwe implementaties |
+| **Beheerder** | Logius; beleid door Ministerie van BZK |
+| **Toegankelijkheidsverklaring** | Verplicht en jaarlijks bijwerken |
+| **Audit** | Elke 36 maanden een nieuwe toegankelijkheidsaudit |
+
+**Complianceniveaus:**
+
+- **Status A**: alle 50 geteste succescriteria voldaan + verklaring gepubliceerd
+- **Status B**: gedeeltelijke compliance + verklaring met verbeterplan
+- **Status C**: verklaring gepubliceerd + audit gepland binnen 6 maanden
+
+Alle drie de statussen (A, B, C) gelden als wettelijk compliant.
+
+**European Accessibility Act (EAA):** Sinds 28 juni 2025 moeten ook commerciële e-commerce-sites voldoen aan WCAG 2.2 AA.
+
+- [DigiToegankelijk.nl](https://www.digitoegankelijk.nl/)
+- [Wat is verplicht?](https://www.digitoegankelijk.nl/wetgeving/wat-is-verplicht)
+
+## Authenticatie- en API-standaarden
+
+### Authenticatie (verplicht — pas toe of leg uit)
+
+| Standaard | Toelichting |
+|-----------|-------------|
+| **OpenID.NLGov + SAML** | Gecombineerde verplichte standaard sinds september 2023. Identity providers moeten beide ondersteunen. OIDC is de toekomststandaard; SAML blijft relevant voor legacy SSO |
+| **NL GOV Assurance Profile for OAuth 2.0** | Verplicht voor REST-API's waar gebruikers toestemming geven aan derden. Versie 1.1 (in procedure) voegt machine-to-machine (M2M) client credentials toe |
+
+### API-standaarden (verplicht — pas toe of leg uit)
+
+| Standaard | Toelichting |
+|-----------|-------------|
+| **NLGov REST API Design Rules** (v2.0) | Verplicht bij het aanbieden van REST-API's voor overheidsinformatie. Modulair met verplichte modules voor Transport Security. [Logius](https://logius-standaarden.github.io/API-Design-Rules/) |
+| **OpenAPI Specification** (v3+) | API-documentatie moet als OAS v3+ definitie worden aangeboden |
+| **NL GOV Profile for CloudEvents** | Verplicht sinds november 2025 voor gestandaardiseerde event-notificaties |
+| **Digikoppeling** | Verplicht voor gegevensuitwisseling met GDI-componenten (basisregistraties) of cross-sectorale uitwisseling. Vier koppelvlakstandaarden: WUS, ebMS2, REST-API (met FSC), Grote Berichten |
+
+## Audit en compliance
+
+### ENSIA — Eenduidige Normatiek Single Information Audit
+
+Jaarlijks zelfevaluatie- en auditframework voor overheidsorganisaties om BIO-compliance aan te tonen. Principe: Single Information, Single Audit — één set informatie dient zowel horizontale (aan raad/bestuur) als verticale (aan nationale toezichthouders) verantwoording.
+
+**ENSIA dekt:** BIO-compliance, DigiD, BRP, Reisdocumenten, Suwinet, BAG, BGT, BRO.
+
+- [Digitale Overheid — ENSIA](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cybersecurity/bio-en-ensia/ensia/)
+- [VNG — ENSIA](https://vng.nl/projecten/ensia)
+
+### DigiD Normenkader 3.0
+
+Verplichte externe beveiligingsassessment voor alle organisaties die aansluiten op DigiD. Bevat 21 normen op basis van NCSC-richtlijnen (inclusief TLS 2025-05). Jaarlijks assessment van 1 januari tot 1 mei.
+
+- [Logius — DigiD Normenkader](https://www.logius.nl/onze-dienstverlening/toegang/digid/ict-beveiligingsassessments-digid/documentatie/norm-ict-beveiligingsassessments-digid)
+
+### Internet.nl — Compliancetesting
+
+Geautomatiseerde test van overheidswebsites en e-maildomeinen op naleving van verplichte internetstandaarden: IPv6, DNSSEC, HTTPS, HSTS, TLS, DMARC, DKIM, SPF, STARTTLS, DANE, RPKI, security.txt.
+
+- [Internet.nl](https://internet.nl)
+
+## Architectuur
+
+### NORA — Nederlandse Overheid Referentie Architectuur
+
+Overkoepelend architectuurraamwerk met 10 basisprincipes en 40 afgeleide principes. Gebaseerd op TOGAF.
+
+**NORA-familie (dochterarchitecturen):**
+
+| Architectuur | Laag |
+|-------------|------|
+| **GEMMA** | Gemeenten |
+| **PETRA** | Provincies |
+| **WILMA** | Waterschappen |
+| **RORA** | Rijksoverheid (sinds 2024, vervangt EAR) |
+
+- [NORA Online](https://www.noraonline.nl)
+
+## Standaardenhiërarchie
+
+```
+EU-niveau
+  ├── NIS2-richtlijn → Cyberbeveiligingswet (Cbw, verwacht Q2 2026)
+  ├── EN 301 549 → DigiToegankelijk (WCAG 2.1)
+  ├── AVG (GDPR)
+  ├── European Accessibility Act (EAA)
+  └── eIDAS-verordening → AdES Baseline Profiles
+Nationale wetgeving
+  ├── Cyberbeveiligingswet (Cbw)
+  ├── Wet digitale overheid (Wdo, sinds 1 juli 2023)
+  └── AMvB HTTPS/HSTS (wettelijk verplicht sinds 1 juli 2023)
+Overheidsbaseline
+  └── BIO2 (gebouwd op ISO 27001:2023 + ISO 27002:2022)
+Forum Standaardisatie ("pas toe of leg uit")
+  ├── Internet: HTTPS/HSTS, TLS, DNSSEC, DMARC, DKIM, SPF, STARTTLS/DANE, RPKI, IPv6, STIX/TAXII
+  ├── API's: NLGov REST API Design Rules, OAuth 2.0 NL GOV, CloudEvents, OpenAPI, Digikoppeling, FSC
+  ├── Authenticatie: OpenID.NLGov + SAML
+  ├── ISMS: ISO 27001, ISO 27002
+  ├── Toegankelijkheid: DigiToegankelijk (EN 301 549/WCAG 2.1)
+  └── Documenten: ODF, PDF/A
+NCSC-richtlijnen
+  ├── TLS-richtlijnen (2025-05)
+  ├── Webapplicatie-richtlijnen
+  └── Basisprincipes voor Digitale Weerbaarheid
+Architectuur
+  └── NORA → GEMMA, PETRA, WILMA, RORA
+Audit & compliance
+  ├── ENSIA (zelfevaluatie + externe audit)
+  ├── DigiD Normenkader 3.0
+  ├── Internet.nl (geautomatiseerde testing)
+  └── Monitor Open Standaarden (halfjaarlijkse meting)
+```
+
 ## Codevoorbeelden
 
 ### Logging conform BIO2 (Python)
@@ -280,16 +512,62 @@ async def bio2_security_headers(request: Request, call_next):
 
 | Standaard | Relatie met BIO2 |
 |-----------|-----------------|
-| NEN-EN-ISO/IEC 27001 | BIO2 vereist werkend ISMS conform 27001 (5.35.01) |
-| NEN-EN-ISO/IEC 27002 | BIO2-maatregelen zijn aanvullend op 27002-controls |
-| NIS2 / Cyberbeveiligingswet | BIO2 is het implementatiekader voor NIS2-verplichtingen bij de overheid |
-| Forum Standaardisatie | Verplichte standaarden voor internetgerichte systemen (5.14.01) |
-| NCSC-richtlijnen | Referentie voor cryptografische sterkte en kwetsbaarhedenbeheer |
-| AVG / GDPR | Incidentmelding en bewaartermijnen sluiten aan bij AVG-vereisten |
+| NEN-EN-ISO/IEC 27001:2023 | BIO2 vereist werkend ISMS conform 27001 (5.35.01); Deel 1 volgt 27001-structuur |
+| NEN-EN-ISO/IEC 27002:2022 | BIO2-overheidsmaatregelen (Deel 2) zijn aanvullend op 27002-controls |
+| Cyberbeveiligingswet (Cbw) | BIO2 is het sectorspecifieke implementatiekader (zorgplichtinvulling) voor de Cbw/NIS2 bij de overheid |
+| Forum Standaardisatie | Verplichte standaarden voor internetgerichte systemen (5.14.01); ~40+ standaarden op "pas toe of leg uit"-lijst |
+| NCSC TLS-richtlijnen 2025-05 | Referentie voor TLS-configuratie; TLS 1.3=Goed, 1.2=Voldoende, 1.0/1.1=Onvoldoende |
+| NCSC Webapplicatie-richtlijnen | Wettelijk verplicht voor alle internettoegankelijke overheidswebsites |
+| AVG / GDPR | Incidentmelding (meldplicht datalekken), bewaartermijnen en privacy by design sluiten aan bij AVG-vereisten |
+| Wet digitale overheid (Wdo) | Wettelijke basis voor verplicht HTTPS/HSTS (sinds 1 juli 2023) en DigiToegankelijk |
+| DigiToegankelijk (WCAG 2.1) | Wettelijk verplicht voor alle overheidswebsites en -apps; apart van BIO2 maar onderdeel van dezelfde compliance-vereisten |
+| NLGov REST API Design Rules | Verplicht bij aanbieden van REST-API's; Transport Security-module referereert aan NCSC TLS-richtlijnen |
+| OAuth 2.0 NL GOV | Verplicht voor API-autorisatie; complementair aan BIO2 toegangsbeheer (5.15–5.18) |
+| OpenID.NLGov + SAML | Verplichte authenticatiestandaarden; aanvullend op BIO2 MFA-vereiste (5.17.01) |
+| ENSIA | Jaarlijks auditframework voor aantonen BIO-compliance en andere beveiligingsvereisten |
+| NORA | Referentiearchitectuur met beveiligingsprincipes die aansluiten bij BIO2 security by design (8.27.01) |
 
 ## Meer informatie
 
+### BIO2 en beveiliging
 - [BIO2 op GitHub](https://github.com/MinBZK/Baseline-Informatiebeveiliging-Overheid)
+- [BIO2 v1.2 PDF](https://www.bio-overheid.nl/media/cs5ctudu/20250924-baseline-informatiebeveiliging-overheid-2-bio2-v12-deff.pdf)
+- [bio-overheid.nl](https://www.bio-overheid.nl/category/producten/bio)
 - [CIP — Centrum Informatiebeveiliging en Privacybescherming](https://www.cip-overheid.nl)
-- [Forum Standaardisatie — Verplichte standaarden](https://www.forumstandaardisatie.nl/open-standaarden)
-- [NCSC — Beveiligingsrichtlijnen](https://www.ncsc.nl)
+- [Digitale Overheid — BIO en ENSIA](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cybersecurity/bio-en-ensia/)
+
+### Wet- en regelgeving
+- [Digitale Overheid — Cyberbeveiligingswet](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cyberbeveiligingswet/)
+- [NCTV — Cyberbeveiligingswet](https://www.nctv.nl/onderwerpen/c/cyberbeveiligingswet)
+- [DigiToegankelijk.nl — Wat is verplicht](https://www.digitoegankelijk.nl/wetgeving/wat-is-verplicht)
+
+### Forum Standaardisatie
+- [Verplichte standaarden](https://www.forumstandaardisatie.nl/open-standaarden/verplicht)
+- [Alle open standaarden](https://www.forumstandaardisatie.nl/open-standaarden)
+- [Streefbeeldafspraken](https://www.forumstandaardisatie.nl/onderwerpen/veilig-internet/streefbeeldafspraken)
+- [Monitor Open Standaarden 2025](https://www.forumstandaardisatie.nl/monitor-open-standaarden-2025-hoofdlijnen-en-conclusies)
+
+### NCSC-richtlijnen
+- [NCSC — TLS-richtlijnen 2025-05](https://www.ncsc.nl/documenten/publicaties/2025/juni/01/ict-beveiligingsrichtlijnen-voor-transport-layer-security-2025-05)
+- [NCSC — Webapplicatie-richtlijnen](https://www.ncsc.nl/onderwerpen/ict-beveiligingsrichtlijnen-voor-webapplicaties)
+- [NCSC — Basisprincipes](https://www.ncsc.nl/basisprincipes)
+- [NCSC — Cybersecuritybeeld 2025](https://www.ncsc.nl/nieuws/cybersecuritybeeld-2025-dreigingen-divers-en-onvoorspelbaar-digitale-basishygiene-op-orde-blijft)
+
+### API- en authenticatiestandaarden
+- [NLGov REST API Design Rules](https://logius-standaarden.github.io/API-Design-Rules/)
+- [NL GOV OAuth 2.0](https://www.forumstandaardisatie.nl/open-standaarden/nl-gov-assurance-profile-oauth-20)
+- [Authenticatie-standaarden (OpenID.NLGov + SAML)](https://www.forumstandaardisatie.nl/open-standaarden/authenticatie-standaarden)
+- [NL GOV Profile for CloudEvents](https://logius-standaarden.github.io/NL-GOV-profile-for-CloudEvents/)
+- [Digikoppeling Architectuur](https://logius-standaarden.github.io/Digikoppeling-Architectuur/)
+- [Developer.overheid.nl](https://developer.overheid.nl)
+
+### Audit en compliance
+- [ENSIA — Digitale Overheid](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cybersecurity/bio-en-ensia/ensia/)
+- [VNG — ENSIA](https://vng.nl/projecten/ensia)
+- [DigiD Normenkader 3.0](https://www.logius.nl/onze-dienstverlening/toegang/digid/ict-beveiligingsassessments-digid/documentatie/norm-ict-beveiligingsassessments-digid)
+- [Internet.nl — Compliancetest](https://internet.nl)
+
+### Architectuur
+- [NORA Online](https://www.noraonline.nl)
+- [Digitale Overheid — NORA](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/nora/)
+- [Digitale Overheid — NORA Familie](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/nora/nora-familie/)
