@@ -142,8 +142,8 @@
     },
     {
       "name": "bio-security-baseline",
-      "description": "Skill voor de Baseline Informatiebeveiliging Overheid 2 (BIO2): verplichte beveiligingsmaatregelen voor alle Nederlandse overheidsorganisaties (informatiebeveiliging, toegangsbeheer, kwetsbaarhedenbeheer, logging, cryptografie, en meer)",
-      "version": "0.1.0",
+      "description": "Skill voor de Baseline Informatiebeveiliging Overheid 2 (BIO2): verplichte beveiligingsmaatregelen voor alle Nederlandse overheidsorganisaties (informatiebeveiliging, toegangsbeheer, kwetsbaarhedenbeheer, logging, cryptografie, EU CRA, AI Act, eIDAS 2.0, en meer)",
+      "version": "0.2.0",
       "author": {
         "name": "MinBZK",
         "email": ""

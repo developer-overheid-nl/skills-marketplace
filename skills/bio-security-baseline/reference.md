@@ -391,3 +391,169 @@ Bron: [BIO2 op GitHub](https://github.com/MinBZK/Baseline-Informatiebeveiliging-
 |----|-----------|
 | 8.32.01 | Wijzigingsbeheer omvat wijzigingsadministratie met testresultaten, risicobeoordeling met rollback-plannen en goedkeuringsprocedures. |
 | 8.32.02 | Wijzigingsbeheer volgt algemeen geaccepteerde beheerframeworks. |
+
+---
+
+## Codevoorbeelden
+
+### Logging conform BIO2 (Python)
+
+```python
+import logging
+import json
+from datetime import datetime, timezone
+
+class BIO2AuditLogger:
+    """Logger die voldoet aan BIO2 maatregel 8.15.01 (minimale logvelden)
+    en 8.15.02 (geen beveiligingsgevoelige data)."""
+
+    SENSITIVE_FIELDS = {"password", "wachtwoord", "token", "secret",
+                        "bsn", "api_key", "authorization", "cookie",
+                        "session_id", "credit_card"}
+
+    def __init__(self, logger_name: str):
+        self.logger = logging.getLogger(logger_name)
+
+    def _sanitize(self, data: dict) -> dict:
+        """Verwijder beveiligingsgevoelige velden (8.15.02)."""
+        return {k: "***REDACTED***" if k.lower() in self.SENSITIVE_FIELDS
+                else v for k, v in data.items()}
+
+    def audit_log(self, action: str, obj: str, result: str,
+                  origin: str, actor: str, details: dict | None = None):
+        """Schrijf auditlogregel conform BIO2 8.15.01.
+
+        Verplichte velden: actie, object, resultaat, herkomst,
+        actor-identificatie, tijdstempel.
+        """
+        entry = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "action": action,
+            "object": obj,
+            "result": result,
+            "origin": origin,
+            "actor": actor,
+        }
+        if details:
+            entry["details"] = self._sanitize(details)
+        self.logger.info(json.dumps(entry))
+
+# Gebruik:
+audit = BIO2AuditLogger("myapp.audit")
+audit.audit_log(
+    action="login",
+    obj="user_session",
+    result="success",
+    origin="192.168.1.100",
+    actor="user@example.nl",
+)
+```
+
+### Security headers conform BIO2 (Python/FastAPI)
+
+```python
+from fastapi import FastAPI, Request
+
+app = FastAPI()
+
+@app.middleware("http")
+async def bio2_security_headers(request: Request, call_next):
+    """Voeg beveiligingsheaders toe conform BIO2 5.14.01
+    en Forum Standaardisatie-eisen."""
+    response = await call_next(request)
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Content-Security-Policy"] = "frame-ancestors 'none'"
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    return response
+```
+
+### security.txt conform BIO2 (voorbeeld)
+
+```text
+# https://www.example.overheid.nl/.well-known/security.txt
+# Conform BIO2 8.08.06 (CVD) en internet.nl-vereisten
+
+Contact: mailto:security@example.overheid.nl
+Expires: 2027-01-01T00:00:00.000Z
+Encryption: https://www.example.overheid.nl/pgp-key.txt
+Preferred-Languages: nl, en
+Canonical: https://www.example.overheid.nl/.well-known/security.txt
+Policy: https://www.example.overheid.nl/responsible-disclosure
+```
+
+---
+
+## Relatie met andere standaarden
+
+| Standaard | Relatie met BIO2 |
+|-----------|-----------------|
+| NEN-EN-ISO/IEC 27001:2023 | BIO2 vereist werkend ISMS conform 27001 (5.35.01); Deel 1 volgt 27001-structuur |
+| NEN-EN-ISO/IEC 27002:2022 | BIO2-overheidsmaatregelen (Deel 2) zijn aanvullend op 27002-controls |
+| Cyberbeveiligingswet (Cbw) | BIO2 is het sectorspecifieke implementatiekader (zorgplichtinvulling) voor de Cbw/NIS2 bij de overheid |
+| Forum Standaardisatie | Verplichte standaarden voor internetgerichte systemen (5.14.01); ~40+ standaarden op "pas toe of leg uit"-lijst |
+| NCSC TLS-richtlijnen 2025-05 | Referentie voor TLS-configuratie; TLS 1.3=Goed, 1.2=Voldoende, 1.0/1.1=Onvoldoende |
+| NCSC Webapplicatie-richtlijnen | Wettelijk verplicht voor alle internettoegankelijke overheidswebsites |
+| AVG / GDPR | Incidentmelding (meldplicht datalekken), bewaartermijnen en privacy by design sluiten aan bij AVG-vereisten |
+| Wet digitale overheid (Wdo) | Wettelijke basis voor verplicht HTTPS/HSTS (sinds 1 juli 2023) en DigiToegankelijk |
+| DigiToegankelijk (WCAG 2.1) | Wettelijk verplicht voor alle overheidswebsites en -apps; apart van BIO2 maar onderdeel van dezelfde compliance-vereisten |
+| NLGov REST API Design Rules | Verplicht bij aanbieden van REST-API's; Transport Security-module referereert aan NCSC TLS-richtlijnen |
+| OAuth 2.0 NL GOV | Verplicht voor API-autorisatie; complementair aan BIO2 toegangsbeheer (5.15–5.18) |
+| OpenID.NLGov + SAML | Verplichte authenticatiestandaarden; aanvullend op BIO2 MFA-vereiste (5.17.01) |
+| ENSIA | Jaarlijks auditframework voor aantonen BIO-compliance en andere beveiligingsvereisten |
+| NORA | Referentiearchitectuur met beveiligingsprincipes die aansluiten bij BIO2 security by design (8.27.01) |
+| Cyber Resilience Act (CRA) | EU-verordening voor producten met digitale elementen; vereist SBOM, kwetsbaarhedenbeheer en security-by-design. Complementair aan BIO2 voor software die de overheid inkoopt of ontwikkelt |
+| AI Act | EU-verordening voor AI-systemen; risicogebaseerde eisen inclusief conformiteitsbeoordeling en menselijk toezicht voor hoog-risico AI bij de overheid |
+| eIDAS 2.0 | European Digital Identity Wallet; overheden moeten EUDI Wallet accepteren. Aanvullend op BIO2 authenticatievereisten (5.17) |
+
+---
+
+## Uitgebreide bronnenlijst
+
+### BIO2 en beveiliging
+- [BIO2 op GitHub](https://github.com/MinBZK/Baseline-Informatiebeveiliging-Overheid)
+- [BIO2 v1.2 PDF](https://www.bio-overheid.nl/media/cs5ctudu/20250924-baseline-informatiebeveiliging-overheid-2-bio2-v12-deff.pdf)
+- [bio-overheid.nl](https://www.bio-overheid.nl/category/producten/bio)
+- [CIP — Centrum Informatiebeveiliging en Privacybescherming](https://www.cip-overheid.nl)
+- [Digitale Overheid — BIO en ENSIA](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cybersecurity/bio-en-ensia/)
+
+### Wet- en regelgeving
+- [Digitale Overheid — Cyberbeveiligingswet](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cyberbeveiligingswet/)
+- [NCTV — Cyberbeveiligingswet](https://www.nctv.nl/onderwerpen/c/cyberbeveiligingswet)
+- [DigiToegankelijk.nl — Wat is verplicht](https://www.digitoegankelijk.nl/wetgeving/wat-is-verplicht)
+- [EU Cyber Resilience Act](https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act)
+- [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)
+
+### Forum Standaardisatie
+- [Verplichte standaarden](https://www.forumstandaardisatie.nl/open-standaarden/verplicht)
+- [Alle open standaarden](https://www.forumstandaardisatie.nl/open-standaarden)
+- [Streefbeeldafspraken](https://www.forumstandaardisatie.nl/onderwerpen/veilig-internet/streefbeeldafspraken)
+- [Monitor Open Standaarden 2025](https://www.forumstandaardisatie.nl/monitor-open-standaarden-2025-hoofdlijnen-en-conclusies)
+
+### NCSC-richtlijnen
+- [NCSC — TLS-richtlijnen 2025-05](https://www.ncsc.nl/documenten/publicaties/2025/juni/01/ict-beveiligingsrichtlijnen-voor-transport-layer-security-2025-05)
+- [NCSC — Webapplicatie-richtlijnen](https://www.ncsc.nl/onderwerpen/ict-beveiligingsrichtlijnen-voor-webapplicaties)
+- [NCSC — Basisprincipes](https://www.ncsc.nl/basisprincipes)
+- [NCSC — Cybersecuritybeeld 2025](https://www.ncsc.nl/nieuws/cybersecuritybeeld-2025-dreigingen-divers-en-onvoorspelbaar-digitale-basishygiene-op-orde-blijft)
+
+### API- en authenticatiestandaarden
+- [NLGov REST API Design Rules](https://logius-standaarden.github.io/API-Design-Rules/)
+- [NL GOV OAuth 2.0](https://www.forumstandaardisatie.nl/open-standaarden/nl-gov-assurance-profile-oauth-20)
+- [Authenticatie-standaarden (OpenID.NLGov + SAML)](https://www.forumstandaardisatie.nl/open-standaarden/authenticatie-standaarden)
+- [NL GOV Profile for CloudEvents](https://logius-standaarden.github.io/NL-GOV-profile-for-CloudEvents/)
+- [Digikoppeling Architectuur](https://logius-standaarden.github.io/Digikoppeling-Architectuur/)
+- [Developer.overheid.nl](https://developer.overheid.nl)
+
+### Audit en compliance
+- [ENSIA — Digitale Overheid](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cybersecurity/bio-en-ensia/ensia/)
+- [VNG — ENSIA](https://vng.nl/projecten/ensia)
+- [DigiD Normenkader 3.0](https://www.logius.nl/onze-dienstverlening/toegang/digid/ict-beveiligingsassessments-digid/documentatie/norm-ict-beveiligingsassessments-digid)
+- [Internet.nl — Compliancetest](https://internet.nl)
+
+### Architectuur
+- [NORA Online](https://www.noraonline.nl)
+- [Digitale Overheid — NORA](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/nora/)
+- [Digitale Overheid — NORA Familie](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/nora/nora-familie/)

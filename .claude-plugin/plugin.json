@@ -1,5 +1,5 @@
 {
   "name": "bio-security-baseline",
   "description": "Skill voor de Baseline Informatiebeveiliging Overheid 2 (BIO2): verplichte beveiligingsmaatregelen voor alle Nederlandse overheidsorganisaties, gebaseerd op ISO/IEC 27001/27002 en NIS2",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
