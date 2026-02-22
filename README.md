@@ -1,7 +1,7 @@
 # Overheid Claude Plugins
 
 [![EUPL-1.2](https://img.shields.io/badge/licentie-EUPL--1.2-blue.svg)](LICENSE)
-[![plugins](https://img.shields.io/badge/plugins-4-green.svg)](#beschikbare-plugins)
+[![plugins](https://img.shields.io/badge/plugins-6-green.svg)](#beschikbare-plugins)
 [![CI](https://github.com/MinBZK/overheid-claude-plugins/actions/workflows/validate.yml/badge.svg)](https://github.com/MinBZK/overheid-claude-plugins/actions/workflows/validate.yml)
 
 Centrale catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugins voor de Nederlandse overheid. Via deze marketplace kunnen overheidsteams hun Claude Code plugins publiceren en ontdekken.
@@ -26,6 +26,8 @@ claude plugin install logius-standaarden@overheid-plugins
 | [zad-actions](https://github.com/RijksICTGilde/zad-actions) | 5 | Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en debugging | [Rijks ICT Gilde](https://github.com/RijksICTGilde) |
 | [developer-overheid](https://github.com/dstotijn/developer-overheid-nl-agent-skills) | 9 | Kennisbank van developer.overheid.nl: richtlijnen en standaarden voor overheidssoftwareontwikkeling (API's, data, frontend, infra, security, open source) | [David Stotijn](https://github.com/dstotijn) |
 | [nerds](https://github.com/MinBZK/NeRDS) | 14 | Skills voor de Nederlandse Richtlijn Digitale Systemen (NeRDS): 13 richtlijnen voor ontwerpen, ontwikkelen en inkopen van digitale systemen (toegankelijkheid, open source, cloud, veiligheid, privacy, en meer) | [MinBZK](https://github.com/MinBZK) |
+| [internet-nl](https://github.com/MinBZK/internet-nl-plugin) | 5 | Skills voor internet.nl: test compliance met moderne internetstandaarden voor websites en mailservers (IPv6, DNSSEC, HTTPS, TLS, DMARC, DKIM, SPF, DANE) | [MinBZK](https://github.com/MinBZK) |
+| [geonovum](https://github.com/MinBZK/geonovum-plugin) | 6 | Skills voor Geonovum geo-standaarden: OGC API, WMS, WFS, metadata (ISO 19115), informatiemodellen (NEN 3610, MIM), INSPIRE en 3D | [MinBZK](https://github.com/MinBZK) |
 
 ## Plugin toevoegen
 

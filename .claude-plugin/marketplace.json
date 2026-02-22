@@ -95,6 +95,50 @@
         "veiligheid",
         "duurzaamheid"
       ]
+    },
+    {
+      "name": "internet-nl",
+      "description": "Skills voor internet.nl: test compliance met moderne internetstandaarden voor websites en mailservers (IPv6, DNSSEC, HTTPS, TLS, HSTS, DMARC, DKIM, SPF, STARTTLS, DANE).",
+      "version": "0.1.0",
+      "author": {
+        "name": "MinBZK"
+      },
+      "source": {
+        "source": "github",
+        "repo": "MinBZK/internet-nl-plugin"
+      },
+      "category": "productivity",
+      "tags": [
+        "overheid",
+        "internet-standaarden",
+        "compliance",
+        "security",
+        "dnssec",
+        "tls",
+        "dmarc"
+      ]
+    },
+    {
+      "name": "geonovum",
+      "description": "Skills voor Geonovum geo-standaarden: OGC API, WMS, WFS, metadata (ISO 19115), informatiemodellen (NEN 3610, MIM), INSPIRE en 3D.",
+      "version": "0.1.0",
+      "author": {
+        "name": "MinBZK"
+      },
+      "source": {
+        "source": "github",
+        "repo": "MinBZK/geonovum-plugin"
+      },
+      "category": "productivity",
+      "tags": [
+        "overheid",
+        "geo",
+        "geostandaarden",
+        "ogc-api",
+        "inspire",
+        "metadata",
+        "nen3610"
+      ]
     }
   ]
 }
