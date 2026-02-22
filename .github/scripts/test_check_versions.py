@@ -1,19 +1,29 @@
 """Tests for check_versions.py."""
 
+import base64
 import json
-from unittest.mock import MagicMock, patch
+import os
+import subprocess
+from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
 
 from check_versions import (
+    MARKETPLACE_PATH,
     apply_updates,
     build_branch_and_title,
     build_pr_body,
+    check_existing_bump_pr,
+    create_pr,
     detect_updates,
+    fetch_upstream_plugin,
+    main,
     normalize_version,
     resolve_repo,
     sanitize_branch,
+    validate_repo,
     versions_equal,
+    write_job_summary,
 )
 
 
@@ -96,6 +106,35 @@ class TestSanitizeBranch:
         assert sanitize_branch("hello_world") == "hello_world"
 
 
+class TestValidateRepo:
+    def test_valid(self):
+        assert validate_repo("MinBZK/logius-standaarden-plugin")
+
+    def test_valid_with_dots(self):
+        assert validate_repo("org/repo.name")
+
+    def test_valid_with_underscores(self):
+        assert validate_repo("org_name/repo_name")
+
+    def test_invalid_slash_count(self):
+        assert not validate_repo("org/repo/extra")
+
+    def test_injection_attempt(self):
+        assert not validate_repo("../../etc/passwd")
+
+    def test_semicolon(self):
+        assert not validate_repo("org/repo; rm -rf /")
+
+    def test_spaces(self):
+        assert not validate_repo("org/repo name")
+
+    def test_empty(self):
+        assert not validate_repo("")
+
+    def test_no_slash(self):
+        assert not validate_repo("just-a-name")
+
+
 class TestResolveRepo:
     def test_github_source(self):
         plugin = {
@@ -107,11 +146,28 @@ class TestResolveRepo:
         plugin = {"source": {"source": "github"}}
         assert resolve_repo(plugin) is None
 
+    def test_github_source_invalid_repo(self):
+        plugin = {"source": {"source": "github", "repo": "../../etc/passwd"}}
+        assert resolve_repo(plugin) is None
+
+    def test_github_source_injection_attempt(self):
+        plugin = {"source": {"source": "github", "repo": "org/repo; rm -rf /"}}
+        assert resolve_repo(plugin) is None
+
     def test_url_source_github(self):
         plugin = {
             "source": {
                 "source": "url",
                 "url": "https://github.com/MinBZK/test-repo.git",
+            }
+        }
+        assert resolve_repo(plugin) == "MinBZK/test-repo"
+
+    def test_url_source_github_with_trailing_path(self):
+        plugin = {
+            "source": {
+                "source": "url",
+                "url": "https://github.com/MinBZK/test-repo/tree/main/something",
             }
         }
         assert resolve_repo(plugin) == "MinBZK/test-repo"
@@ -132,6 +188,12 @@ class TestResolveRepo:
 
     def test_source_not_dict(self):
         plugin = {"source": "some-string"}
+        assert resolve_repo(plugin) is None
+
+    def test_url_source_single_segment(self):
+        plugin = {
+            "source": {"source": "url", "url": "https://github.com/onlyone"}
+        }
         assert resolve_repo(plugin) is None
 
 
@@ -326,8 +388,9 @@ class TestDetectUpdates:
                 "source": {"source": "github", "repo": "org/test"},
             }
         ]
-        updates, summary = detect_updates(plugins)
+        updates, summary, failures = detect_updates(plugins)
         assert len(updates) == 0
+        assert failures == 0
         assert any("OK:" in s for s in summary)
 
     @patch("check_versions.fetch_upstream_plugin")
@@ -341,9 +404,28 @@ class TestDetectUpdates:
                 "source": {"source": "github", "repo": "org/test"},
             }
         ]
-        updates, summary = detect_updates(plugins)
+        updates, summary, failures = detect_updates(plugins)
         assert len(updates) == 1
         assert updates[0]["new_version"] == "2.0.0"
+        assert failures == 0
+
+    @patch("check_versions.fetch_upstream_plugin")
+    def test_description_only_change(self, mock_fetch):
+        mock_fetch.return_value = {"version": "1.0.0", "description": "new desc"}
+        plugins = [
+            {
+                "name": "test",
+                "version": "1.0.0",
+                "description": "old desc",
+                "source": {"source": "github", "repo": "org/test"},
+            }
+        ]
+        updates, summary, failures = detect_updates(plugins)
+        assert len(updates) == 1
+        assert updates[0]["description_changed"] is True
+        assert updates[0]["version_changed"] is False
+        assert updates[0]["new_description"] == "new desc"
+        assert failures == 0
 
     @patch("check_versions.fetch_upstream_plugin")
     def test_v_prefix_not_false_positive(self, mock_fetch):
@@ -356,8 +438,9 @@ class TestDetectUpdates:
                 "source": {"source": "github", "repo": "org/test"},
             }
         ]
-        updates, _ = detect_updates(plugins)
+        updates, _, failures = detect_updates(plugins)
         assert len(updates) == 0
+        assert failures == 0
 
     @patch("check_versions.fetch_upstream_plugin")
     def test_trailing_zero_not_false_positive(self, mock_fetch):
@@ -370,8 +453,9 @@ class TestDetectUpdates:
                 "source": {"source": "github", "repo": "org/test"},
             }
         ]
-        updates, _ = detect_updates(plugins)
+        updates, _, failures = detect_updates(plugins)
         assert len(updates) == 0
+        assert failures == 0
 
     @patch("check_versions.fetch_upstream_plugin")
     def test_upstream_fetch_failure(self, mock_fetch):
@@ -384,8 +468,9 @@ class TestDetectUpdates:
                 "source": {"source": "github", "repo": "org/test"},
             }
         ]
-        updates, summary = detect_updates(plugins)
+        updates, summary, failures = detect_updates(plugins)
         assert len(updates) == 0
+        assert failures == 1
         assert any("WAARSCHUWING" in s for s in summary)
 
     def test_no_github_repo(self):
@@ -397,6 +482,353 @@ class TestDetectUpdates:
                 "source": {"source": "npm"},
             }
         ]
-        updates, summary = detect_updates(plugins)
+        updates, summary, failures = detect_updates(plugins)
         assert len(updates) == 0
+        assert failures == 0
         assert any("SKIP" in s for s in summary)
+
+    @patch("check_versions.fetch_upstream_plugin")
+    def test_multiple_failures_counted(self, mock_fetch):
+        mock_fetch.return_value = None
+        plugins = [
+            {
+                "name": "a",
+                "version": "1.0.0",
+                "description": "d",
+                "source": {"source": "github", "repo": "org/a"},
+            },
+            {
+                "name": "b",
+                "version": "1.0.0",
+                "description": "d",
+                "source": {"source": "github", "repo": "org/b"},
+            },
+        ]
+        _, _, failures = detect_updates(plugins)
+        assert failures == 2
+
+
+class TestFetchUpstreamPlugin:
+    @patch("check_versions.subprocess.run")
+    def test_success(self, mock_run):
+        plugin_data = {"name": "test", "version": "1.0.0"}
+        encoded = base64.b64encode(json.dumps(plugin_data).encode()).decode()
+        mock_run.return_value = MagicMock(returncode=0, stdout=encoded)
+
+        result = fetch_upstream_plugin("org/repo")
+        assert result == plugin_data
+
+    @patch("check_versions.subprocess.run")
+    def test_api_failure(self, mock_run):
+        mock_run.return_value = MagicMock(returncode=1, stdout="")
+        assert fetch_upstream_plugin("org/repo") is None
+
+    @patch("check_versions.subprocess.run")
+    def test_invalid_base64(self, mock_run):
+        mock_run.return_value = MagicMock(returncode=0, stdout="not-valid-base64!!!")
+        assert fetch_upstream_plugin("org/repo") is None
+
+    @patch("check_versions.subprocess.run")
+    def test_invalid_json(self, mock_run):
+        encoded = base64.b64encode(b"not json").decode()
+        mock_run.return_value = MagicMock(returncode=0, stdout=encoded)
+        assert fetch_upstream_plugin("org/repo") is None
+
+    @patch("check_versions.subprocess.run")
+    def test_timeout_passed(self, mock_run):
+        mock_run.return_value = MagicMock(returncode=0, stdout="e30=")  # {}
+        fetch_upstream_plugin("org/repo")
+        _, kwargs = mock_run.call_args
+        assert kwargs.get("timeout") == 60
+
+    @patch("check_versions.subprocess.run")
+    def test_timeout_raises(self, mock_run):
+        mock_run.side_effect = subprocess.TimeoutExpired(cmd="gh", timeout=60)
+        with pytest.raises(subprocess.TimeoutExpired):
+            fetch_upstream_plugin("org/repo")
+
+
+class TestCheckExistingBumpPr:
+    @patch("check_versions.subprocess.run")
+    def test_found(self, mock_run):
+        prs = [{"number": 5, "title": "Bump plugin", "headRefName": "automated/bump-x"}]
+        mock_run.return_value = MagicMock(
+            returncode=0, stdout=json.dumps(prs)
+        )
+        result = check_existing_bump_pr()
+        assert result is not None
+        assert result["number"] == 5
+
+    @patch("check_versions.subprocess.run")
+    def test_no_prs(self, mock_run):
+        mock_run.return_value = MagicMock(returncode=0, stdout="[]")
+        assert check_existing_bump_pr() is None
+
+    @patch("check_versions.subprocess.run")
+    def test_command_failure(self, mock_run):
+        mock_run.return_value = MagicMock(returncode=1, stdout="")
+        assert check_existing_bump_pr() is None
+
+    @patch("check_versions.subprocess.run")
+    def test_invalid_json(self, mock_run):
+        mock_run.return_value = MagicMock(returncode=0, stdout="not json")
+        assert check_existing_bump_pr() is None
+
+    @patch("check_versions.subprocess.run")
+    def test_label_match_without_branch_prefix(self, mock_run):
+        """Any PR with automated-bump label counts, regardless of branch name."""
+        prs = [
+            {"number": 7, "title": "Manual bump", "headRefName": "manual/some-branch"}
+        ]
+        mock_run.return_value = MagicMock(
+            returncode=0, stdout=json.dumps(prs)
+        )
+        result = check_existing_bump_pr()
+        assert result is not None
+        assert result["number"] == 7
+
+
+class TestWriteJobSummary:
+    def test_writes_to_file(self, tmp_path):
+        summary_file = tmp_path / "summary.md"
+        with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(summary_file)}):
+            write_job_summary(["OK: test v1.0.0"], "Extra info")
+
+        content = summary_file.read_text()
+        assert "Plugin versie-check resultaten" in content
+        assert "OK: test v1.0.0" in content
+        assert "Extra info" in content
+
+    def test_no_env_var_does_nothing(self):
+        with patch.dict(os.environ, {}, clear=True):
+            # Should not raise
+            write_job_summary(["OK: test v1.0.0"])
+
+    def test_emoji_for_ok(self, tmp_path):
+        summary_file = tmp_path / "summary.md"
+        with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(summary_file)}):
+            write_job_summary(["OK: test"])
+        assert "\u2705" in summary_file.read_text()
+
+    def test_emoji_for_update(self, tmp_path):
+        summary_file = tmp_path / "summary.md"
+        with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(summary_file)}):
+            write_job_summary(["UPDATE: test"])
+        assert "\U0001f504" in summary_file.read_text()
+
+    def test_emoji_for_warning(self, tmp_path):
+        summary_file = tmp_path / "summary.md"
+        with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(summary_file)}):
+            write_job_summary(["WAARSCHUWING: test"])
+        assert "\u26a0\ufe0f" in summary_file.read_text()
+
+
+class TestCreatePr:
+    @patch("check_versions.subprocess.run")
+    def test_success(self, mock_run, tmp_path):
+        marketplace = tmp_path / "marketplace.json"
+        marketplace.write_text('{"plugins": []}')
+
+        # Mock all subprocess calls to succeed
+        mock_run.return_value = MagicMock(
+            returncode=0, stdout="https://github.com/org/repo/pull/1\n", stderr=""
+        )
+
+        data = {"plugins": [{"name": "test", "version": "2.0.0"}]}
+        updates = [{"name": "test", "new_version": "2.0.0"}]
+
+        url = create_pr(
+            str(marketplace), data, updates, "automated/bump-test", "Update test", "body"
+        )
+        assert url == "https://github.com/org/repo/pull/1"
+
+        # Verify marketplace.json was written correctly
+        written = json.loads(marketplace.read_text())
+        assert written["plugins"][0]["version"] == "2.0.0"
+
+    @patch("check_versions.subprocess.run")
+    def test_push_failure_exits(self, mock_run, tmp_path):
+        marketplace = tmp_path / "marketplace.json"
+        marketplace.write_text('{"plugins": []}')
+
+        call_count = [0]
+        push_cmd_index = 5  # config name, config email, checkout, add, commit, push
+
+        def side_effect(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == push_cmd_index + 1:
+                return MagicMock(returncode=1, stderr="push failed", stdout="")
+            return MagicMock(returncode=0, stdout="", stderr="")
+
+        mock_run.side_effect = side_effect
+
+        data = {"plugins": []}
+        with pytest.raises(SystemExit) as exc:
+            create_pr(str(marketplace), data, [{"name": "x"}], "branch", "title", "body")
+        assert exc.value.code == 1
+
+    @patch("check_versions.subprocess.run")
+    def test_pr_create_failure_exits(self, mock_run, tmp_path):
+        marketplace = tmp_path / "marketplace.json"
+        marketplace.write_text('{"plugins": []}')
+
+        call_count = [0]
+        pr_cmd_index = 7  # config name, config email, checkout, add, commit, push, label, pr create
+
+        def side_effect(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == pr_cmd_index + 1:
+                return MagicMock(returncode=1, stderr="pr create failed", stdout="")
+            return MagicMock(returncode=0, stdout="url", stderr="")
+
+        mock_run.side_effect = side_effect
+
+        data = {"plugins": []}
+        with pytest.raises(SystemExit) as exc:
+            create_pr(str(marketplace), data, [{"name": "x"}], "branch", "title", "body")
+        assert exc.value.code == 1
+
+    @patch("check_versions.subprocess.run")
+    def test_timeout_on_subprocess_calls(self, mock_run, tmp_path):
+        marketplace = tmp_path / "marketplace.json"
+        marketplace.write_text('{"plugins": []}')
+
+        mock_run.return_value = MagicMock(returncode=0, stdout="url\n", stderr="")
+
+        data = {"plugins": []}
+        create_pr(str(marketplace), data, [{"name": "x"}], "branch", "title", "body")
+
+        # Verify every subprocess.run call got a timeout
+        for call in mock_run.call_args_list:
+            _, kwargs = call
+            assert "timeout" in kwargs, f"Missing timeout in call: {call}"
+
+    @patch("check_versions.subprocess.run")
+    def test_multi_update_commit_message(self, mock_run, tmp_path):
+        marketplace = tmp_path / "marketplace.json"
+        marketplace.write_text('{"plugins": []}')
+
+        mock_run.return_value = MagicMock(returncode=0, stdout="url\n", stderr="")
+
+        data = {"plugins": []}
+        updates = [{"name": "a", "new_version": "1.0"}, {"name": "b", "new_version": "2.0"}]
+        create_pr(str(marketplace), data, updates, "branch", "Update 2 plugins", "body")
+
+        # Find the commit call and check message
+        for call in mock_run.call_args_list:
+            args = call[0][0]
+            if args[:2] == ["git", "commit"]:
+                assert "a, b" in args[3]
+
+
+class TestMain:
+    @patch("check_versions.create_pr")
+    @patch("check_versions.check_existing_bump_pr")
+    @patch("check_versions.fetch_upstream_plugin")
+    @patch("builtins.open", create=True)
+    def test_all_up_to_date(self, mock_file_open, mock_fetch, mock_pr_check, mock_create):
+        data = {
+            "plugins": [
+                {
+                    "name": "test",
+                    "version": "1.0.0",
+                    "description": "desc",
+                    "source": {"source": "github", "repo": "org/test"},
+                }
+            ]
+        }
+        mock_file_open.return_value.__enter__ = lambda s: s
+        mock_file_open.return_value.__exit__ = MagicMock(return_value=False)
+        mock_file_open.return_value.read = MagicMock(return_value=json.dumps(data))
+
+        mock_fetch.return_value = {"version": "1.0.0", "description": "desc"}
+
+        with patch("json.load", return_value=data):
+            with pytest.raises(SystemExit) as exc:
+                main()
+            assert exc.value.code == 0
+
+        mock_create.assert_not_called()
+
+    @patch("check_versions.write_job_summary")
+    @patch("check_versions.fetch_upstream_plugin")
+    @patch("builtins.open", create=True)
+    def test_all_fetches_fail_exits_with_error(self, mock_file_open, mock_fetch, mock_summary):
+        data = {
+            "plugins": [
+                {
+                    "name": "a",
+                    "version": "1.0.0",
+                    "description": "d",
+                    "source": {"source": "github", "repo": "org/a"},
+                },
+                {
+                    "name": "b",
+                    "version": "1.0.0",
+                    "description": "d",
+                    "source": {"source": "github", "repo": "org/b"},
+                },
+            ]
+        }
+        mock_file_open.return_value.__enter__ = lambda s: s
+        mock_file_open.return_value.__exit__ = MagicMock(return_value=False)
+
+        mock_fetch.return_value = None
+
+        with patch("json.load", return_value=data):
+            with pytest.raises(SystemExit) as exc:
+                main()
+            assert exc.value.code == 1
+
+    @patch("check_versions.create_pr", return_value="https://example.com/pr/1")
+    @patch("check_versions.check_existing_bump_pr", return_value=None)
+    @patch("check_versions.fetch_upstream_plugin")
+    @patch("builtins.open", create=True)
+    def test_creates_pr_on_drift(self, mock_file_open, mock_fetch, mock_pr_check, mock_create):
+        data = {
+            "plugins": [
+                {
+                    "name": "test",
+                    "version": "1.0.0",
+                    "description": "desc",
+                    "source": {"source": "github", "repo": "org/test"},
+                }
+            ]
+        }
+        mock_file_open.return_value.__enter__ = lambda s: s
+        mock_file_open.return_value.__exit__ = MagicMock(return_value=False)
+
+        mock_fetch.return_value = {"version": "2.0.0", "description": "desc"}
+
+        with patch("json.load", return_value=data):
+            main()
+
+        mock_create.assert_called_once()
+
+    @patch("check_versions.create_pr")
+    @patch("check_versions.check_existing_bump_pr")
+    @patch("check_versions.fetch_upstream_plugin")
+    @patch("builtins.open", create=True)
+    def test_skips_pr_if_existing(self, mock_file_open, mock_fetch, mock_pr_check, mock_create):
+        data = {
+            "plugins": [
+                {
+                    "name": "test",
+                    "version": "1.0.0",
+                    "description": "desc",
+                    "source": {"source": "github", "repo": "org/test"},
+                }
+            ]
+        }
+        mock_file_open.return_value.__enter__ = lambda s: s
+        mock_file_open.return_value.__exit__ = MagicMock(return_value=False)
+
+        mock_fetch.return_value = {"version": "2.0.0", "description": "desc"}
+        mock_pr_check.return_value = {"number": 5, "title": "Existing PR"}
+
+        with patch("json.load", return_value=data):
+            with pytest.raises(SystemExit) as exc:
+                main()
+            assert exc.value.code == 0
+
+        mock_create.assert_not_called()

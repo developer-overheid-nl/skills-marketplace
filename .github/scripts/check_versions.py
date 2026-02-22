@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Check upstream plugin versions and create a PR if drift is detected."""
+"""Check upstream plugin versions and create a PR if drift is detected.
+
+Compares plugin versions and descriptions in marketplace.json against their
+upstream plugin.json files on GitHub. Creates a PR when drift is detected.
+
+Version normalization: leading 'v' prefixes and trailing '.0' segments are
+ignored during comparison (e.g. "v1.2.0" == "1.2"), so cosmetic differences
+don't trigger false-positive updates.
+"""
 
 import base64
 import binascii
@@ -10,12 +18,24 @@ import re
 import subprocess
 import sys
 
+MARKETPLACE_PATH = ".claude-plugin/marketplace.json"
+
+SUBPROCESS_TIMEOUT = 60
+
+# Matches 'org/repo' with valid GitHub characters
+REPO_PATTERN = re.compile(r"^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$")
+
 
 def normalize_version(version: str) -> str:
     """Normalize a version string for comparison.
 
     Strips leading 'v', trailing '.0' segments for comparison purposes.
     Returns lowercased, stripped version.
+
+    Examples:
+        "v1.2.0" -> "1.2"
+        "1.0.0"  -> "1"
+        "1.2.3"  -> "1.2.3"
     """
     v = version.strip().lower()
     if v.startswith("v"):
@@ -42,22 +62,38 @@ def sanitize_branch(s: str) -> str:
     return sanitized or "unknown"
 
 
+def validate_repo(repo: str) -> bool:
+    """Validate that a repo string is a safe 'org/name' format."""
+    return bool(REPO_PATTERN.match(repo))
+
+
 def resolve_repo(plugin: dict) -> str | None:
     """Extract the GitHub repo from a plugin's source config.
 
     Returns repo string like 'org/name' or None if not resolvable.
+    Validates the result against a safe pattern to prevent injection.
     """
     source = plugin.get("source", {})
     if not isinstance(source, dict):
         return None
 
+    repo = None
     source_type = source.get("source")
     if source_type == "github":
-        return source.get("repo")
+        repo = source.get("repo")
     elif source_type == "url":
         url = source.get("url", "")
-        if "github.com" in url:
-            return url.split("github.com/")[-1].replace(".git", "")
+        if "github.com/" in url:
+            # Extract exactly org/name from the URL path
+            path = url.split("github.com/", 1)[-1]
+            # Remove .git suffix and any trailing path segments
+            path = path.replace(".git", "")
+            segments = [s for s in path.split("/") if s]
+            if len(segments) >= 2:
+                repo = f"{segments[0]}/{segments[1]}"
+
+    if repo and validate_repo(repo):
+        return repo
     return None
 
 
@@ -76,6 +112,7 @@ def fetch_upstream_plugin(repo: str) -> dict | None:
         ],
         capture_output=True,
         text=True,
+        timeout=SUBPROCESS_TIMEOUT,
     )
     if result.returncode != 0:
         return None
@@ -87,10 +124,19 @@ def fetch_upstream_plugin(repo: str) -> dict | None:
         return None
 
 
-def detect_updates(plugins: list[dict]) -> tuple[list[dict], list[str]]:
-    """Compare local plugins against upstream and return updates and summary lines."""
+def detect_updates(
+    plugins: list[dict],
+) -> tuple[list[dict], list[str], int]:
+    """Compare local plugins against upstream and return updates, summary, and failure count.
+
+    Returns:
+        updates: list of update dicts for plugins that need updating
+        summary_lines: human-readable status per plugin
+        fetch_failures: count of plugins where upstream fetch failed
+    """
     updates = []
     summary_lines = []
+    fetch_failures = 0
 
     for plugin in plugins:
         name = plugin.get("name", "?")
@@ -106,6 +152,7 @@ def detect_updates(plugins: list[dict]) -> tuple[list[dict], list[str]]:
 
         upstream = fetch_upstream_plugin(repo)
         if upstream is None:
+            fetch_failures += 1
             msg = f"WAARSCHUWING: {name} - kan plugin.json niet ophalen uit {repo}"
             print(msg)
             summary_lines.append(msg)
@@ -151,7 +198,7 @@ def detect_updates(plugins: list[dict]) -> tuple[list[dict], list[str]]:
             print(msg)
             summary_lines.append(msg)
 
-    return updates, summary_lines
+    return updates, summary_lines, fetch_failures
 
 
 def write_job_summary(summary_lines: list[str], extra: str = "") -> None:
@@ -176,7 +223,10 @@ def write_job_summary(summary_lines: list[str], extra: str = "") -> None:
 
 
 def check_existing_bump_pr() -> dict | None:
-    """Check for an existing open bump PR. Returns PR dict or None."""
+    """Check for an existing open bump PR with the automated-bump label.
+
+    Returns the first matching PR dict or None.
+    """
     result = subprocess.run(
         [
             "gh",
@@ -191,6 +241,7 @@ def check_existing_bump_pr() -> dict | None:
         ],
         capture_output=True,
         text=True,
+        timeout=SUBPROCESS_TIMEOUT,
     )
     if result.returncode != 0 or not result.stdout.strip():
         return None
@@ -200,10 +251,8 @@ def check_existing_bump_pr() -> dict | None:
     except json.JSONDecodeError:
         return None
 
-    for pr in prs:
-        if pr.get("headRefName", "").startswith("automated/bump-"):
-            return pr
-    return None
+    # Any PR with the automated-bump label counts as an existing bump PR
+    return prs[0] if prs else None
 
 
 def apply_updates(data: dict, updates: list[dict]) -> None:
@@ -311,7 +360,9 @@ def create_pr(
 
     # Git configuration
     subprocess.run(
-        ["git", "config", "user.name", "github-actions[bot]"], check=True
+        ["git", "config", "user.name", "github-actions[bot]"],
+        check=True,
+        timeout=SUBPROCESS_TIMEOUT,
     )
     subprocess.run(
         [
@@ -321,11 +372,20 @@ def create_pr(
             "github-actions[bot]@users.noreply.github.com",
         ],
         check=True,
+        timeout=SUBPROCESS_TIMEOUT,
     )
 
     # Create branch and commit
-    subprocess.run(["git", "checkout", "-b", branch], check=True)
-    subprocess.run(["git", "add", marketplace_path], check=True)
+    subprocess.run(
+        ["git", "checkout", "-b", branch],
+        check=True,
+        timeout=SUBPROCESS_TIMEOUT,
+    )
+    subprocess.run(
+        ["git", "add", marketplace_path],
+        check=True,
+        timeout=SUBPROCESS_TIMEOUT,
+    )
 
     if len(updates) == 1:
         commit_msg = title
@@ -333,12 +393,17 @@ def create_pr(
         names = ", ".join(u["name"] for u in updates)
         commit_msg = f"Update plugins: {names}"
 
-    subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+    subprocess.run(
+        ["git", "commit", "-m", commit_msg],
+        check=True,
+        timeout=SUBPROCESS_TIMEOUT,
+    )
 
     push_result = subprocess.run(
         ["git", "push", "-u", "origin", branch],
         capture_output=True,
         text=True,
+        timeout=SUBPROCESS_TIMEOUT,
     )
     if push_result.returncode != 0:
         print(f"FOUT: git push mislukt: {push_result.stderr}")
@@ -359,6 +424,7 @@ def create_pr(
         ],
         capture_output=True,
         text=True,
+        timeout=SUBPROCESS_TIMEOUT,
     )
 
     # Create PR
@@ -376,6 +442,7 @@ def create_pr(
         ],
         capture_output=True,
         text=True,
+        timeout=SUBPROCESS_TIMEOUT,
     )
     if result.returncode != 0:
         print(f"FOUT: PR aanmaken mislukt: {result.stderr}")
@@ -385,12 +452,23 @@ def create_pr(
 
 
 def main() -> None:
-    marketplace_path = ".claude-plugin/marketplace.json"
-
-    with open(marketplace_path) as f:
+    with open(MARKETPLACE_PATH) as f:
         data = json.load(f)
 
-    updates, summary_lines = detect_updates(data.get("plugins", []))
+    plugins = data.get("plugins", [])
+    resolvable_count = sum(1 for p in plugins if resolve_repo(p) is not None)
+
+    updates, summary_lines, fetch_failures = detect_updates(plugins)
+
+    # If all resolvable plugins failed to fetch, something is wrong (auth, network)
+    if resolvable_count > 0 and fetch_failures == resolvable_count:
+        msg = (
+            f"FOUT: Alle {fetch_failures} upstream fetches zijn mislukt. "
+            "Mogelijk een netwerk- of authenticatieprobleem."
+        )
+        print(f"\n{msg}")
+        write_job_summary(summary_lines, f"**{msg}**")
+        sys.exit(1)
 
     if not updates:
         print("\nAlle plugin versies zijn actueel")
@@ -416,7 +494,7 @@ def main() -> None:
     apply_updates(data, updates)
     branch, title = build_branch_and_title(updates)
     body = build_pr_body(updates)
-    pr_url = create_pr(marketplace_path, data, updates, branch, title, body)
+    pr_url = create_pr(MARKETPLACE_PATH, data, updates, branch, title, body)
 
     print(f"\nPR aangemaakt: {pr_url}")
     write_job_summary(summary_lines, f"**PR aangemaakt:** {pr_url}")
