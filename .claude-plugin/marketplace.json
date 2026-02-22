@@ -98,8 +98,8 @@
     },
     {
       "name": "internet-nl",
-      "description": "Skills voor internet.nl: test compliance met moderne internetstandaarden voor websites en mailservers (IPv6, DNSSEC, HTTPS, TLS, HSTS, DMARC, DKIM, SPF, STARTTLS, DANE).",
-      "version": "0.1.0",
+      "description": "Plugin voor het testen en implementeren van moderne internetstandaarden conform internet.nl. Bevat skills voor 5 domeinen: webstandaarden (HTTPS, TLS, DNSSEC, IPv6, RPKI), mailstandaarden (DMARC, DKIM, SPF, STARTTLS, DANE), batch API, en implementatiegidsen uit de toolbox-wiki.",
+      "version": "0.1.1",
       "author": {
         "name": "MinBZK"
       },
@@ -120,8 +120,8 @@
     },
     {
       "name": "geonovum",
-      "description": "Skills voor Geonovum geo-standaarden: OGC API, WMS, WFS, metadata (ISO 19115), informatiemodellen (NEN 3610, MIM), INSPIRE en 3D.",
-      "version": "0.1.0",
+      "description": "Plugin voor Geonovum geo-standaarden voor ruimtelijke data in Nederland. Bevat skills voor 6 domeinen: OGC API services (WMS, WFS, WMTS, OGC API Features), metadata (ISO 19115, NGR), informatiemodellen (NEN 3610, MIM), INSPIRE implementatie, en 3D standaarden (CityGML, 3D Tiles).",
+      "version": "0.1.1",
       "author": {
         "name": "MinBZK"
       },
