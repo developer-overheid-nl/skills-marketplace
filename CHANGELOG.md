@@ -13,6 +13,13 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 - Versie-vergelijking met normalisatie (v-prefix, trailing .0)
 - Tests voor check-versions script
 
+## [1.1.0] - 2026-02-23
+
+### Toegevoegd
+
+- Plugin: bio-security-baseline v0.2.0 (1 skill voor BIO2 informatiebeveiliging)
+  - Source verplaatst van djimit/bio-security-baseline naar MinBZK/bio-security-baseline-plugin
+
 ## [1.0.0] - 2026-02-16
 
 ### Toegevoegd
