@@ -13,21 +13,6 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 - Versie-vergelijking met normalisatie (v-prefix, trailing .0)
 - Tests voor check-versions script
 
-## [1.1.0] - 2026-02-22
-
-### Toegevoegd
-
-- Plugin: bio-security-baseline v0.2.0 (1 skill voor BIO2 informatiebeveiliging)
-  - BIO2-overheidsmaatregelen over 13 domeinen (governance, toegangsbeheer, logging, cryptografie, etc.)
-  - Implementatie-checklist voor ontwikkelaars
-  - Forum Standaardisatie verplichte standaarden (HTTPS/HSTS, TLS, DNSSEC, DMARC, DKIM, SPF, etc.)
-  - NCSC-richtlijnen (TLS 2025-05, webapplicaties, basisprincipes)
-  - Cyberbeveiligingswet (NIS2-implementatie)
-  - EU-regelgeving: Cyber Resilience Act, AI Act, Data Act, eIDAS 2.0
-  - DigiToegankelijk (WCAG), authenticatie- en API-standaarden
-  - Audit en compliance (ENSIA, DigiD Normenkader, internet.nl)
-  - Codevoorbeelden (logging, security headers, security.txt)
-
 ## [1.0.0] - 2026-02-16
 
 ### Toegevoegd
