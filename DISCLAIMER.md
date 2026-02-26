@@ -1,6 +1,6 @@
 # Disclaimer
 
-Deze marketplace is een **experimenteel project** om ervaring op te doen met de inzet van generatieve AI bij de Nederlandse overheid. De marketplace biedt een catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugins die worden ontwikkeld en onderhouden door verschillende teams en organisaties.
+Deze marketplace is een **experimenteel project** om te leren hoe generatieve AI gestuurd kan worden om te werken volgens de kaders, richtlijnen en standaarden van de Nederlandse overheid. De marketplace biedt een catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugins die worden ontwikkeld en onderhouden door verschillende teams en organisaties.
 
 ## De plugins in deze marketplace zijn niet de officiële standaarden
 
@@ -30,6 +30,6 @@ Individuele plugins worden onderhouden door hun respectievelijke maintainers. Zi
 
 ## Geen garantie
 
-Dit project is mede bedoeld om te leren over de mogelijkheden en beperkingen van generatieve AI bij de overheid. De content wordt aangeboden zonder enige garantie van volledigheid, juistheid of actualiteit. Gebruik is op eigen risico.
+Dit project is mede bedoeld om te leren hoe generatieve AI gestuurd kan worden om te werken volgens de kaders, richtlijnen en standaarden van de overheid. De content wordt aangeboden zonder enige garantie van volledigheid, juistheid of actualiteit. Gebruik is op eigen risico.
 
 ---
