@@ -23,7 +23,7 @@ Je plugin moet voldoen aan de [kwaliteitseisen](../CONTRIBUTING.md):
 ### Stap 1: Fork en clone
 
 ```bash
-gh repo fork MinBZK/overheid-claude-plugins --clone
+gh repo fork developer-overheid-nl/overheid-claude-plugins --clone
 cd overheid-claude-plugins
 ```
 
@@ -82,7 +82,7 @@ gh pr create --title "Voeg jouw-plugin toe" --body "Beschrijving van de plugin e
 Zodra je plugin is toegevoegd kunnen gebruikers deze installeren:
 
 ```bash
-claude plugin marketplace add MinBZK/overheid-claude-plugins
+claude plugin marketplace add developer-overheid-nl/overheid-claude-plugins
 claude plugin install jouw-plugin@overheid-plugins
 ```
 
