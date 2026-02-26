@@ -5,7 +5,7 @@
     "description": "Claude Code plugins voor de Nederlandse overheid"
   },
   "owner": {
-    "name": "MinBZK"
+    "name": "developer-overheid-nl"
   },
   "plugins": [
     {

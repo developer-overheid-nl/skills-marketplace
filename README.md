@@ -2,7 +2,7 @@
 
 [![EUPL-1.2](https://img.shields.io/badge/licentie-EUPL--1.2-blue.svg)](LICENSE)
 [![plugins](https://img.shields.io/badge/plugins-7-green.svg)](#beschikbare-plugins)
-[![CI](https://github.com/MinBZK/overheid-claude-plugins/actions/workflows/validate.yml/badge.svg)](https://github.com/MinBZK/overheid-claude-plugins/actions/workflows/validate.yml)
+[![CI](https://github.com/developer-overheid-nl/overheid-claude-plugins/actions/workflows/validate.yml/badge.svg)](https://github.com/developer-overheid-nl/overheid-claude-plugins/actions/workflows/validate.yml)
 
 Centrale catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugins voor de Nederlandse overheid. Via deze marketplace kunnen overheidsteams hun Claude Code plugins publiceren en ontdekken.
 
@@ -10,7 +10,7 @@ Centrale catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-c
 
 ```bash
 # 1. Voeg de marketplace toe
-claude plugin marketplace add MinBZK/overheid-claude-plugins
+claude plugin marketplace add developer-overheid-nl/overheid-claude-plugins
 
 # 2. Installeer een plugin
 claude plugin install logius-standaarden@overheid-plugins
