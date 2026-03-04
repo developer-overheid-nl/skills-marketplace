@@ -131,7 +131,7 @@ def check_sync(source_data: dict) -> bool:
     """Check if platform files are in sync with the source. Returns True if synced."""
     all_synced = True
 
-    for name, (path, generator) in PLATFORMS.items():
+    for _name, (path, generator) in PLATFORMS.items():
         expected = generator(source_data)
 
         if not path.exists():
