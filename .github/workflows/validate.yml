@@ -136,7 +136,7 @@ jobs:
           print("Alle bereikbare plugin-repos gecontroleerd")
           SCRIPT
 
-      - name: Controleer plugin.json aanwezig in repos
+      - name: Controleer platform-bestanden aanwezig in repos
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -145,6 +145,12 @@ jobs:
 
           with open('marketplace.json') as f:
               data = json.load(f)
+
+          REQUIRED_PATHS = [
+              '.plugin/plugin.json',
+              '.claude-plugin/plugin.json',
+              '.cursor-plugin/plugin.json',
+          ]
 
           errors = []
           for plugin in data.get('plugins', []):
@@ -169,21 +175,26 @@ jobs:
                   print(f"SKIP: {plugin['name']} -> '{repo}' niet bereikbaar (mogelijk private repo)")
                   continue
 
-              result = subprocess.run(
-                  ['gh', 'api', f'repos/{repo}/contents/.claude-plugin/plugin.json', '--jq', '.name'],
-                  capture_output=True, text=True
-              )
-              if result.returncode != 0:
-                  errors.append(f"{plugin['name']}: .claude-plugin/plugin.json niet gevonden in {repo}")
+              missing = []
+              for path in REQUIRED_PATHS:
+                  result = subprocess.run(
+                      ['gh', 'api', f'repos/{repo}/contents/{path}', '--jq', '.name'],
+                      capture_output=True, text=True
+                  )
+                  if result.returncode != 0:
+                      missing.append(path)
+
+              if missing:
+                  errors.append(f"{plugin['name']}: ontbreekt in {repo}: {', '.join(missing)}")
               else:
-                  print(f"OK: {plugin['name']} heeft plugin.json")
+                  print(f"OK: {plugin['name']} heeft alle platform-bestanden")
 
           if errors:
               for e in errors:
                   print(f"FOUT: {e}")
               sys.exit(1)
 
-          print("Alle bereikbare plugins hebben een geldig manifest")
+          print("Alle bereikbare plugins hebben alle platform-bestanden")
           SCRIPT
 
       - name: Controleer vereiste bestanden
