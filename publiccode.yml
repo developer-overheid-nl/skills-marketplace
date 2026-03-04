@@ -48,7 +48,7 @@ maintenance:
   contacts:
     - name: developer-overheid-nl
   type: community
-name: overheid-claude-plugins
+name: skills-marketplace
 releaseDate: '2026-02-12'
 softwareType: standalone/other
-url: https://github.com/developer-overheid-nl/overheid-claude-plugins
+url: https://github.com/developer-overheid-nl/skills-marketplace

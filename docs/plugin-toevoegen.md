@@ -23,8 +23,8 @@ Je plugin moet voldoen aan de [kwaliteitseisen](../CONTRIBUTING.md):
 ### Stap 1: Fork en clone
 
 ```bash
-gh repo fork developer-overheid-nl/overheid-claude-plugins --clone
-cd overheid-claude-plugins
+gh repo fork developer-overheid-nl/skills-marketplace --clone
+cd skills-marketplace
 ```
 
 ### Stap 2: Voeg je plugin toe aan marketplace.json
@@ -82,7 +82,7 @@ gh pr create --title "Voeg jouw-plugin toe" --body "Beschrijving van de plugin e
 Zodra je plugin is toegevoegd kunnen gebruikers deze installeren:
 
 ```bash
-claude plugin marketplace add developer-overheid-nl/overheid-claude-plugins
+claude plugin marketplace add developer-overheid-nl/skills-marketplace
 claude plugin install jouw-plugin@overheid-plugins
 ```
 
