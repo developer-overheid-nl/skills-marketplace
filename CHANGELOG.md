@@ -33,6 +33,6 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 - Issue template voor plugin-aanmeldingen
 - PR template
 
-[Unreleased]: https://github.com/developer-overheid-nl/overheid-claude-plugins/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/developer-overheid-nl/overheid-claude-plugins/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/developer-overheid-nl/overheid-claude-plugins/releases/tag/v1.0.0
+[Unreleased]: https://github.com/developer-overheid-nl/skills-marketplace/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/developer-overheid-nl/skills-marketplace/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/developer-overheid-nl/skills-marketplace/releases/tag/v1.0.0
