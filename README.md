@@ -1,10 +1,10 @@
-# Overheid Claude Plugins
+# Overheid AI-Assistant Plugins
 
 [![EUPL-1.2](https://img.shields.io/badge/licentie-EUPL--1.2-blue.svg)](LICENSE)
 [![plugins](https://img.shields.io/badge/plugins-7-green.svg)](#beschikbare-plugins)
 [![CI](https://github.com/developer-overheid-nl/skills-marketplace/actions/workflows/validate.yml/badge.svg)](https://github.com/developer-overheid-nl/skills-marketplace/actions/workflows/validate.yml)
 
-Centrale catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugins voor de Nederlandse overheid. Via deze marketplace kunnen overheidsteams hun Claude Code plugins publiceren en ontdekken.
+Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid. Ondersteunt meerdere platformen: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) en [Cursor](https://www.cursor.com/). Via deze marketplace kunnen overheidsteams hun plugins publiceren en ontdekken.
 
 ## Snel starten
 
@@ -50,12 +50,31 @@ Zie [CONTRIBUTING.md](CONTRIBUTING.md) voor het volledige review-proces.
 ## Structuur
 
 ```
+marketplace.json              # Neutraal formaat (single source of truth)
 .claude-plugin/
-  marketplace.json      # Catalogus met alle plugins
+  marketplace.json            # Gegenereerd voor Claude Code
+.cursor-plugin/
+  marketplace.json            # Gegenereerd voor Cursor
+.github/scripts/
+  generate_marketplace.py     # Genereert platform-bestanden
 docs/
-  plugin-maken.md       # Handleiding: plugin bouwen
-  plugin-toevoegen.md   # Handleiding: plugin registreren
+  plugin-maken.md             # Handleiding: plugin bouwen
+  plugin-toevoegen.md         # Handleiding: plugin registreren
 ```
+
+### Cross-platform architectuur
+
+Het neutrale `marketplace.json` in de root is de single source of truth. Platform-specifieke bestanden worden gegenereerd door `generate_marketplace.py`. CI controleert of de gegenereerde bestanden in sync zijn.
+
+```bash
+# Genereer platform-bestanden
+uv run python .github/scripts/generate_marketplace.py
+
+# Controleer of alles in sync is
+uv run python .github/scripts/generate_marketplace.py --check
+```
+
+Een nieuw platform toevoegen (bijv. Windsurf, Copilot) vereist alleen een nieuwe `generate_<platform>()` functie in het script.
 
 ## Disclaimer
 

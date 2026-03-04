@@ -32,8 +32,9 @@ Open een [Plugin aanmelding](../../issues/new?template=plugin-aanmelding.yml) is
 ### 2. Via een pull request
 
 1. Fork deze repository
-2. Voeg je plugin toe aan `.claude-plugin/marketplace.json`
-3. Open een pull request met een beschrijving van je plugin
+2. Voeg je plugin toe aan `marketplace.json` (in de root)
+3. Draai `python .github/scripts/generate_marketplace.py` om platform-bestanden te genereren
+4. Open een pull request met een beschrijving van je plugin
 
 Zie [docs/plugin-toevoegen.md](docs/plugin-toevoegen.md) voor gedetailleerde instructies.
 

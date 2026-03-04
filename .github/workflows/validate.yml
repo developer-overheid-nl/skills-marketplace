@@ -14,14 +14,14 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Valideer marketplace.json syntax
-        run: python3 -c "import json; json.load(open('.claude-plugin/marketplace.json'))"
+        run: python3 -c "import json; json.load(open('marketplace.json'))"
 
       - name: Valideer marketplace structuur
         run: |
           python3 << 'SCRIPT'
           import json, sys
 
-          with open('.claude-plugin/marketplace.json') as f:
+          with open('marketplace.json') as f:
               data = json.load(f)
 
           errors = []
@@ -55,6 +55,41 @@ jobs:
           print(f"Marketplace '{data['name']}' is geldig ({len(data['plugins'])} plugins)")
           SCRIPT
 
+      - name: Controleer platform-bestanden in sync
+        run: python3 .github/scripts/generate_marketplace.py --check
+
+      - name: Valideer Cursor marketplace structuur
+        run: |
+          python3 << 'SCRIPT'
+          import json, sys
+
+          with open('.cursor-plugin/marketplace.json') as f:
+              data = json.load(f)
+
+          errors = []
+
+          for field in ['name', 'owner', 'plugins']:
+              if field not in data:
+                  errors.append(f"Verplicht veld '{field}' ontbreekt")
+
+          if 'metadata' in data and 'pluginRoot' not in data.get('metadata', {}):
+              errors.append("Verplicht veld 'metadata.pluginRoot' ontbreekt")
+
+          for i, plugin in enumerate(data.get('plugins', [])):
+              prefix = f"plugins[{i}]"
+              if 'displayName' not in plugin:
+                  errors.append(f"{prefix}: 'displayName' ontbreekt")
+              if 'source' not in plugin:
+                  errors.append(f"{prefix}: 'source' ontbreekt")
+
+          if errors:
+              for e in errors:
+                  print(f"FOUT: {e}")
+              sys.exit(1)
+
+          print(f"Cursor marketplace is geldig ({len(data['plugins'])} plugins)")
+          SCRIPT
+
       - name: Controleer plugin-repos bereikbaar
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,7 +97,7 @@ jobs:
           python3 << 'SCRIPT'
           import json, subprocess, sys
 
-          with open('.claude-plugin/marketplace.json') as f:
+          with open('marketplace.json') as f:
               data = json.load(f)
 
           errors = []
@@ -108,7 +143,7 @@ jobs:
           python3 << 'SCRIPT'
           import json, subprocess, sys
 
-          with open('.claude-plugin/marketplace.json') as f:
+          with open('marketplace.json') as f:
               data = json.load(f)
 
           errors = []
@@ -153,7 +188,7 @@ jobs:
 
       - name: Controleer vereiste bestanden
         run: |
-          for f in LICENSE README.md CONTRIBUTING.md CHANGELOG.md .claude-plugin/marketplace.json; do
+          for f in LICENSE README.md CONTRIBUTING.md CHANGELOG.md marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json; do
             if [ ! -f "$f" ]; then
               echo "FOUT: $f ontbreekt"
               exit 1

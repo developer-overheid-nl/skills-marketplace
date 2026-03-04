@@ -29,7 +29,7 @@ cd skills-marketplace
 
 ### Stap 2: Voeg je plugin toe aan marketplace.json
 
-Open `.claude-plugin/marketplace.json` en voeg je plugin toe aan de `plugins` array:
+Open `marketplace.json` (in de root van het project) en voeg je plugin toe aan de `plugins` array:
 
 ```json
 {
@@ -65,7 +65,9 @@ Open `.claude-plugin/marketplace.json` en voeg je plugin toe aan de `plugins` ar
 
 ```bash
 git checkout -b add-jouw-plugin
-git add .claude-plugin/marketplace.json
+# Genereer platform-bestanden na het wijzigen van marketplace.json
+python .github/scripts/generate_marketplace.py
+git add marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json
 git commit -m "Voeg jouw-plugin toe aan marketplace"
 git push origin add-jouw-plugin
 gh pr create --title "Voeg jouw-plugin toe" --body "Beschrijving van de plugin en wat deze doet."
@@ -91,5 +93,6 @@ claude plugin install jouw-plugin@overheid-plugins
 Als je een nieuwe versie van je plugin uitbrengt:
 
 1. Update de `version` in je eigen `plugin.json`
-2. Open een PR om de `version` in `marketplace.json` bij te werken
-3. Gebruikers krijgen de update via `claude plugin marketplace update`
+2. Open een PR om de `version` in `marketplace.json` (root) bij te werken
+3. Draai `python .github/scripts/generate_marketplace.py` om de platform-bestanden bij te werken
+4. Gebruikers krijgen de update via `claude plugin marketplace update`
