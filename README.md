@@ -13,7 +13,7 @@ Centrale catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-c
 claude plugin marketplace add developer-overheid-nl/skills-marketplace
 
 # 2. Installeer een plugin
-claude plugin install logius-standaarden@overheid-plugins
+claude plugin install standaarden@overheid-plugins
 ```
 
 ![Demo: plugin installeren en browsen](docs/demo.gif)
@@ -22,12 +22,12 @@ claude plugin install logius-standaarden@overheid-plugins
 
 | Plugin | Skills | Beschrijving | Maintainer |
 |--------|--------|-------------|------------|
-| [logius-standaarden](https://github.com/developer-overheid-nl/skills-standaarden) | 10 | Skills voor 77 Logius standaarden repositories: API Design Rules, Digikoppeling, OAuth NL, FSC, CloudEvents, BOMOS, en meer | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
+| [standaarden](https://github.com/developer-overheid-nl/skills-standaarden) | 10 | Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, CloudEvents, BOMOS, en meer | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
 | [zad-actions](https://github.com/RijksICTGilde/zad-actions) | 5 | Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en debugging | [Rijks ICT Gilde](https://github.com/RijksICTGilde) |
 | [developer-overheid](https://github.com/dstotijn/developer-overheid-nl-agent-skills) | 9 | Kennisbank van developer.overheid.nl: richtlijnen en standaarden voor overheidssoftwareontwikkeling (API's, data, frontend, infra, security, open source) | [David Stotijn](https://github.com/dstotijn) |
 | [nerds](https://github.com/MinBZK/NeRDS) | 14 | Skills voor de Nederlandse Richtlijn Digitale Systemen (NeRDS): 13 richtlijnen voor ontwerpen, ontwikkelen en inkopen van digitale systemen (toegankelijkheid, open source, cloud, veiligheid, privacy, en meer) | [MinBZK](https://github.com/MinBZK) |
-| [internet-nl](https://github.com/developer-overheid-nl/skills-internet) | 5 | Skills voor internet.nl: test compliance met moderne internetstandaarden voor websites en mailservers (IPv6, DNSSEC, HTTPS, TLS, DMARC, DKIM, SPF, DANE) | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
-| [geonovum](https://github.com/developer-overheid-nl/skills-geo) | 6 | Skills voor Geonovum geo-standaarden: OGC API, WMS, WFS, metadata (ISO 19115), informatiemodellen (NEN 3610, MIM), INSPIRE en 3D | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
+| [internet](https://github.com/developer-overheid-nl/skills-internet) | 5 | Skills voor moderne internetstandaarden (getest via internet.nl): compliance voor websites en mailservers (IPv6, DNSSEC, HTTPS, TLS, DMARC, DKIM, SPF, DANE) | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
+| [geo](https://github.com/developer-overheid-nl/skills-geo) | 6 | Skills voor Nederlandse geo-standaarden (beheerd door Geonovum): OGC API, WMS, WFS, metadata (ISO 19115), informatiemodellen (NEN 3610, MIM), INSPIRE en 3D | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
 | [bio-security-baseline](https://github.com/MinBZK/bio-security-baseline-plugin) | 1 | BIO2 security baseline: verplichte beveiligingsmaatregelen, Forum Standaardisatie-standaarden, NCSC-richtlijnen, NIS2/Cyberbeveiligingswet, EU CRA, AI Act en compliance-informatie | [MinBZK](https://github.com/MinBZK) |
 
 ## Plugin toevoegen
