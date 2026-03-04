@@ -32,7 +32,7 @@ claude plugin install standaarden@overheid-plugins
 
 ## Plugin toevoegen
 
-Heb je een Claude Code plugin die relevant is voor de Nederlandse overheid? Voeg hem toe aan deze marketplace:
+Heb je een plugin die relevant is voor de Nederlandse overheid? Voeg hem toe aan deze marketplace:
 
 1. **Plugin bouwen** - Zie [docs/plugin-maken.md](docs/plugin-maken.md) voor een stap-voor-stap handleiding
 2. **Plugin aanmelden** - Zie [docs/plugin-toevoegen.md](docs/plugin-toevoegen.md) of open een [issue](../../issues/new?template=plugin-aanmelding.yml)
@@ -41,7 +41,7 @@ Heb je een Claude Code plugin die relevant is voor de Nederlandse overheid? Voeg
 
 - Open-source licentie (EUPL-1.2, Apache-2.0, MIT, of vergelijkbaar)
 - Publieke GitHub repository
-- Geldige `.claude-plugin/plugin.json`
+- Geldige `.plugin/plugin.json`
 - Minimaal 1 werkende skill, command of agent
 - Nederlandse of tweetalige documentatie
 

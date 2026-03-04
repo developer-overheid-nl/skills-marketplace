@@ -1,10 +1,10 @@
-# Een Claude Code plugin maken
+# Een plugin maken
 
-Deze handleiding beschrijft hoe je een Claude Code plugin bouwt die via de marketplace gedistribueerd kan worden.
+Deze handleiding beschrijft hoe je een AI-assistant plugin bouwt die via de marketplace gedistribueerd kan worden.
 
 ## Wat is een plugin?
 
-Een Claude Code plugin is een verzameling skills, commands, agents, hooks en/of MCP servers die Claude Code uitbreiden met domeinkennis of tooling. Plugins worden gedistribueerd via een marketplace en zijn beschikbaar in elke Claude Code sessie.
+Een plugin is een verzameling skills, commands, agents, hooks en/of MCP servers die een AI-assistant uitbreiden met domeinkennis of tooling. Plugins worden gedistribueerd via een marketplace en werken in meerdere platformen (Claude Code, Cursor).
 
 ## Stap 1: Directory-structuur
 
@@ -12,8 +12,14 @@ Maak de volgende structuur aan in je repository:
 
 ```
 mijn-plugin/
+├── .plugin/
+│   └── plugin.json          # Plugin manifest, source of truth (verplicht)
 ├── .claude-plugin/
-│   └── plugin.json          # Plugin manifest (verplicht)
+│   └── plugin.json          # Gegenereerd voor Claude Code
+├── .cursor-plugin/
+│   └── plugin.json          # Gegenereerd voor Cursor
+├── scripts/
+│   └── generate_plugin.py   # Genereert platform-bestanden
 ├── skills/
 │   └── mijn-skill/
 │       └── SKILL.md         # Skill definitie
@@ -24,7 +30,7 @@ mijn-plugin/
 
 ## Stap 2: Plugin manifest
 
-Maak `.claude-plugin/plugin.json`:
+Maak `.plugin/plugin.json`:
 
 ```json
 {
@@ -94,29 +100,27 @@ claude plugin validate ./mijn-plugin
 
 ## Bestaande skills migreren
 
-Heb je al `.claude/skills/` in je project? Je kunt ze **in-place** omzetten naar plugin-formaat zonder ze te verplaatsen:
+Heb je al `.claude/skills/` in je project? Verplaats ze naar `skills/` voor cross-platform compatibiliteit:
 
-1. Maak `.claude-plugin/plugin.json` aan met een `skills` veld dat naar `.claude/skills/` verwijst:
-   ```json
-   {
-     "name": "mijn-plugin",
-     "description": "Beschrijving",
-     "version": "1.0.0",
-     "skills": "./.claude/skills/"
-   }
-   ```
-2. Zet elke `skill-naam.md` om naar een directory `skill-naam/SKILL.md`
-3. Voeg YAML frontmatter toe aan elke SKILL.md (name, description, model, allowed-tools)
-4. Test lokaal met `--plugin-dir`
+1. `git mv .claude/skills/ skills/`
+2. Maak `.plugin/plugin.json` aan (zonder `skills` veld — de standaardlocatie `skills/` wordt automatisch gevonden)
+3. Zet elke `skill-naam.md` om naar een directory `skill-naam/SKILL.md`
+4. Voeg YAML frontmatter toe aan elke SKILL.md (name, description, model, allowed-tools)
+5. Draai `python scripts/generate_plugin.py` om platform-bestanden te genereren
+6. Test lokaal met `--plugin-dir`
 
-Zo heb je **één locatie** voor skills die zowel lokaal in het project als via de marketplace werkt. Zie [zad-actions](https://github.com/RijksICTGilde/zad-actions) voor een werkend voorbeeld.
+Zie [zad-actions](https://github.com/RijksICTGilde/zad-actions) voor een werkend voorbeeld.
 
-## Cursor compatibiliteit
+## Cross-platform architectuur
 
-`SKILL.md` bestanden met YAML frontmatter zijn cross-platform en werken in zowel Claude Code als Cursor. Om je plugin ook via Cursor beschikbaar te maken:
+`.plugin/plugin.json` is de source of truth. Platform-specifieke bestanden worden gegenereerd met `scripts/generate_plugin.py`:
 
-1. Voeg `.cursor-plugin/plugin.json` toe aan je repository (vergelijkbaar met `.claude-plugin/plugin.json`)
-2. De marketplace genereert automatisch een Cursor-variant met `displayName`, `keywords` en `repository` velden
+```bash
+python scripts/generate_plugin.py          # genereer platform-bestanden
+python scripts/generate_plugin.py --check  # controleer of alles in sync is
+```
+
+`SKILL.md` bestanden met YAML frontmatter zijn al cross-platform en werken in zowel Claude Code als Cursor.
 
 ## Meer informatie
 

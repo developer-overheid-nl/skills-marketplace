@@ -5,37 +5,37 @@ categories:
 description:
   nl:
     features:
-      - Centrale catalogus van Claude Code plugins voor de Nederlandse overheid
+      - Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid
       - Geautomatiseerde validatie van plugin-registraties
       - Kwaliteitsdashboard voor gepubliceerde plugins
       - Handleidingen voor het bouwen en toevoegen van plugins
       - Ondersteuning voor meerdere overheidsorganisaties en standaarden
     genericName: Plugin marketplace
     longDescription: >
-      Centrale catalogus (marketplace) van Claude Code plugins voor de Nederlandse
-      overheid. Via deze marketplace kunnen overheidsteams hun Claude Code plugins
+      Centrale catalogus (marketplace) van AI-assistant plugins voor de Nederlandse
+      overheid. Via deze marketplace kunnen overheidsteams hun AI-assistant plugins
       publiceren en ontdekken. Bevat plugins voor onder andere Logius standaarden,
       internetstandaarden (internet.nl), geo-standaarden (Geonovum), de Nederlandse
       Richtlijn Digitale Systemen (NeRDS), BIO2 beveiligingsbaseline, en meer.
       Inclusief geautomatiseerde validatie, kwaliteitseisen en documentatie voor
       pluginontwikkelaars.
-    shortDescription: Centrale catalogus van Claude Code plugins voor de Nederlandse overheid
+    shortDescription: Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid
   en:
     features:
-      - Central catalog of Claude Code plugins for the Dutch government
+      - Central catalog of AI-assistant plugins for the Dutch government
       - Automated validation of plugin registrations
       - Quality dashboard for published plugins
       - Guides for building and adding plugins
       - Support for multiple government organizations and standards
     genericName: Plugin marketplace
     longDescription: >
-      Central catalog (marketplace) of Claude Code plugins for the Dutch government.
+      Central catalog (marketplace) of AI-assistant plugins for the Dutch government.
       Through this marketplace, government teams can publish and discover Claude Code
       plugins. Contains plugins for Logius standards, internet standards (internet.nl),
       geo-standards (Geonovum), the Dutch Digital Systems Guideline (NeRDS), BIO2
       security baseline, and more. Includes automated validation, quality requirements,
       and documentation for plugin developers.
-    shortDescription: Central catalog of Claude Code plugins for the Dutch government
+    shortDescription: Central catalog of AI-assistant plugins for the Dutch government
 developmentStatus: stable
 legal:
   license: EUPL-1.2
