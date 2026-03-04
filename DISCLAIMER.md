@@ -1,6 +1,6 @@
 # Disclaimer
 
-Deze marketplace is een **experimenteel project** om te leren hoe generatieve AI gestuurd kan worden om te werken volgens de kaders, richtlijnen en standaarden van de Nederlandse overheid. De marketplace biedt een catalogus van [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugins die worden ontwikkeld en onderhouden door verschillende teams en organisaties.
+Deze marketplace is een **experimenteel project** om te leren hoe generatieve AI gestuurd kan worden om te werken volgens de kaders, richtlijnen en standaarden van de Nederlandse overheid. De marketplace biedt een catalogus van AI-assistant plugins die worden ontwikkeld en onderhouden door verschillende teams en organisaties.
 
 ## De plugins in deze marketplace zijn niet de officiële standaarden
 

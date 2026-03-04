@@ -97,8 +97,8 @@ def resolve_repo(plugin: dict) -> str | None:
     return None
 
 
-def fetch_upstream_plugin(repo: str) -> dict | None:
-    """Fetch and parse the upstream plugin.json from a GitHub repo.
+def _fetch_json_from_repo(repo: str, path: str) -> dict | None:
+    """Fetch and parse a JSON file from a GitHub repo via the API.
 
     Returns parsed dict or None on failure (including timeout).
     """
@@ -107,7 +107,7 @@ def fetch_upstream_plugin(repo: str) -> dict | None:
             [
                 "gh",
                 "api",
-                f"repos/{repo}/contents/.claude-plugin/plugin.json",
+                f"repos/{repo}/contents/{path}",
                 "--jq",
                 ".content",
             ],
@@ -116,7 +116,7 @@ def fetch_upstream_plugin(repo: str) -> dict | None:
             timeout=SUBPROCESS_TIMEOUT,
         )
     except subprocess.TimeoutExpired:
-        print(f"WAARSCHUWING: timeout bij ophalen plugin.json uit {repo}")
+        print(f"WAARSCHUWING: timeout bij ophalen {path} uit {repo}")
         return None
     if result.returncode != 0:
         return None
@@ -126,6 +126,18 @@ def fetch_upstream_plugin(repo: str) -> dict | None:
         return json.loads(content)
     except (json.JSONDecodeError, ValueError, binascii.Error):
         return None
+
+
+def fetch_upstream_plugin(repo: str) -> dict | None:
+    """Fetch and parse the upstream plugin.json from a GitHub repo.
+
+    Tries .plugin/plugin.json first (source of truth), falls back to
+    .claude-plugin/plugin.json for repos that haven't migrated yet.
+    """
+    result = _fetch_json_from_repo(repo, ".plugin/plugin.json")
+    if result is not None:
+        return result
+    return _fetch_json_from_repo(repo, ".claude-plugin/plugin.json")
 
 
 def detect_updates(

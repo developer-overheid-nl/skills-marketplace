@@ -1,5 +1,5 @@
 name: Plugin aanmelding
-description: Meld een nieuwe Claude Code plugin aan voor de marketplace
+description: Meld een nieuwe plugin aan voor de marketplace
 title: "[Plugin] "
 labels: ["plugin-aanmelding"]
 body:
@@ -79,7 +79,7 @@ body:
       options:
         - label: De repository is publiek toegankelijk
           required: true
-        - label: Er is een geldige `.claude-plugin/plugin.json` aanwezig
+        - label: Er is een geldige `.plugin/plugin.json` aanwezig (met gegenereerde platform-bestanden)
           required: true
         - label: De plugin bevat minimaal 1 werkende skill, command of agent
           required: true

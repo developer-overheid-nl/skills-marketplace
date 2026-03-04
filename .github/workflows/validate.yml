@@ -136,7 +136,7 @@ jobs:
           print("Alle bereikbare plugin-repos gecontroleerd")
           SCRIPT
 
-      - name: Controleer plugin.json aanwezig in repos
+      - name: Controleer platform-bestanden aanwezig in repos
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -146,7 +146,12 @@ jobs:
           with open('marketplace.json') as f:
               data = json.load(f)
 
+          # .claude-plugin is verplicht, .plugin en .cursor-plugin zijn gewenst
+          REQUIRED_PATHS = ['.claude-plugin/plugin.json']
+          DESIRED_PATHS = ['.plugin/plugin.json', '.cursor-plugin/plugin.json']
+
           errors = []
+          warnings = []
           for plugin in data.get('plugins', []):
               source = plugin.get('source', {})
               if isinstance(source, dict) and source.get('source') == 'github':
@@ -169,21 +174,41 @@ jobs:
                   print(f"SKIP: {plugin['name']} -> '{repo}' niet bereikbaar (mogelijk private repo)")
                   continue
 
-              result = subprocess.run(
-                  ['gh', 'api', f'repos/{repo}/contents/.claude-plugin/plugin.json', '--jq', '.name'],
-                  capture_output=True, text=True
-              )
-              if result.returncode != 0:
-                  errors.append(f"{plugin['name']}: .claude-plugin/plugin.json niet gevonden in {repo}")
+              missing_required = []
+              for path in REQUIRED_PATHS:
+                  result = subprocess.run(
+                      ['gh', 'api', f'repos/{repo}/contents/{path}', '--jq', '.name'],
+                      capture_output=True, text=True
+                  )
+                  if result.returncode != 0:
+                      missing_required.append(path)
+
+              missing_desired = []
+              for path in DESIRED_PATHS:
+                  result = subprocess.run(
+                      ['gh', 'api', f'repos/{repo}/contents/{path}', '--jq', '.name'],
+                      capture_output=True, text=True
+                  )
+                  if result.returncode != 0:
+                      missing_desired.append(path)
+
+              if missing_required:
+                  errors.append(f"{plugin['name']}: ontbreekt in {repo}: {', '.join(missing_required)}")
+              elif missing_desired:
+                  warnings.append(f"{plugin['name']}: ontbreekt in {repo}: {', '.join(missing_desired)}")
+                  print(f"WAARSCHUWING: {plugin['name']} mist: {', '.join(missing_desired)}")
               else:
-                  print(f"OK: {plugin['name']} heeft plugin.json")
+                  print(f"OK: {plugin['name']} heeft alle platform-bestanden")
+
+          if warnings:
+              print(f"\n{len(warnings)} plugin(s) missen cross-platform bestanden")
 
           if errors:
               for e in errors:
                   print(f"FOUT: {e}")
               sys.exit(1)
 
-          print("Alle bereikbare plugins hebben een geldig manifest")
+          print("Alle bereikbare plugins hebben de verplichte bestanden")
           SCRIPT
 
       - name: Controleer vereiste bestanden

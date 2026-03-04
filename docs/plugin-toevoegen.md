@@ -1,6 +1,6 @@
 # Een plugin toevoegen aan de marketplace
 
-Deze handleiding beschrijft hoe je een bestaande Claude Code plugin registreert in de overheid-plugins marketplace.
+Deze handleiding beschrijft hoe je een bestaande plugin registreert in de overheid-plugins marketplace.
 
 ## Voorwaarden
 
@@ -8,7 +8,7 @@ Je plugin moet voldoen aan de [kwaliteitseisen](../CONTRIBUTING.md):
 
 - Open-source licentie
 - Publieke GitHub repository
-- Geldige `.claude-plugin/plugin.json`
+- Geldige `.plugin/plugin.json` (en gegenereerde platform-bestanden)
 - Minimaal 1 werkende skill, command of agent
 - README met documentatie
 
@@ -92,7 +92,7 @@ claude plugin install jouw-plugin@overheid-plugins
 
 Als je een nieuwe versie van je plugin uitbrengt:
 
-1. Update de `version` in je eigen `plugin.json`
-2. Open een PR om de `version` in `marketplace.json` (root) bij te werken
-3. Draai `python .github/scripts/generate_marketplace.py` om de platform-bestanden bij te werken
+1. Update de `version` in je eigen `.plugin/plugin.json`
+2. Draai `python scripts/generate_plugin.py` in je plugin-repo om platform-bestanden bij te werken
+3. De marketplace detecteert automatisch versie-wijzigingen en maakt een PR aan
 4. Gebruikers krijgen de update via `claude plugin marketplace update`
