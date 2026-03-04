@@ -1,5 +1,4 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "overheid-plugins",
   "metadata": {
     "description": "Plugins voor de Nederlandse overheid"

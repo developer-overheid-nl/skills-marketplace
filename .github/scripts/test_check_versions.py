@@ -18,6 +18,7 @@ from check_versions import (
     fetch_upstream_plugin,
     main,
     normalize_version,
+    regenerate_platform_files,
     resolve_repo,
     sanitize_branch,
     validate_repo,
@@ -630,7 +631,17 @@ class TestWriteJobSummary:
         assert "\u26a0\ufe0f" in summary_file.read_text()
 
 
+MOCK_PLATFORM_FILES = [".claude-plugin/marketplace.json", ".cursor-plugin/marketplace.json"]
+
+
 class TestCreatePr:
+    @pytest.fixture(autouse=True)
+    def _mock_regenerate(self, monkeypatch):
+        monkeypatch.setattr(
+            "check_versions.regenerate_platform_files",
+            lambda: MOCK_PLATFORM_FILES,
+        )
+
     @patch("check_versions.subprocess.run")
     def test_success(self, mock_run, tmp_path):
         marketplace = tmp_path / "marketplace.json"

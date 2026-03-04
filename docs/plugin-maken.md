@@ -111,6 +111,13 @@ Heb je al `.claude/skills/` in je project? Je kunt ze **in-place** omzetten naar
 
 Zo heb je **één locatie** voor skills die zowel lokaal in het project als via de marketplace werkt. Zie [zad-actions](https://github.com/RijksICTGilde/zad-actions) voor een werkend voorbeeld.
 
+## Cursor compatibiliteit
+
+`SKILL.md` bestanden met YAML frontmatter zijn cross-platform en werken in zowel Claude Code als Cursor. Om je plugin ook via Cursor beschikbaar te maken:
+
+1. Voeg `.cursor-plugin/plugin.json` toe aan je repository (vergelijkbaar met `.claude-plugin/plugin.json`)
+2. De marketplace genereert automatisch een Cursor-variant met `displayName`, `keywords` en `repository` velden
+
 ## Meer informatie
 
 - [Claude Code plugin documentatie](https://code.claude.com/docs/en/plugins)

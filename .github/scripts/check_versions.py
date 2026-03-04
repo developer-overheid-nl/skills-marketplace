@@ -18,7 +18,7 @@ import re
 import subprocess
 import sys
 
-MARKETPLACE_PATH = ".claude-plugin/marketplace.json"
+MARKETPLACE_PATH = "marketplace.json"
 
 SUBPROCESS_TIMEOUT = 60
 
@@ -347,6 +347,19 @@ def build_pr_body(updates: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def regenerate_platform_files() -> list[str]:
+    """Regenerate platform-specific marketplace files from the root.
+
+    Returns list of generated file paths (relative).
+    """
+    from generate_marketplace import generate_all, load_source, PLATFORMS
+
+    source_data = load_source()
+    generate_all(source_data)
+    return [str(path.relative_to(path.parent.parent.parent))
+            for _, (path, _) in PLATFORMS.items()]
+
+
 def create_pr(
     marketplace_path: str,
     data: dict,
@@ -365,6 +378,9 @@ def create_pr(
     with open(marketplace_path) as f:
         json.load(f)
 
+    # Regenerate platform-specific files
+    platform_files = regenerate_platform_files()
+
     # Git configuration and branch setup — fail fast with clear messages
     git_steps = [
         (["git", "config", "user.name", "github-actions[bot]"], "git config user.name"),
@@ -378,7 +394,7 @@ def create_pr(
             "git config user.email",
         ),
         (["git", "checkout", "-b", branch], "git checkout -b"),
-        (["git", "add", marketplace_path], "git add"),
+        (["git", "add", marketplace_path] + platform_files, "git add"),
     ]
     for cmd, label in git_steps:
         r = subprocess.run(
