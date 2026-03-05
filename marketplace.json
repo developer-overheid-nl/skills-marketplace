@@ -51,7 +51,7 @@
     },
     {
       "name": "developer-overheid",
-      "description": "Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
+      "description": "Kennisbank van developer.overheid.nl: richtlijnen en standaarden voor overheidssoftwareontwikkeling (API's, data, frontend, infrastructuur, security, open source)",
       "version": "0.1.0",
       "author": {
         "name": "David Stotijn"

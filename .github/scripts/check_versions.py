@@ -131,13 +131,16 @@ def _fetch_json_from_repo(repo: str, path: str) -> dict | None:
 def fetch_upstream_plugin(repo: str) -> dict | None:
     """Fetch and parse the upstream plugin.json from a GitHub repo.
 
-    Tries .plugin/plugin.json first (source of truth), falls back to
-    .claude-plugin/plugin.json for repos that haven't migrated yet.
+    Tries .plugin/plugin.json first (source of truth), then falls back to
+    platform-specific paths for repos that haven't migrated yet.
     """
     result = _fetch_json_from_repo(repo, ".plugin/plugin.json")
     if result is not None:
         return result
-    return _fetch_json_from_repo(repo, ".claude-plugin/plugin.json")
+    result = _fetch_json_from_repo(repo, ".claude-plugin/plugin.json")
+    if result is not None:
+        return result
+    return _fetch_json_from_repo(repo, ".cursor-plugin/plugin.json")
 
 
 def detect_updates(

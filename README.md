@@ -8,6 +8,8 @@ Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid. Onders
 
 ## Snel starten
 
+### Claude Code
+
 ```bash
 # 1. Voeg de marketplace toe
 claude plugin marketplace add developer-overheid-nl/skills-marketplace
@@ -15,6 +17,10 @@ claude plugin marketplace add developer-overheid-nl/skills-marketplace
 # 2. Installeer een plugin
 claude plugin install standaarden@overheid-plugins
 ```
+
+### Cursor
+
+Importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL `developer-overheid-nl/skills-marketplace`. Zie de [Cursor plugin documentatie](https://cursor.com/docs/plugins) voor meer informatie.
 
 ![Demo: plugin installeren en browsen](docs/demo.gif)
 

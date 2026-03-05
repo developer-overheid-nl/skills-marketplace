@@ -1,4 +1,4 @@
-# Bijdragen aan Overheid Claude Plugins
+# Bijdragen aan de Overheid AI-Assistant Plugins Marketplace
 
 Bedankt voor je interesse om een plugin toe te voegen aan de marketplace!
 
@@ -10,7 +10,7 @@ Elke plugin moet voldoen aan:
 
 - **Open-source licentie** - EUPL-1.2, Apache-2.0, MIT, of vergelijkbaar
 - **Publieke GitHub repository** - de plugin-code moet openbaar toegankelijk zijn
-- **Geldig manifest** - `.claude-plugin/plugin.json` met minimaal `name`, `description`, `version`
+- **Geldig manifest** - `.plugin/plugin.json` met minimaal `name`, `description`, `version`
 - **Minimaal 1 component** - een werkende skill, command, agent, hook of MCP server
 - **Documentatie** - README met installatie-instructies en beschrijving
 
@@ -55,7 +55,7 @@ De `name` in je `plugin.json` wordt de namespace-prefix voor je skills. Gebruike
 Zorg ervoor dat:
 - De plugin-naam uniek en beschrijvend is (kebab-case)
 - Skill-namen binnen je plugin uniek zijn
-- Namen niet lijken op officiële Anthropic plugins
+- Namen niet lijken op officiële platform-plugins (Anthropic, Cursor, etc.)
 
 ## Vragen?
 

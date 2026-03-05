@@ -79,9 +79,12 @@ Voeg tabellen, beslisbomen, codevoorbeelden toe die de agent nodig heeft.
 
 Test je plugin lokaal voordat je hem publiceert:
 
+**Claude Code:**
 ```bash
 claude --plugin-dir ./mijn-plugin
 ```
+
+**Cursor:** Zie de [Cursor plugin documentatie](https://cursor.com/docs/plugins) voor lokale test-instructies.
 
 Stel vragen die je skill zouden moeten activeren en controleer of de juiste skill wordt gekozen.
 
@@ -124,6 +127,11 @@ python scripts/generate_plugin.py --check  # controleer of alles in sync is
 
 ## Meer informatie
 
-- [Claude Code plugin documentatie](https://code.claude.com/docs/en/plugins)
-- [Plugin marketplace documentatie](https://code.claude.com/docs/en/plugin-marketplaces)
-- [Plugin referentie](https://code.claude.com/docs/en/plugins-reference)
+### Claude Code
+- [Claude Code plugin documentatie](https://docs.anthropic.com/en/docs/claude-code/plugins)
+- [Plugin marketplace documentatie](https://docs.anthropic.com/en/docs/claude-code/plugin-marketplaces)
+- [Plugin referentie](https://docs.anthropic.com/en/docs/claude-code/plugins-reference)
+
+### Cursor
+- [Cursor plugin documentatie](https://cursor.com/docs/plugins)
+- [Cursor Marketplace](https://cursor.com/blog/marketplace)

@@ -30,7 +30,7 @@ description:
     genericName: Plugin marketplace
     longDescription: >
       Central catalog (marketplace) of AI-assistant plugins for the Dutch government.
-      Through this marketplace, government teams can publish and discover Claude Code
+      Through this marketplace, government teams can publish and discover AI-assistant
       plugins. Contains plugins for Logius standards, internet standards (internet.nl),
       geo-standards (Geonovum), the Dutch Digital Systems Guideline (NeRDS), BIO2
       security baseline, and more. Includes automated validation, quality requirements,

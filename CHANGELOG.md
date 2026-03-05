@@ -13,6 +13,12 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 - Versie-vergelijking met normalisatie (v-prefix, trailing .0)
 - Tests voor check-versions script
 
+### Gewijzigd
+
+- Plugin logius-standaarden hernoemd naar standaarden (nu 10 skills)
+- Plugin zad-actions uitgebreid van 3 naar 5 skills
+- Marketplace volledig platform-neutraal gemaakt (Claude Code en Cursor gelijkwaardig)
+
 ## [1.1.0] - 2026-02-23
 
 ### Toegevoegd
