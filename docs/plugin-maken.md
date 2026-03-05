@@ -84,10 +84,7 @@ Test je plugin lokaal voordat je hem publiceert:
 claude --plugin-dir ./mijn-plugin
 ```
 
-**Cursor:**
-```bash
-cursor --plugin-dir ./mijn-plugin
-```
+**Cursor:** Gebruik `/add-plugin` in de editor en wijs naar je lokale plugin-directory.
 
 Stel vragen die je skill zouden moeten activeren en controleer of de juiste skill wordt gekozen.
 
@@ -95,14 +92,8 @@ Stel vragen die je skill zouden moeten activeren en controleer of de juiste skil
 
 Valideer de plugin-structuur:
 
-**Claude Code:**
 ```bash
 claude plugin validate ./mijn-plugin
-```
-
-**Cursor:**
-```bash
-cursor plugin validate ./mijn-plugin
 ```
 
 ## Stap 6: Publiceren
@@ -142,4 +133,5 @@ python scripts/generate_plugin.py --check  # controleer of alles in sync is
 - [Plugin referentie](https://docs.anthropic.com/en/docs/claude-code/plugins-reference)
 
 ### Cursor
-- [Cursor plugin documentatie](https://docs.cursor.com/plugins)
+- [Cursor plugin documentatie](https://cursor.com/docs/plugins)
+- [Cursor Marketplace](https://cursor.com/blog/marketplace)

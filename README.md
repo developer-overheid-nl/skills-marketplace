@@ -20,13 +20,7 @@ claude plugin install standaarden@overheid-plugins
 
 ### Cursor
 
-```bash
-# 1. Voeg de marketplace toe
-cursor plugin marketplace add developer-overheid-nl/skills-marketplace
-
-# 2. Installeer een plugin
-cursor plugin install standaarden@overheid-plugins
-```
+Installeer plugins via de marketplace in Cursor: gebruik `/add-plugin` in de editor of importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL `developer-overheid-nl/skills-marketplace`. Zie de [Cursor Marketplace documentatie](https://cursor.com/blog/marketplace) voor meer informatie.
 
 ![Demo: plugin installeren en browsen](docs/demo.gif)
 
