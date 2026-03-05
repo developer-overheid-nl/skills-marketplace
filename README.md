@@ -22,6 +22,8 @@ claude plugin install standaarden@overheid-plugins
 
 Importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL `developer-overheid-nl/skills-marketplace`. Zie de [Cursor plugin documentatie](https://cursor.com/docs/plugins) voor meer informatie.
 
+## Demo
+
 ![Demo: plugin installeren en browsen](docs/demo.gif)
 
 ## Beschikbare plugins
