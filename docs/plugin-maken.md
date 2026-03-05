@@ -84,7 +84,7 @@ Test je plugin lokaal voordat je hem publiceert:
 claude --plugin-dir ./mijn-plugin
 ```
 
-**Cursor:** Gebruik `/add-plugin` in de editor en wijs naar je lokale plugin-directory.
+**Cursor:** Zie de [Cursor plugin documentatie](https://cursor.com/docs/plugins) voor lokale test-instructies.
 
 Stel vragen die je skill zouden moeten activeren en controleer of de juiste skill wordt gekozen.
 

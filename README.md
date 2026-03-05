@@ -20,7 +20,7 @@ claude plugin install standaarden@overheid-plugins
 
 ### Cursor
 
-Installeer plugins via de marketplace in Cursor: gebruik `/add-plugin` in de editor of importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL `developer-overheid-nl/skills-marketplace`. Zie de [Cursor Marketplace documentatie](https://cursor.com/blog/marketplace) voor meer informatie.
+Importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL `developer-overheid-nl/skills-marketplace`. Zie de [Cursor plugin documentatie](https://cursor.com/docs/plugins) voor meer informatie.
 
 ![Demo: plugin installeren en browsen](docs/demo.gif)
 

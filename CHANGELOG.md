@@ -13,6 +13,12 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 - Versie-vergelijking met normalisatie (v-prefix, trailing .0)
 - Tests voor check-versions script
 
+### Gewijzigd
+
+- Plugin logius-standaarden hernoemd naar standaarden (nu 10 skills)
+- Plugin zad-actions uitgebreid van 3 naar 5 skills
+- Marketplace volledig platform-neutraal gemaakt (Claude Code en Cursor gelijkwaardig)
+
 ## [1.1.0] - 2026-02-23
 
 ### Toegevoegd
@@ -25,8 +31,8 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 ### Toegevoegd
 
 - Marketplace opgezet als centrale catalogus voor overheids AI-assistant plugins
-- Plugin: standaarden v1.0.0 (10 skills voor 88 Logius standaarden repositories)
-- Plugin: zad-actions v1.0.0 (5 skills voor ZAD deployment)
+- Plugin: logius-standaarden v1.0.0 (10 skills voor 88 Logius standaarden repositories)
+- Plugin: zad-actions v1.0.0 (3 skills voor ZAD deployment)
 - Documentatie: plugin-maken.md handleiding
 - Documentatie: plugin-toevoegen.md handleiding
 - CI workflow voor validatie van marketplace.json

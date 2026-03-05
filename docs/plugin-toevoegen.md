@@ -89,7 +89,7 @@ claude plugin marketplace add developer-overheid-nl/skills-marketplace
 claude plugin install jouw-plugin@overheid-plugins
 ```
 
-**Cursor:** Gebruik `/add-plugin` in de editor of importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL.
+**Cursor:** Importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL.
 
 ## Plugin updaten
 
