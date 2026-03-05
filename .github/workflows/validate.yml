@@ -146,9 +146,8 @@ jobs:
           with open('marketplace.json') as f:
               data = json.load(f)
 
-          # .plugin is verplicht (source of truth), platform-bestanden zijn gewenst
-          REQUIRED_PATHS = ['.plugin/plugin.json']
-          DESIRED_PATHS = ['.claude-plugin/plugin.json', '.cursor-plugin/plugin.json']
+          # Een plugin moet minstens één van deze manifest-paden hebben
+          MANIFEST_PATHS = ['.plugin/plugin.json', '.claude-plugin/plugin.json', '.cursor-plugin/plugin.json']
 
           errors = []
           warnings = []
@@ -174,31 +173,25 @@ jobs:
                   print(f"SKIP: {plugin['name']} -> '{repo}' niet bereikbaar (mogelijk private repo)")
                   continue
 
-              missing_required = []
-              for path in REQUIRED_PATHS:
+              found = []
+              missing = []
+              for path in MANIFEST_PATHS:
                   result = subprocess.run(
                       ['gh', 'api', f'repos/{repo}/contents/{path}', '--jq', '.name'],
                       capture_output=True, text=True
                   )
-                  if result.returncode != 0:
-                      missing_required.append(path)
+                  if result.returncode == 0:
+                      found.append(path)
+                  else:
+                      missing.append(path)
 
-              missing_desired = []
-              for path in DESIRED_PATHS:
-                  result = subprocess.run(
-                      ['gh', 'api', f'repos/{repo}/contents/{path}', '--jq', '.name'],
-                      capture_output=True, text=True
-                  )
-                  if result.returncode != 0:
-                      missing_desired.append(path)
-
-              if missing_required:
-                  errors.append(f"{plugin['name']}: ontbreekt in {repo}: {', '.join(missing_required)}")
-              elif missing_desired:
-                  warnings.append(f"{plugin['name']}: ontbreekt in {repo}: {', '.join(missing_desired)}")
-                  print(f"WAARSCHUWING: {plugin['name']} mist: {', '.join(missing_desired)}")
+              if not found:
+                  errors.append(f"{plugin['name']}: geen manifest gevonden in {repo} (verwacht: {', '.join(MANIFEST_PATHS)})")
+              elif '.plugin/plugin.json' not in found:
+                  warnings.append(f"{plugin['name']}: mist .plugin/plugin.json in {repo} (heeft: {', '.join(found)})")
+                  print(f"WAARSCHUWING: {plugin['name']} mist .plugin/plugin.json (source of truth), heeft: {', '.join(found)}")
               else:
-                  print(f"OK: {plugin['name']} heeft alle platform-bestanden")
+                  print(f"OK: {plugin['name']} heeft {', '.join(found)}")
 
           if warnings:
               print(f"\n{len(warnings)} plugin(s) missen cross-platform bestanden")
