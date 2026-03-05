@@ -146,9 +146,9 @@ jobs:
           with open('marketplace.json') as f:
               data = json.load(f)
 
-          # .claude-plugin is verplicht, .plugin en .cursor-plugin zijn gewenst
-          REQUIRED_PATHS = ['.claude-plugin/plugin.json']
-          DESIRED_PATHS = ['.plugin/plugin.json', '.cursor-plugin/plugin.json']
+          # .plugin is verplicht (source of truth), platform-bestanden zijn gewenst
+          REQUIRED_PATHS = ['.plugin/plugin.json']
+          DESIRED_PATHS = ['.claude-plugin/plugin.json', '.cursor-plugin/plugin.json']
 
           errors = []
           warnings = []

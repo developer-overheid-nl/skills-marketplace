@@ -83,9 +83,16 @@ gh pr create --title "Voeg jouw-plugin toe" --body "Beschrijving van de plugin e
 
 Zodra je plugin is toegevoegd kunnen gebruikers deze installeren:
 
+**Claude Code:**
 ```bash
 claude plugin marketplace add developer-overheid-nl/skills-marketplace
 claude plugin install jouw-plugin@overheid-plugins
+```
+
+**Cursor:**
+```bash
+cursor plugin marketplace add developer-overheid-nl/skills-marketplace
+cursor plugin install jouw-plugin@overheid-plugins
 ```
 
 ## Plugin updaten
@@ -95,4 +102,4 @@ Als je een nieuwe versie van je plugin uitbrengt:
 1. Update de `version` in je eigen `.plugin/plugin.json`
 2. Draai `python scripts/generate_plugin.py` in je plugin-repo om platform-bestanden bij te werken
 3. De marketplace detecteert automatisch versie-wijzigingen en maakt een PR aan
-4. Gebruikers krijgen de update via `claude plugin marketplace update`
+4. Gebruikers krijgen de update via hun platform (`claude plugin marketplace update` of `cursor plugin marketplace update`)

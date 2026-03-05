@@ -14,7 +14,7 @@
 Vul in als je een nieuwe plugin toevoegt:
 
 - [ ] Plugin-repo is publiek toegankelijk
-- [ ] `.claude-plugin/plugin.json` is aanwezig in de plugin-repo
+- [ ] `.plugin/plugin.json` is aanwezig in de plugin-repo
 - [ ] Plugin heeft minimaal 1 werkende skill/command/agent
 - [ ] Plugin-naam is uniek in de marketplace
 - [ ] Open-source licentie aanwezig
