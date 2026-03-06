@@ -18,11 +18,7 @@ Bij twijfel of tegenstrijdigheid geldt altijd de officiële, gepubliceerde versi
 
 ## Gebruik van generatieve AI
 
-Overheidsorganisaties die generatieve AI inzetten — waaronder het gebruik van plugins uit deze marketplace en de output die ermee wordt gegenereerd — dienen te voldoen aan het [Rijksbrede beleidskader voor de inzet van generatieve AI](https://www.government.nl/documents/policy-notes/2025/01/31/government-wide-position-on-the-use-of-generative-ai). Dit betekent onder meer:
-
-- AI-gegenereerde antwoorden dienen altijd te worden geverifieerd aan de hand van de officiële bronnen
-- De verantwoordelijkheid voor het gebruik van de output ligt bij de gebruiker
-- De plugins vervangen geen juridisch, beleidsmatig of technisch advies
+Overheidsorganisaties die generatieve AI inzetten — waaronder het gebruik van plugins uit deze marketplace en de output die ermee wordt gegenereerd — dienen te voldoen aan het [Overheidsbreed standpunt voor de inzet van generatieve AI](https://open.overheid.nl/documenten/bc03ce31-0cf1-4946-9c94-e934a62ebe73/file) en aan eigen beleid en kaders over AI.
 
 ## Verantwoordelijkheid
 
