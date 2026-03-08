@@ -14,7 +14,6 @@ from generate_marketplace import (
     generate_all,
     generate_claude,
     generate_cursor,
-    load_source,
     write_json,
 )
 
