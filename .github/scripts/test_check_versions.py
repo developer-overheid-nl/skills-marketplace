@@ -18,7 +18,6 @@ from check_versions import (
     fetch_upstream_plugin,
     main,
     normalize_version,
-    regenerate_platform_files,
     resolve_repo,
     sanitize_branch,
     validate_repo,
