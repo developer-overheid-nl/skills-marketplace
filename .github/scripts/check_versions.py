@@ -367,11 +367,11 @@ def regenerate_platform_files() -> list[str]:
 
     Returns list of generated file paths (relative).
     """
-    from generate_marketplace import generate_all, load_source, PLATFORMS
+    from generate_marketplace import generate_all, load_source, PLATFORMS, ROOT_DIR
 
     source_data = load_source()
     generate_all(source_data)
-    return [str(path.relative_to(path.parent.parent.parent))
+    return [str(path.relative_to(ROOT_DIR))
             for _, (path, _) in PLATFORMS.items()]
 
 
