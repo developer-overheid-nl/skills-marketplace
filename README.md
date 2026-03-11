@@ -38,7 +38,6 @@ Importeer de marketplace via **Dashboard → Settings → Plugins → Import** m
 | [nerds](https://github.com/MinBZK/NeRDS) | 14 | Skills voor de Nederlandse Richtlijn Digitale Systemen (NeRDS): 13 richtlijnen voor ontwerpen, ontwikkelen en inkopen van digitale systemen (toegankelijkheid, open source, cloud, veiligheid, privacy, en meer) | [MinBZK](https://github.com/MinBZK) |
 | [internet](https://github.com/developer-overheid-nl/skills-internet) | 5 | Skills voor moderne internetstandaarden (getest via internet.nl): compliance voor websites en mailservers (IPv6, DNSSEC, HTTPS, TLS, DMARC, DKIM, SPF, DANE) | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
 | [geo](https://github.com/developer-overheid-nl/skills-geo) | 6 | Skills voor Nederlandse geo-standaarden (beheerd door Geonovum): OGC API, WMS, WFS, metadata (ISO 19115), informatiemodellen (NEN 3610, MIM), INSPIRE en 3D | [developer-overheid-nl](https://github.com/developer-overheid-nl) |
-| [bio-security-baseline](https://github.com/MinBZK/bio-security-baseline-plugin) | 1 | BIO2 security baseline: verplichte beveiligingsmaatregelen, Forum Standaardisatie-standaarden, NCSC-richtlijnen, NIS2/Cyberbeveiligingswet, EU CRA, AI Act en compliance-informatie | [MinBZK](https://github.com/MinBZK) |
 
 ## Plugin toevoegen
 
