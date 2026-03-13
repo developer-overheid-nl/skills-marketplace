@@ -64,9 +64,9 @@
       },
       "source": {
         "source": "github",
-        "repo": "dstotijn/developer-overheid-nl-agent-skills"
+        "repo": "developer-overheid-nl/developer-overheid-nl-agent-skills"
       },
-      "repository": "https://github.com/dstotijn/developer-overheid-nl-agent-skills",
+      "repository": "https://github.com/developer-overheid-nl/developer-overheid-nl-agent-skills",
       "keywords": [
         "productivity",
         "overheid",
