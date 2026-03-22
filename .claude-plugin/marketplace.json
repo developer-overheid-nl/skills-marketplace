@@ -11,7 +11,7 @@
     {
       "name": "standaarden",
       "description": "CONCEPT — Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, Logboek Dataverwerkingen, CloudEvents, BOMOS, E-Government en Publicatie-tooling. Bevat 10 skills voor 77 GitHub repositories verdeeld over 9 domeinen.",
-      "version": "0.3.11",
+      "version": "0.3.12",
       "author": {
         "name": "developer-overheid-nl"
       },
@@ -121,7 +121,7 @@
     {
       "name": "geo",
       "description": "CONCEPT — Skills voor Nederlandse geo-standaarden (beheerd door Geonovum): OGC API services (WMS, WFS, WMTS, OGC API Features), metadata (ISO 19115, NGR), informatiemodellen (NEN 3610, MIM), INSPIRE implementatie en 3D standaarden (CityGML, 3D Tiles).",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "author": {
         "name": "developer-overheid-nl"
       },
