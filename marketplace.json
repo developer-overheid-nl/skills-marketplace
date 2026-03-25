@@ -29,7 +29,7 @@
     },
     {
       "name": "zad-actions",
-      "description": "Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
+      "description": "CONCEPT — Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
       "version": "1.2.0",
       "author": {
         "name": "Rijks ICT Gilde"
@@ -51,7 +51,7 @@
     },
     {
       "name": "developer-overheid",
-      "description": "Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
+      "description": "CONCEPT — Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
       "version": "0.1.0",
       "author": {
         "name": "David Stotijn"
