@@ -1,16 +1,24 @@
-publiccodeYmlVersion: '0.2'
+publiccodeYmlVersion: '0.5'
+
+name: skills-marketplace
+url: https://github.com/developer-overheid-nl/skills-marketplace
+
+softwareType: standalone/other
+
+platforms:
+  - linux
+  - mac
+  - windows
+
+developmentStatus: development
+
 categories:
   - collaboration
   - it-development
+
 description:
   nl:
-    features:
-      - Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid
-      - Geautomatiseerde validatie van plugin-registraties
-      - Kwaliteitsdashboard voor gepubliceerde plugins
-      - Handleidingen voor het bouwen en toevoegen van plugins
-      - Ondersteuning voor meerdere overheidsorganisaties en standaarden
-    genericName: Plugin marketplace
+    shortDescription: Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid
     longDescription: >
       Centrale catalogus (marketplace) van AI-assistant plugins voor de Nederlandse
       overheid. Via deze marketplace kunnen overheidsteams hun AI-assistant plugins
@@ -19,15 +27,14 @@ description:
       Richtlijn Digitale Systemen (NeRDS), BIO2 beveiligingsbaseline, en meer.
       Inclusief geautomatiseerde validatie, kwaliteitseisen en documentatie voor
       pluginontwikkelaars.
-    shortDescription: Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid
-  en:
     features:
-      - Central catalog of AI-assistant plugins for the Dutch government
-      - Automated validation of plugin registrations
-      - Quality dashboard for published plugins
-      - Guides for building and adding plugins
-      - Support for multiple government organizations and standards
-    genericName: Plugin marketplace
+      - Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid
+      - Geautomatiseerde validatie van plugin-registraties
+      - Kwaliteitsdashboard voor gepubliceerde plugins
+      - Handleidingen voor het bouwen en toevoegen van plugins
+      - Ondersteuning voor meerdere overheidsorganisaties en standaarden
+  en:
+    shortDescription: Central catalog of AI-assistant plugins for the Dutch government
     longDescription: >
       Central catalog (marketplace) of AI-assistant plugins for the Dutch government.
       Through this marketplace, government teams can publish and discover AI-assistant
@@ -35,20 +42,30 @@ description:
       geo-standards (Geonovum), the Dutch Digital Systems Guideline (NeRDS), BIO2
       security baseline, and more. Includes automated validation, quality requirements,
       and documentation for plugin developers.
-    shortDescription: Central catalog of AI-assistant plugins for the Dutch government
-developmentStatus: stable
+    features:
+      - Central catalog of AI-assistant plugins for the Dutch government
+      - Automated validation of plugin registrations
+      - Quality dashboard for published plugins
+      - Guides for building and adding plugins
+      - Support for multiple government organizations and standards
+
 legal:
   license: EUPL-1.2
+  mainCopyrightOwner: developer-overheid-nl
+
+intendedAudience:
+  countries:
+    - NL
+  scope:
+    - government
+
 localisation:
   availableLanguages:
     - nl
     - en
   localisationReady: false
+
 maintenance:
+  type: community
   contacts:
     - name: developer-overheid-nl
-  type: community
-name: skills-marketplace
-releaseDate: '2026-02-12'
-softwareType: standalone/other
-url: https://github.com/developer-overheid-nl/skills-marketplace
