@@ -11,7 +11,7 @@
     {
       "name": "standaarden",
       "description": "CONCEPT — Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, Logboek Dataverwerkingen, CloudEvents, BOMOS, E-Government en Publicatie-tooling. Bevat 10 skills voor 77 GitHub repositories verdeeld over 9 domeinen.",
-      "version": "0.3.12",
+      "version": "0.3.15",
       "author": {
         "name": "developer-overheid-nl"
       },
@@ -30,7 +30,7 @@
     },
     {
       "name": "zad-actions",
-      "description": "CONCEPT — Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
+      "description": "Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
       "version": "1.2.0",
       "author": {
         "name": "Rijks ICT Gilde"
@@ -52,7 +52,7 @@
     },
     {
       "name": "developer-overheid",
-      "description": "CONCEPT — Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
+      "description": "Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
       "version": "0.1.0",
       "author": {
         "name": "David Stotijn"
@@ -74,7 +74,7 @@
     },
     {
       "name": "nerds",
-      "description": "CONCEPT — Plugin voor de Nederlandse Richtlijn Digitale Systemen (NeRDS). Bevat skills voor 13 richtlijnen die richting geven aan het ontwerpen, ontwikkelen en inkopen van digitale systemen binnen de Nederlandse overheid: gebruikersbehoeften, toegankelijkheid, open source, open standaarden, cloud, veiligheid, privacy, samenwerking, integratie, data, algoritmen, inkoop en duurzaamheid.",
+      "description": "Plugin voor de Nederlandse Richtlijn Digitale Systemen (NeRDS). Bevat skills voor 13 richtlijnen die richting geven aan het ontwerpen, ontwikkelen en inkopen van digitale systemen binnen de Nederlandse overheid: gebruikersbehoeften, toegankelijkheid, open source, open standaarden, cloud, veiligheid, privacy, samenwerking, integratie, data, algoritmen, inkoop en duurzaamheid.",
       "version": "0.1.1",
       "author": {
         "name": "MinBZK"
@@ -99,7 +99,7 @@
     {
       "name": "internet",
       "description": "CONCEPT — Skills voor moderne internetstandaarden (getest via internet.nl): webstandaarden (HTTPS, TLS, DNSSEC, IPv6, RPKI), mailstandaarden (DMARC, DKIM, SPF, STARTTLS, DANE), batch API en implementatiegidsen uit de toolbox-wiki.",
-      "version": "0.1.9",
+      "version": "0.2.2",
       "author": {
         "name": "developer-overheid-nl"
       },
@@ -121,7 +121,7 @@
     {
       "name": "geo",
       "description": "CONCEPT — Skills voor Nederlandse geo-standaarden (beheerd door Geonovum): OGC API services (WMS, WFS, WMTS, OGC API Features), metadata (ISO 19115, NGR), informatiemodellen (NEN 3610, MIM), INSPIRE implementatie en 3D standaarden (CityGML, 3D Tiles).",
-      "version": "0.2.7",
+      "version": "0.3.3",
       "author": {
         "name": "developer-overheid-nl"
       },
