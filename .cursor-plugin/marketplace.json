@@ -12,7 +12,7 @@
       "name": "standaarden",
       "displayName": "Standaarden",
       "description": "CONCEPT — Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, Logboek Dataverwerkingen, CloudEvents, BOMOS, E-Government en Publicatie-tooling. Bevat 10 skills voor 77 GitHub repositories verdeeld over 9 domeinen.",
-      "version": "0.3.17",
+      "version": "0.4.0",
       "author": {
         "name": "developer-overheid-nl"
       },
@@ -108,7 +108,7 @@
       "name": "internet",
       "displayName": "Internet",
       "description": "CONCEPT — Skills voor moderne internetstandaarden (getest via internet.nl): webstandaarden (HTTPS, TLS, DNSSEC, IPv6, RPKI), mailstandaarden (DMARC, DKIM, SPF, STARTTLS, DANE), batch API en implementatiegidsen uit de toolbox-wiki.",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "author": {
         "name": "developer-overheid-nl"
       },
