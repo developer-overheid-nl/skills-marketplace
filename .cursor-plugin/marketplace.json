@@ -132,7 +132,7 @@
       "name": "geo",
       "displayName": "Geo",
       "description": "CONCEPT — Skills voor Nederlandse geo-standaarden (beheerd door Geonovum): OGC API services (WMS, WFS, WMTS, OGC API Features), metadata (ISO 19115, NGR), informatiemodellen (NEN 3610, MIM), INSPIRE implementatie en 3D standaarden (CityGML, 3D Tiles).",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "author": {
         "name": "developer-overheid-nl"
       },
