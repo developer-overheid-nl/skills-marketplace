@@ -12,7 +12,7 @@
       "name": "standaarden",
       "displayName": "Standaarden",
       "description": "CONCEPT — Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, Logboek Dataverwerkingen, CloudEvents, BOMOS, E-Government en Publicatie-tooling. Bevat 10 skills voor 77 GitHub repositories verdeeld over 9 domeinen.",
-      "version": "0.4.3",
+      "version": "0.4.4",
       "author": {
         "name": "developer-overheid-nl"
       },
