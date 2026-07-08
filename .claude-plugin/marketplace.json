@@ -139,6 +139,26 @@
         "metadata",
         "nen3610"
       ]
+    },
+    {
+      "name": "developer-overheid-open-source-repo",
+      "description": "An Agent Skills which helps you to Open Source a repository and runs you through all mandatory steps when developing for the Dutch government.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Tom Ootes"
+      },
+      "source": {
+        "source": "github",
+        "repo": "developer-overheid-nl/skills-open-source-repo"
+      },
+      "category": "productivity",
+      "tags": [
+        "overheid",
+        "developer",
+        "open-source",
+        "publiccode.yml",
+        "standaarden"
+      ]
     }
   ]
 }
