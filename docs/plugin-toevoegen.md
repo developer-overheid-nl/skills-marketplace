@@ -98,4 +98,7 @@ Als je een nieuwe versie van je plugin uitbrengt:
 1. Update de `version` in je eigen `.plugin/plugin.json`
 2. Draai `python scripts/generate_plugin.py` in je plugin-repo om platform-bestanden bij te werken
 3. De marketplace detecteert automatisch versie-wijzigingen en maakt een PR aan
-4. Gebruikers krijgen de update via hun platform (bijv. `claude plugin marketplace update`)
+4. Gebruikers halen de nieuwe versie op met `claude plugin update <plugin>@overheid-plugins`,
+   of automatisch als ze auto-update aan hebben staan voor de marketplace. Let op:
+   `claude plugin marketplace update` ververst alleen de index met beschikbare versies,
+   het werkt de geïnstalleerde plugin zelf niet bij
