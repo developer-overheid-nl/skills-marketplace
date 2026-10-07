@@ -173,6 +173,51 @@
         "publiccode.yml",
         "standaarden"
       ]
+    },
+    {
+      "name": "nldd-design-system",
+      "displayName": "Nldd Design System",
+      "description": "Bouw applicaties met het NLDD Designsysteem (@nldd/design-system). Vijf skills: nldd-design om componenten, attributen, iconen en releases op te zoeken, nldd-design-build om een applicatie te bouwen, nldd-design-migrate om een bestaande frontend om te zetten, nldd-design-upgrade om een versie te verhogen, en nldd-design-contribute om een wijziging voor te stellen. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
+      "version": "0.8.96",
+      "author": {
+        "name": "Nederlandse Digitale Dienst"
+      },
+      "source": {
+        "source": "github",
+        "repo": "NederlandseDigitaleDienst/design-system"
+      },
+      "repository": "https://github.com/NederlandseDigitaleDienst/design-system",
+      "keywords": [
+        "productivity",
+        "overheid",
+        "design-system",
+        "web-components",
+        "frontend",
+        "toegankelijkheid",
+        "nldd"
+      ]
+    },
+    {
+      "name": "nldd-archi",
+      "displayName": "Nldd Archi",
+      "description": "Werk aan native ArchiMate-modellen (.archimate) met de archi-CLI. Drie skills: nldd-archi-model om het model te wijzigen, nldd-archi-view om views te genereren en nldd-archi-slides om presentaties te maken. Vereist archi-cli (uv tool install archi-cli).",
+      "version": "0.4.0",
+      "author": {
+        "name": "Nederlandse Digitale Dienst"
+      },
+      "source": {
+        "source": "github",
+        "repo": "NederlandseDigitaleDienst/ai-assisted-architecting"
+      },
+      "repository": "https://github.com/NederlandseDigitaleDienst/ai-assisted-architecting",
+      "keywords": [
+        "productivity",
+        "overheid",
+        "architectuur",
+        "archimate",
+        "enterprise-architecture",
+        "nldd"
+      ]
     }
   ]
 }
