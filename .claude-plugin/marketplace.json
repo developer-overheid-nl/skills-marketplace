@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "overheid-plugins",
   "metadata": {
-    "description": "Plugins voor de Nederlandse overheid"
+    "description": "Plugins voor AI-assisted coding door developers bij de Nederlandse overheid"
   },
   "owner": {
     "name": "developer-overheid-nl"

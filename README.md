@@ -1,10 +1,10 @@
-# Overheid AI-Assistant Plugins
+# Plugins voor AI-assisted coding bij de overheid
 
 [![EUPL-1.2](https://img.shields.io/badge/licentie-EUPL--1.2-blue.svg)](LICENSE)
-[![plugins](https://img.shields.io/badge/plugins-7-green.svg)](#beschikbare-plugins)
+[![plugins](https://img.shields.io/badge/plugins-9-green.svg)](#beschikbare-plugins)
 [![CI](https://github.com/developer-overheid-nl/skills-marketplace/actions/workflows/validate.yml/badge.svg)](https://github.com/developer-overheid-nl/skills-marketplace/actions/workflows/validate.yml)
 
-Centrale catalogus van AI-assistant plugins voor de Nederlandse overheid. Ondersteunt meerdere platformen: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) en [Cursor](https://www.cursor.com/). Via deze marketplace kunnen overheidsteams hun plugins publiceren en ontdekken.
+Centrale catalogus van plugins voor AI-assisted coding door developers bij de Nederlandse overheid. Ondersteunt meerdere platformen: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) en [Cursor](https://www.cursor.com/). Via deze marketplace kunnen overheidsteams hun plugins publiceren en ontdekken.
 
 > **CONCEPT** — Deze marketplace is in ontwikkeling. De plugins zijn informatieve samenvattingen — niet de officiële standaarden zelf. Zie onze [verantwoording](docs/verantwoording.md) en [disclaimer](DISCLAIMER.md) voor meer informatie.
 
