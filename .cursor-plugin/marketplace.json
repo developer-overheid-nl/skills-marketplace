@@ -155,16 +155,16 @@
     {
       "name": "developer-overheid-open-source-repo",
       "displayName": "Developer Overheid Open Source Repo",
-      "description": "An Agent Skills which helps you to Open Source a repository and runs you through all mandatory steps when developing for the Dutch government.",
-      "version": "0.1.0",
+      "description": "Maak een repository klaar voor open source: genereer README, LICENSE, SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, CHANGELOG.md en publiccode.yml met de repo-docs-generator CLI.",
+      "version": "0.2.0",
       "author": {
         "name": "Tom Ootes"
       },
       "source": {
         "source": "github",
-        "repo": "developer-overheid-nl/skills-open-source-repo"
+        "repo": "developer-overheid-nl/repo-docs-generator"
       },
-      "repository": "https://github.com/developer-overheid-nl/skills-open-source-repo",
+      "repository": "https://github.com/developer-overheid-nl/repo-docs-generator",
       "keywords": [
         "productivity",
         "overheid",
