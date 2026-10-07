@@ -1,7 +1,7 @@
 {
   "name": "overheid-plugins",
   "metadata": {
-    "description": "Plugins voor de Nederlandse overheid",
+    "description": "Plugins voor AI-assisted coding door developers bij de Nederlandse overheid",
     "pluginRoot": ".cursor-plugin"
   },
   "owner": {
