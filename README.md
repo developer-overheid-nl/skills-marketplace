@@ -20,6 +20,28 @@ claude plugin marketplace add developer-overheid-nl/skills-marketplace
 claude plugin install standaarden@overheid-plugins
 ```
 
+Plugins blijven op de versie waarmee je ze installeerde. Werk bij met
+`claude plugin update <plugin>@overheid-plugins`, of zet auto-update aan zodat
+nieuwe versies op de achtergrond worden opgehaald:
+
+- **In Claude Code:** `/plugin` → **Marketplaces** → `overheid-plugins` → **Enable auto-update**
+- **Of in `~/.claude/settings.json`:**
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "overheid-plugins": {
+      "source": { "source": "github", "repo": "developer-overheid-nl/skills-marketplace" },
+      "autoUpdate": true
+    }
+  }
+}
+```
+
+De instelling in `settings.json` gaat voor op de toggle in `/plugin`; staat daar
+`false`, dan heeft de toggle geen effect. Na een update laadt Claude Code de
+nieuwe versie bij de volgende start, of direct met `/reload-plugins`.
+
 ### Cursor
 
 Importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL `developer-overheid-nl/skills-marketplace`. Zie de [Cursor plugin documentatie](https://cursor.com/docs/plugins) voor meer informatie.
