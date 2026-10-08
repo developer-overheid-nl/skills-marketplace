@@ -74,7 +74,7 @@
     {
       "name": "nerds",
       "description": "Plugin voor de Nederlandse Richtlijn Digitale Systemen (NeRDS). Bevat skills voor 13 richtlijnen die richting geven aan het ontwerpen, ontwikkelen en inkopen van digitale systemen binnen de Nederlandse overheid: gebruikersbehoeften, toegankelijkheid, open source, open standaarden, cloud, veiligheid, privacy, samenwerking, integratie, data, algoritmen, inkoop en duurzaamheid.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "author": {
         "name": "MinBZK"
       },
@@ -141,7 +141,7 @@
     },
     {
       "name": "developer-overheid-open-source-repo",
-      "description": "Maak een repository klaar voor open source: genereer README, LICENSE, SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, CHANGELOG.md en publiccode.yml met de repo-docs-generator CLI.",
+      "description": "Maak een repository klaar voor open source: vul input.json en genereer README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, CHANGELOG en publiccode.yml met de repo-docs-generator CLI.",
       "version": "0.2.0",
       "author": {
         "name": "Tom Ootes"

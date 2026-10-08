@@ -84,7 +84,7 @@
     },
     {
       "name": "developer-overheid-open-source-repo",
-      "description": "Maak een repository klaar voor open source: genereer README, LICENSE, SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, CHANGELOG.md en publiccode.yml met de repo-docs-generator CLI.",
+      "description": "Maak een repository klaar voor open source: vul input.json en genereer README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, CHANGELOG en publiccode.yml met de repo-docs-generator CLI.",
       "source": {
         "source": "url",
         "url": "https://github.com/developer-overheid-nl/repo-docs-generator.git"
