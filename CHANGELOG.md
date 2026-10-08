@@ -9,6 +9,8 @@ en dit project volgt [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Toegevoegd
 
+- Ondersteuning voor Codex: `.agents/plugins/marketplace.json` wordt gegenereerd met url-sources, omdat Codex het source-type `github` niet kent en zulke plugins zonder melding overslaat
+- CI-validatie van de Codex marketplace: controleert per plugin de verplichte velden en weigert een source-type dat Codex stil negeert
 - CI workflow voor automatische plugin versie-checks (dagelijks, maakt PR bij versie-drift)
 - Versie-vergelijking met normalisatie (v-prefix, trailing .0)
 - Tests voor check-versions script

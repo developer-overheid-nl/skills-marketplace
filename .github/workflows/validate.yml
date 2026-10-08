@@ -90,6 +90,51 @@ jobs:
           print(f"Cursor marketplace is geldig ({len(data['plugins'])} plugins)")
           SCRIPT
 
+      - name: Valideer Codex marketplace structuur
+        run: |
+          python3 << 'SCRIPT'
+          import json, sys
+
+          with open('.agents/plugins/marketplace.json') as f:
+              data = json.load(f)
+
+          # Codex kent deze source-types; een ander type wordt zonder melding
+          # overgeslagen, dus de plugin ontbreekt dan stil in de marketplace.
+          SUPPORTED_SOURCES = {'local', 'url', 'git-subdir', 'npm'}
+
+          errors = []
+
+          for field in ['name', 'plugins']:
+              if field not in data:
+                  errors.append(f"Verplicht veld '{field}' ontbreekt")
+
+          for i, plugin in enumerate(data.get('plugins', [])):
+              prefix = f"plugins[{i}]"
+              name = plugin.get('name', prefix)
+
+              for field in ['name', 'source', 'policy', 'category']:
+                  if field not in plugin:
+                      errors.append(f"{prefix}: '{field}' ontbreekt")
+
+              source = plugin.get('source', {})
+              if isinstance(source, dict):
+                  source_type = source.get('source')
+                  if source_type not in SUPPORTED_SOURCES:
+                      errors.append(
+                          f"{name}: source-type '{source_type}' wordt door Codex "
+                          f"overgeslagen (verwacht: {', '.join(sorted(SUPPORTED_SOURCES))})"
+                      )
+              else:
+                  errors.append(f"{name}: 'source' is geen object")
+
+          if errors:
+              for e in errors:
+                  print(f"FOUT: {e}")
+              sys.exit(1)
+
+          print(f"Codex marketplace is geldig ({len(data['plugins'])} plugins)")
+          SCRIPT
+
       - name: Controleer plugin-repos bereikbaar
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -206,7 +251,7 @@ jobs:
 
       - name: Controleer vereiste bestanden
         run: |
-          for f in LICENSE README.md CONTRIBUTING.md CHANGELOG.md marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json; do
+          for f in LICENSE README.md CONTRIBUTING.md CHANGELOG.md marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json .agents/plugins/marketplace.json; do
             if [ ! -f "$f" ]; then
               echo "FOUT: $f ontbreekt"
               exit 1

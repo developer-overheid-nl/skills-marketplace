@@ -1,0 +1,125 @@
+{
+  "name": "overheid-plugins",
+  "interface": {
+    "displayName": "Overheid Plugins"
+  },
+  "plugins": [
+    {
+      "name": "standaarden",
+      "description": "CONCEPT — Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, Logboek Dataverwerkingen, CloudEvents, BOMOS, E-Government en Publicatie-tooling. Bevat 10 skills voor 77 GitHub repositories verdeeld over 9 domeinen.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/developer-overheid-nl/skills-standaarden.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "zad-actions",
+      "description": "Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/RijksICTGilde/zad-actions.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "developer-overheid",
+      "description": "Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/developer-overheid-nl/developer-overheid-nl-agent-skills.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "nerds",
+      "description": "Plugin voor de Nederlandse Richtlijn Digitale Systemen (NeRDS). Bevat skills voor 13 richtlijnen die richting geven aan het ontwerpen, ontwikkelen en inkopen van digitale systemen binnen de Nederlandse overheid: gebruikersbehoeften, toegankelijkheid, open source, open standaarden, cloud, veiligheid, privacy, samenwerking, integratie, data, algoritmen, inkoop en duurzaamheid.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/MinBZK/NeRDS.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "internet",
+      "description": "CONCEPT — Skills voor moderne internetstandaarden (getest via internet.nl): webstandaarden (HTTPS, TLS, DNSSEC, IPv6, RPKI), mailstandaarden (DMARC, DKIM, SPF, STARTTLS, DANE), batch API en implementatiegidsen uit de toolbox-wiki.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/developer-overheid-nl/skills-internet.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "geo",
+      "description": "CONCEPT — Skills voor Nederlandse geo-standaarden (beheerd door Geonovum): OGC API services (WMS, WFS, WMTS, OGC API Features), metadata (ISO 19115, NGR), informatiemodellen (NEN 3610, MIM), INSPIRE implementatie en 3D standaarden (CityGML, 3D Tiles).",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/developer-overheid-nl/skills-geo.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "developer-overheid-open-source-repo",
+      "description": "Maak een repository klaar voor open source: genereer README, LICENSE, SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, CHANGELOG.md en publiccode.yml met de repo-docs-generator CLI.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/developer-overheid-nl/repo-docs-generator.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "nldd-design-system",
+      "description": "Bouw applicaties met het NLDD Designsysteem (@nldd/design-system). Vijf skills: nldd-design om componenten, attributen, iconen en releases op te zoeken, nldd-design-build om een applicatie te bouwen, nldd-design-migrate om een bestaande frontend om te zetten, nldd-design-upgrade om een versie te verhogen, en nldd-design-contribute om een wijziging voor te stellen. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/NederlandseDigitaleDienst/design-system.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "nldd-archi",
+      "description": "Werk aan native ArchiMate-modellen (.archimate) met de archi-CLI. Drie skills: nldd-archi-model om het model te wijzigen, nldd-archi-view om views te genereren en nldd-archi-slides om presentaties te maken. Vereist archi-cli (uv tool install archi-cli).",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/NederlandseDigitaleDienst/ai-assisted-architecting.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

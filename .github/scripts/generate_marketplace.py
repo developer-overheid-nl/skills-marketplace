@@ -2,7 +2,8 @@
 """Generate platform-specific marketplace files from the neutral root format.
 
 The root marketplace.json is the single source of truth. This script generates
-platform-specific variants for Claude Code and Cursor (and future platforms).
+platform-specific variants for Claude Code, Cursor and Codex (and future
+platforms).
 
 Usage:
     python generate_marketplace.py          # generate all platform files
@@ -18,6 +19,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 SOURCE_PATH = ROOT_DIR / "marketplace.json"
 CLAUDE_PATH = ROOT_DIR / ".claude-plugin" / "marketplace.json"
 CURSOR_PATH = ROOT_DIR / ".cursor-plugin" / "marketplace.json"
+CODEX_PATH = ROOT_DIR / ".agents" / "plugins" / "marketplace.json"
 
 CLAUDE_SCHEMA = "https://anthropic.com/claude-code/marketplace.schema.json"
 
@@ -94,17 +96,67 @@ def generate_cursor(data: dict) -> dict:
             "pluginRoot": ".cursor-plugin",
         },
         "owner": copy.deepcopy(data.get("owner", {})),
-        "plugins": [
-            _transform_plugin_for_cursor(p) for p in data.get("plugins", [])
-        ],
+        "plugins": [_transform_plugin_for_cursor(p) for p in data.get("plugins", [])],
     }
     return result
+
+
+def _codex_source(source: dict) -> dict:
+    """Transform a plugin source to a type Codex understands.
+
+    Codex has no "github" source type and silently skips any entry using one,
+    so a GitHub repo becomes a plain clone URL. Other source types pass through
+    unchanged.
+    """
+    if not isinstance(source, dict) or source.get("source") != "github":
+        return copy.deepcopy(source)
+
+    codex_source = {
+        "source": "url",
+        "url": f"https://github.com/{source.get('repo', '')}.git",
+    }
+    for key in ("ref", "sha"):
+        if key in source:
+            codex_source[key] = source[key]
+    return codex_source
+
+
+def _transform_plugin_for_codex(plugin: dict) -> dict:
+    """Transform a single plugin entry to Codex format."""
+    codex_plugin: dict = {"name": plugin["name"]}
+
+    if "description" in plugin:
+        codex_plugin["description"] = plugin["description"]
+
+    codex_plugin["source"] = _codex_source(plugin.get("source", {}))
+    codex_plugin["policy"] = {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL",
+    }
+    codex_plugin["category"] = plugin.get("category", "productivity").capitalize()
+
+    return codex_plugin
+
+
+def generate_codex(data: dict) -> dict:
+    """Generate the Codex marketplace.json.
+
+    Codex reads .agents/plugins/marketplace.json before the Claude Code file,
+    and needs url sources plus a policy and category per plugin.
+    """
+    name = data.get("name", "")
+    return {
+        "name": name,
+        "interface": {"displayName": _display_name(name)},
+        "plugins": [_transform_plugin_for_codex(p) for p in data.get("plugins", [])],
+    }
 
 
 # Registry of platform generators — add new platforms here
 PLATFORMS: dict[str, tuple[Path, callable]] = {
     "claude": (CLAUDE_PATH, generate_claude),
     "cursor": (CURSOR_PATH, generate_cursor),
+    "codex": (CODEX_PATH, generate_codex),
 }
 
 
@@ -143,7 +195,9 @@ def check_sync(source_data: dict) -> bool:
             actual = json.load(f)
 
         if actual != expected:
-            print(f"FOUT: {path.relative_to(ROOT_DIR)} is niet in sync met marketplace.json")
+            print(
+                f"FOUT: {path.relative_to(ROOT_DIR)} is niet in sync met marketplace.json"
+            )
             all_synced = False
         else:
             print(f"OK: {path.relative_to(ROOT_DIR)} is in sync")
@@ -163,7 +217,9 @@ def main() -> None:
             print("\nAlle platform-bestanden zijn in sync")
             sys.exit(0)
         else:
-            print("\nPlatform-bestanden zijn NIET in sync. Draai: python generate_marketplace.py")
+            print(
+                "\nPlatform-bestanden zijn NIET in sync. Draai: python generate_marketplace.py"
+            )
             sys.exit(1)
     else:
         generate_all(source_data)

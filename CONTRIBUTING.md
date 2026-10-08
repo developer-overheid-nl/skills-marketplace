@@ -11,7 +11,9 @@ Elke plugin moet voldoen aan:
 - **Open-source licentie** - EUPL-1.2, Apache-2.0, MIT, of vergelijkbaar
 - **Publieke GitHub repository** - de plugin-code moet openbaar toegankelijk zijn
 - **Geldig manifest** - `.plugin/plugin.json` met minimaal `name`, `description`, `version`
+- **Naam gelijk aan de marketplace** - de `name` in het manifest moet exact gelijk zijn aan de naam in `marketplace.json`; Codex weigert de installatie als die twee verschillen
 - **Minimaal 1 component** - een werkende skill, command, agent, hook of MCP server
+- **Skills in `skills/<naam>/SKILL.md`** - een `SKILL.md` in de root van de repository wordt niet gevonden, en de plugin installeert dan met nul skills
 - **Documentatie** - README met installatie-instructies en beschrijving
 
 ### Aanbevolen
