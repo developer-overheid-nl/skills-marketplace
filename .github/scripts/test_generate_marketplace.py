@@ -390,3 +390,47 @@ class TestEndToEnd:
             assert plugin["source"]["source"] != "github"
             assert plugin["policy"]["installation"] == "AVAILABLE"
             assert plugin["category"]
+
+
+class TestReadmeOnlyFields:
+    """skills and maintainer feed the README table, not the platform schemas."""
+
+    SOURCE = {
+        "name": "overheid-plugins",
+        "plugins": [
+            {
+                "name": "geo",
+                "description": "Skills voor geo.",
+                "version": "1.0.0",
+                "skills": 6,
+                "maintainer": {"login": "org", "name": "Org Naam"},
+                "source": {"source": "github", "repo": "org/skills-geo"},
+                "category": "productivity",
+            }
+        ],
+    }
+
+    def test_claude_strips_them(self):
+        plugin = generate_claude(self.SOURCE)["plugins"][0]
+        assert "skills" not in plugin
+        assert "maintainer" not in plugin
+
+    def test_claude_keeps_the_rest(self):
+        plugin = generate_claude(self.SOURCE)["plugins"][0]
+        assert plugin["name"] == "geo"
+        assert plugin["version"] == "1.0.0"
+        assert plugin["source"] == {"source": "github", "repo": "org/skills-geo"}
+
+    def test_cursor_does_not_leak_them(self):
+        plugin = generate_cursor(self.SOURCE)["plugins"][0]
+        assert "skills" not in plugin
+        assert "maintainer" not in plugin
+
+    def test_codex_does_not_leak_them(self):
+        plugin = generate_codex(self.SOURCE)["plugins"][0]
+        assert "skills" not in plugin
+        assert "maintainer" not in plugin
+
+    def test_source_data_is_not_mutated(self):
+        generate_claude(self.SOURCE)
+        assert self.SOURCE["plugins"][0]["skills"] == 6

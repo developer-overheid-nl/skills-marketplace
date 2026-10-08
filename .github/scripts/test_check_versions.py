@@ -630,7 +630,10 @@ class TestWriteJobSummary:
         assert "\u26a0\ufe0f" in summary_file.read_text()
 
 
-MOCK_PLATFORM_FILES = [".claude-plugin/marketplace.json", ".cursor-plugin/marketplace.json"]
+MOCK_PLATFORM_FILES = [
+    ".claude-plugin/marketplace.json",
+    ".cursor-plugin/marketplace.json",
+]
 
 
 class TestCreatePr:
@@ -902,3 +905,49 @@ class TestMain:
             assert exc.value.code == 0
 
         mock_create.assert_not_called()
+
+
+class TestFactChangesInPr:
+    """A repo-facts change alone must still produce a sensible PR."""
+
+    def test_branch_and_title_without_version_updates(self):
+        branch, title = build_branch_and_title([], ["nerds: skills: 13 -> 14"])
+        assert branch.startswith("automated/repo-gegevens-")
+        assert title == "Werk repo-gegevens van plugins bij"
+
+    def test_branch_is_stable_for_same_changes(self):
+        changes = ["nerds: skills: 13 -> 14"]
+        assert build_branch_and_title([], changes) == build_branch_and_title(
+            [], changes
+        )
+
+    def test_branch_differs_for_other_changes(self):
+        a, _ = build_branch_and_title([], ["nerds: skills: 13 -> 14"])
+        b, _ = build_branch_and_title([], ["geo: skills: 5 -> 6"])
+        assert a != b
+
+    def test_body_lists_fact_changes(self):
+        body = build_pr_body([], ["nerds: skills: 13 -> 14"])
+        assert "### Repo-gegevens" in body
+        assert "- nerds: skills: 13 -> 14" in body
+
+    def test_body_warns_on_repo_transfer(self):
+        body = build_pr_body([], ["nerds: source.repo: Oud/N -> Nieuw/N"])
+        assert "hernoemd of overgedragen" in body
+
+    def test_body_has_no_repo_section_without_fact_changes(self):
+        body = build_pr_body([], [])
+        assert "### Repo-gegevens" not in body
+
+    def test_body_omits_version_table_when_only_facts_changed(self):
+        body = build_pr_body([], ["nerds: skills: 13 -> 14"])
+        assert "| Plugin | Veld | Oud | Nieuw | Repo |" not in body
+
+    def test_body_omits_version_checklist_when_only_facts_changed(self):
+        body = build_pr_body([], ["nerds: skills: 13 -> 14"])
+        assert "Versie-nummers kloppen met upstream" not in body
+        assert "Plugin-inhoud in marketplace komt overeen met upstream" in body
+
+    def test_body_adds_owner_checklist_item_on_transfer(self):
+        body = build_pr_body([], ["nerds: source.repo: Oud/N -> Nieuw/N"])
+        assert "Nieuwe eigenaar van de verplaatste repo klopt" in body

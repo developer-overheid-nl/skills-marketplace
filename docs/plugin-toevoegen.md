@@ -62,14 +62,24 @@ De `name` moet exact gelijk zijn aan de `name` in de `.plugin/plugin.json` van j
 | `author` | Aanbevolen | Naam en email van de maintainer |
 | `category` | Optioneel | Categorie (productivity, security, testing, etc.) |
 | `tags` | Optioneel | Zoektermen voor discovery |
+| `skills` | Gegenereerd | Aantal skills, opgehaald uit de bron-repo |
+| `maintainer` | Gegenereerd | Eigenaar van de bron-repo, opgehaald van GitHub |
+
+De velden `skills` en `maintainer` vul je niet zelf in. `refresh_repo_facts.py`
+haalt ze op uit de bron-repository, en de plugin-tabel in de README wordt eruit
+gegenereerd. Hetzelfde script corrigeert `source.repo` wanneer een repository is
+hernoemd of overgedragen.
 
 ### Stap 3: Open een pull request
 
 ```bash
 git checkout -b add-jouw-plugin
-# Genereer platform-bestanden na het wijzigen van marketplace.json
+# Haal het aantal skills en de maintainer op uit je repo
+python .github/scripts/refresh_repo_facts.py
+# Genereer de platform-bestanden en de plugin-tabel in de README
 python .github/scripts/generate_marketplace.py
-git add marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json .agents/plugins/marketplace.json
+python .github/scripts/generate_readme_table.py
+git add marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json .agents/plugins/marketplace.json README.md
 git commit -m "Voeg jouw-plugin toe aan marketplace"
 git push origin add-jouw-plugin
 gh pr create --title "Voeg jouw-plugin toe" --body "Beschrijving van de plugin en wat deze doet."

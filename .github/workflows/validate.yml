@@ -58,6 +58,9 @@ jobs:
       - name: Controleer platform-bestanden in sync
         run: python3 .github/scripts/generate_marketplace.py --check
 
+      - name: Controleer plugin-tabel in README in sync
+        run: python3 .github/scripts/generate_readme_table.py --check
+
       - name: Valideer Cursor marketplace structuur
         run: |
           python3 << 'SCRIPT'

@@ -288,8 +288,19 @@ def apply_updates(data: dict, updates: list[dict]) -> None:
                     plugin["description"] = update["new_description"]
 
 
-def build_branch_and_title(updates: list[dict]) -> tuple[str, str]:
+def build_branch_and_title(
+    updates: list[dict], fact_changes: list[str] | None = None
+) -> tuple[str, str]:
     """Generate branch name and PR title for the updates."""
+    if not updates:
+        changes_hash = hashlib.sha256(
+            "-".join(sorted(fact_changes or [])).encode()
+        ).hexdigest()[:8]
+        return (
+            f"automated/repo-gegevens-{changes_hash}",
+            "Werk repo-gegevens van plugins bij",
+        )
+
     if len(updates) == 1:
         u = updates[0]
         safe_name = sanitize_branch(u["name"])
@@ -312,11 +323,12 @@ def build_branch_and_title(updates: list[dict]) -> tuple[str, str]:
     return branch, title
 
 
-def build_pr_body(updates: list[dict]) -> str:
+def build_pr_body(updates: list[dict], fact_changes: list[str] | None = None) -> str:
     """Build the PR body with update table and review checklist."""
     lines = ["## Automatische plugin-update\n"]
-    lines.append("| Plugin | Veld | Oud | Nieuw | Repo |")
-    lines.append("|--------|------|-----|-------|------|")
+    if updates:
+        lines.append("| Plugin | Veld | Oud | Nieuw | Repo |")
+        lines.append("|--------|------|-----|-------|------|")
 
     for u in updates:
         repo_url = f"https://github.com/{u['repo']}"
@@ -340,16 +352,39 @@ def build_pr_body(updates: list[dict]) -> str:
                 f"[{u['repo']}]({repo_url}) |"
             )
 
+    if fact_changes:
+        lines.append("")
+        lines.append("### Repo-gegevens")
+        lines.append(
+            "Opgehaald uit de bron-repositories. De plugin-tabel in de README "
+            "wordt hieruit gegenereerd."
+        )
+        lines.append("")
+        for change in fact_changes:
+            lines.append(f"- {change}")
+        if any("source.repo" in c for c in fact_changes):
+            lines.append("")
+            lines.append(
+                "> **Let op:** een gewijzigde `source.repo` betekent dat de "
+                "repository is hernoemd of overgedragen. GitHub bleef "
+                "doorverwijzen, dus dit viel niet op. Controleer of de nieuwe "
+                "eigenaar klopt."
+            )
+
     lines.append("")
     lines.append("### Review checklist")
-    lines.append("- [ ] Versie-nummers kloppen met upstream")
-    lines.append("- [ ] Geen breaking changes in de nieuwe versies")
-    lines.append("- [ ] Changelog upstream bekeken")
+    if updates:
+        lines.append("- [ ] Versie-nummers kloppen met upstream")
+        lines.append("- [ ] Geen breaking changes in de nieuwe versies")
+        lines.append("- [ ] Changelog upstream bekeken")
+    if any("source.repo" in c for c in (fact_changes or [])):
+        lines.append("- [ ] Nieuwe eigenaar van de verplaatste repo klopt")
     lines.append("- [ ] Plugin-inhoud in marketplace komt overeen met upstream")
     lines.append("")
     lines.append(
-        "> **Let op:** Deze PR werkt alleen versienummer en description in "
-        "marketplace.json bij. Controleer of de overige plugin-inhoud "
+        "> **Let op:** Deze PR werkt alleen de velden in marketplace.json bij "
+        "die uit de bron-repo komen (versie, description, repo-pad, maintainer "
+        "en het aantal skills). Controleer of de overige plugin-inhoud "
         "(skills, commands, etc.) ook actueel is."
     )
     lines.append("")
@@ -371,8 +406,55 @@ def regenerate_platform_files() -> list[str]:
 
     source_data = load_source()
     generate_all(source_data)
-    return [str(path.relative_to(ROOT_DIR))
-            for _, (path, _) in PLATFORMS.items()]
+    return [str(path.relative_to(ROOT_DIR)) for _, (path, _) in PLATFORMS.items()]
+
+
+def regenerate_readme_table() -> list[str]:
+    """Regenerate the plugin table in README.md from marketplace.json.
+
+    Returns the list of changed file paths (relative), so the caller can stage
+    them alongside the platform files.
+    """
+    from generate_readme_table import (
+        README_PATH,
+        ROOT_DIR,
+        render_table,
+        replace_table,
+    )
+
+    with open(MARKETPLACE_PATH) as f:
+        data = json.load(f)
+
+    readme = README_PATH.read_text()
+    updated = replace_table(readme, render_table(data))
+    if updated == readme:
+        return []
+
+    README_PATH.write_text(updated)
+    return [str(README_PATH.relative_to(ROOT_DIR))]
+
+
+def refresh_repo_facts(plugins: list[dict]) -> list[str]:
+    """Refresh skill count, maintainer and canonical repo path for each plugin.
+
+    These drift silently: GitHub keeps redirecting a transferred repo, so a
+    stale source.repo keeps working while the README credits the wrong
+    organisation. Returns a list of human-readable change descriptions.
+    """
+    from refresh_repo_facts import apply_facts, fetch_repo_facts
+
+    changes = []
+    for plugin in plugins:
+        repo = resolve_repo(plugin)
+        if repo is None:
+            continue
+        facts = fetch_repo_facts(repo)
+        if facts is None:
+            print(f"WAARSCHUWING: kon repo-gegevens van {repo} niet ophalen")
+            continue
+        for change in apply_facts(plugin, facts):
+            changes.append(f"{plugin['name']}: {change}")
+    return changes
 
 
 def create_pr(
@@ -393,8 +475,8 @@ def create_pr(
     with open(marketplace_path) as f:
         json.load(f)
 
-    # Regenerate platform-specific files
-    platform_files = regenerate_platform_files()
+    # Regenerate platform-specific files and the README table
+    platform_files = regenerate_platform_files() + regenerate_readme_table()
 
     # Git configuration and branch setup — fail fast with clear messages
     git_steps = [
@@ -419,7 +501,7 @@ def create_pr(
             print(f"FOUT: {label} mislukt: {r.stderr}")
             sys.exit(1)
 
-    if len(updates) == 1:
+    if len(updates) == 1 or not updates:
         commit_msg = title
     else:
         names = ", ".join(u["name"] for u in updates)
@@ -516,7 +598,12 @@ def main() -> None:
         write_job_summary(summary_lines, f"**{msg}**")
         sys.exit(1)
 
-    if not updates:
+    fact_changes = refresh_repo_facts(plugins)
+    for change in fact_changes:
+        print(change)
+        summary_lines.append(f"- {change}")
+
+    if not updates and not fact_changes:
         print("\nAlle plugin versies zijn actueel")
         write_job_summary(summary_lines, "**Geen updates nodig.**")
         sys.exit(0)
@@ -536,10 +623,11 @@ def main() -> None:
         )
         sys.exit(0)
 
-    # Apply updates and create PR
+    # Apply updates and create PR. refresh_repo_facts already mutated the
+    # plugin entries in place, so data carries those changes too.
     apply_updates(data, updates)
-    branch, title = build_branch_and_title(updates)
-    body = build_pr_body(updates)
+    branch, title = build_branch_and_title(updates, fact_changes)
+    body = build_pr_body(updates, fact_changes)
     pr_url = create_pr(MARKETPLACE_PATH, data, updates, branch, title, body)
 
     print(f"\nPR aangemaakt: {pr_url}")
