@@ -59,7 +59,7 @@
       },
       "source": {
         "source": "github",
-        "repo": "developer-overheid-nl/developer-overheid-nl-agent-skills"
+        "repo": "developer-overheid-nl/skills-developer-overheid-nl"
       },
       "category": "productivity",
       "tags": [
@@ -81,7 +81,7 @@
       },
       "source": {
         "source": "github",
-        "repo": "MinBZK/NeRDS"
+        "repo": "NederlandseDigitaleDienst/NeRDS"
       },
       "category": "productivity",
       "tags": [

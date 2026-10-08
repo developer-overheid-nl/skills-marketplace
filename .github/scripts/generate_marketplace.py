@@ -30,13 +30,27 @@ def load_source() -> dict:
         return json.load(f)
 
 
+# Fields the README table is rendered from. They describe the upstream repo
+# rather than the plugin entry itself, and are not part of any platform schema,
+# so they stay in the neutral marketplace.json. `skills` especially: Claude Code
+# reads that key as a list of skill paths, not as a count.
+README_ONLY_FIELDS = ("skills", "maintainer")
+
+
+def _strip_readme_fields(plugin: dict) -> dict:
+    """Return a copy of a plugin entry without the README-only fields."""
+    return {k: v for k, v in plugin.items() if k not in README_ONLY_FIELDS}
+
+
 def generate_claude(data: dict) -> dict:
     """Generate Claude Code marketplace.json.
 
-    Adds $schema and copies all fields unchanged.
+    Adds $schema and copies all fields unchanged, apart from the README-only
+    fields which have no meaning in the Claude Code schema.
     """
     result = {"$schema": CLAUDE_SCHEMA}
     result.update(copy.deepcopy(data))
+    result["plugins"] = [_strip_readme_fields(p) for p in result.get("plugins", [])]
     return result
 
 

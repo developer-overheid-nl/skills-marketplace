@@ -35,7 +35,7 @@
       "description": "Dutch Government Developer Knowledge Base (developer.overheid.nl/kennisbank) - guidelines and standards for government software development",
       "source": {
         "source": "url",
-        "url": "https://github.com/developer-overheid-nl/developer-overheid-nl-agent-skills.git"
+        "url": "https://github.com/developer-overheid-nl/skills-developer-overheid-nl.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -48,7 +48,7 @@
       "description": "Plugin voor de Nederlandse Richtlijn Digitale Systemen (NeRDS). Bevat skills voor 13 richtlijnen die richting geven aan het ontwerpen, ontwikkelen en inkopen van digitale systemen binnen de Nederlandse overheid: gebruikersbehoeften, toegankelijkheid, open source, open standaarden, cloud, veiligheid, privacy, samenwerking, integratie, data, algoritmen, inkoop en duurzaamheid.",
       "source": {
         "source": "url",
-        "url": "https://github.com/MinBZK/NeRDS.git"
+        "url": "https://github.com/NederlandseDigitaleDienst/NeRDS.git"
       },
       "policy": {
         "installation": "AVAILABLE",

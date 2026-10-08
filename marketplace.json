@@ -25,7 +25,12 @@
         "interoperabiliteit",
         "api",
         "digikoppeling"
-      ]
+      ],
+      "maintainer": {
+        "login": "developer-overheid-nl",
+        "name": "developer.overheid.nl"
+      },
+      "skills": 10
     },
     {
       "name": "zad-actions",
@@ -47,7 +52,12 @@
         "release",
         "debugging",
         "workflow"
-      ]
+      ],
+      "maintainer": {
+        "login": "RijksICTGilde",
+        "name": "Rijks ICT Gilde"
+      },
+      "skills": 5
     },
     {
       "name": "developer-overheid",
@@ -58,7 +68,7 @@
       },
       "source": {
         "source": "github",
-        "repo": "developer-overheid-nl/developer-overheid-nl-agent-skills"
+        "repo": "developer-overheid-nl/skills-developer-overheid-nl"
       },
       "category": "productivity",
       "tags": [
@@ -69,7 +79,12 @@
         "open-source",
         "nl-design-system",
         "standaarden"
-      ]
+      ],
+      "maintainer": {
+        "login": "developer-overheid-nl",
+        "name": "developer.overheid.nl"
+      },
+      "skills": 9
     },
     {
       "name": "nerds",
@@ -80,7 +95,7 @@
       },
       "source": {
         "source": "github",
-        "repo": "MinBZK/NeRDS"
+        "repo": "NederlandseDigitaleDienst/NeRDS"
       },
       "category": "productivity",
       "tags": [
@@ -93,7 +108,12 @@
         "privacy",
         "veiligheid",
         "duurzaamheid"
-      ]
+      ],
+      "maintainer": {
+        "login": "NederlandseDigitaleDienst",
+        "name": "Nederlandse Digitale Dienst"
+      },
+      "skills": 14
     },
     {
       "name": "internet",
@@ -115,7 +135,12 @@
         "dnssec",
         "tls",
         "dmarc"
-      ]
+      ],
+      "maintainer": {
+        "login": "developer-overheid-nl",
+        "name": "developer.overheid.nl"
+      },
+      "skills": 5
     },
     {
       "name": "geo",
@@ -137,7 +162,12 @@
         "inspire",
         "metadata",
         "nen3610"
-      ]
+      ],
+      "maintainer": {
+        "login": "developer-overheid-nl",
+        "name": "developer.overheid.nl"
+      },
+      "skills": 6
     },
     {
       "name": "developer-overheid-open-source-repo",
@@ -157,7 +187,12 @@
         "open-source",
         "publiccode.yml",
         "standaarden"
-      ]
+      ],
+      "maintainer": {
+        "login": "developer-overheid-nl",
+        "name": "developer.overheid.nl"
+      },
+      "skills": 1
     },
     {
       "name": "nldd-design-system",
@@ -179,7 +214,12 @@
         "frontend",
         "toegankelijkheid",
         "nldd"
-      ]
+      ],
+      "maintainer": {
+        "login": "NederlandseDigitaleDienst",
+        "name": "Nederlandse Digitale Dienst"
+      },
+      "skills": 6
     },
     {
       "name": "nldd-archi",
@@ -200,7 +240,12 @@
         "archimate",
         "enterprise-architecture",
         "nldd"
-      ]
+      ],
+      "maintainer": {
+        "login": "NederlandseDigitaleDienst",
+        "name": "Nederlandse Digitale Dienst"
+      },
+      "skills": 3
     }
   ]
 }
