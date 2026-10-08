@@ -34,7 +34,7 @@
       "name": "zad-actions",
       "displayName": "Zad Actions",
       "description": "Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
-      "version": "4.3.1",
+      "version": "4.3.2",
       "author": {
         "name": "Rijks ICT Gilde"
       },
