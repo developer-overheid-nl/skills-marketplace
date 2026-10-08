@@ -8,11 +8,14 @@ import pytest
 
 from generate_marketplace import (
     CLAUDE_SCHEMA,
+    _codex_source,
     _display_name,
+    _transform_plugin_for_codex,
     _transform_plugin_for_cursor,
     check_sync,
     generate_all,
     generate_claude,
+    generate_codex,
     generate_cursor,
     write_json,
 )
@@ -150,6 +153,102 @@ class TestGenerateCursor:
         assert "keywords" in plugin
 
 
+class TestCodexSource:
+    """Test the source mapping for Codex."""
+
+    def test_github_becomes_url(self):
+        """A github source becomes a clone URL, because Codex has no github type."""
+        result = _codex_source({"source": "github", "repo": "org/my-plugin"})
+        assert result == {
+            "source": "url",
+            "url": "https://github.com/org/my-plugin.git",
+        }
+
+    def test_ref_and_sha_are_kept(self):
+        """A pinned ref or sha survives the mapping."""
+        result = _codex_source(
+            {
+                "source": "github",
+                "repo": "org/my-plugin",
+                "ref": "v1.0.0",
+                "sha": "abc123",
+            }
+        )
+        assert result["ref"] == "v1.0.0"
+        assert result["sha"] == "abc123"
+        assert result["source"] == "url"
+
+    def test_other_sources_pass_through(self):
+        """A source type Codex already understands is left alone."""
+        source = {"source": "local", "path": "./plugins/my-plugin"}
+        assert _codex_source(source) == source
+
+    def test_other_sources_are_copied(self):
+        """The returned source is a copy, so the caller cannot mutate the input."""
+        source = {"source": "local", "path": "./plugins/my-plugin"}
+        result = _codex_source(source)
+        result["path"] = "./elsewhere"
+        assert source["path"] == "./plugins/my-plugin"
+
+
+class TestTransformPluginForCodex:
+    """Test the per-plugin transformation for Codex."""
+
+    def test_has_exactly_the_expected_fields(self):
+        """Codex gets name, description, source, policy and category."""
+        result = _transform_plugin_for_codex(SAMPLE_PLUGIN)
+        assert list(result) == ["name", "description", "source", "policy", "category"]
+
+    def test_policy(self):
+        """Every plugin is available and authenticates on install."""
+        result = _transform_plugin_for_codex(SAMPLE_PLUGIN)
+        assert result["policy"] == {
+            "installation": "AVAILABLE",
+            "authentication": "ON_INSTALL",
+        }
+
+    def test_category_is_capitalised(self):
+        """Codex shows the category as written, so it is capitalised."""
+        result = _transform_plugin_for_codex(SAMPLE_PLUGIN)
+        assert result["category"] == "Productivity"
+
+    def test_category_defaults_to_productivity(self):
+        """A plugin without a category still gets one."""
+        plugin = {"name": "x", "source": {"source": "github", "repo": "org/x"}}
+        assert _transform_plugin_for_codex(plugin)["category"] == "Productivity"
+
+    def test_description_is_optional(self):
+        """A plugin without a description does not get an empty one."""
+        plugin = {"name": "x", "source": {"source": "github", "repo": "org/x"}}
+        assert "description" not in _transform_plugin_for_codex(plugin)
+
+    def test_source_is_mapped(self):
+        """The github source is mapped, not copied verbatim."""
+        result = _transform_plugin_for_codex(SAMPLE_PLUGIN)
+        assert result["source"]["source"] == "url"
+
+
+class TestGenerateCodex:
+    """Test the Codex marketplace generation."""
+
+    def test_structure(self):
+        """Codex wants a name, an interface and the plugins."""
+        result = generate_codex(SAMPLE_DATA)
+        assert list(result) == ["name", "interface", "plugins"]
+        assert result["name"] == "test-plugins"
+        assert result["interface"] == {"displayName": "Test Plugins"}
+
+    def test_all_plugins_are_included(self):
+        """No plugin is dropped."""
+        result = generate_codex(SAMPLE_DATA)
+        assert len(result["plugins"]) == len(SAMPLE_DATA["plugins"])
+
+    def test_empty_plugins(self):
+        """An empty marketplace generates an empty plugin list."""
+        result = generate_codex({"name": "empty", "plugins": []})
+        assert result["plugins"] == []
+
+
 class TestWriteJson:
     def test_writes_valid_json(self, tmp_path):
         path = tmp_path / "sub" / "test.json"
@@ -179,8 +278,10 @@ class TestCheckSync:
     def test_in_sync(self, tmp_path):
         source = SAMPLE_DATA
 
-        with patch("generate_marketplace.PLATFORMS") as mock_platforms, \
-             patch("generate_marketplace.ROOT_DIR", tmp_path):
+        with (
+            patch("generate_marketplace.PLATFORMS") as mock_platforms,
+            patch("generate_marketplace.ROOT_DIR", tmp_path),
+        ):
             claude_path = tmp_path / ".claude-plugin" / "marketplace.json"
             generated = generate_claude(source)
             write_json(claude_path, generated)
@@ -193,8 +294,10 @@ class TestCheckSync:
     def test_out_of_sync(self, tmp_path):
         source = SAMPLE_DATA
 
-        with patch("generate_marketplace.PLATFORMS") as mock_platforms, \
-             patch("generate_marketplace.ROOT_DIR", tmp_path):
+        with (
+            patch("generate_marketplace.PLATFORMS") as mock_platforms,
+            patch("generate_marketplace.ROOT_DIR", tmp_path),
+        ):
             claude_path = tmp_path / ".claude-plugin" / "marketplace.json"
             write_json(claude_path, {"different": "data"})
             mock_platforms.items.return_value = [
@@ -206,8 +309,10 @@ class TestCheckSync:
     def test_missing_file(self, tmp_path):
         source = SAMPLE_DATA
 
-        with patch("generate_marketplace.PLATFORMS") as mock_platforms, \
-             patch("generate_marketplace.ROOT_DIR", tmp_path):
+        with (
+            patch("generate_marketplace.PLATFORMS") as mock_platforms,
+            patch("generate_marketplace.ROOT_DIR", tmp_path),
+        ):
             missing_path = tmp_path / "nonexistent" / "marketplace.json"
             mock_platforms.items.return_value = [
                 ("claude", (missing_path, generate_claude))
@@ -222,10 +327,16 @@ class TestGenerateAll:
         claude_path = tmp_path / ".claude-plugin" / "marketplace.json"
         cursor_path = tmp_path / ".cursor-plugin" / "marketplace.json"
 
-        with patch("generate_marketplace.PLATFORMS", {
-            "claude": (claude_path, generate_claude),
-            "cursor": (cursor_path, generate_cursor),
-        }), patch("generate_marketplace.ROOT_DIR", tmp_path):
+        with (
+            patch(
+                "generate_marketplace.PLATFORMS",
+                {
+                    "claude": (claude_path, generate_claude),
+                    "cursor": (cursor_path, generate_cursor),
+                },
+            ),
+            patch("generate_marketplace.ROOT_DIR", tmp_path),
+        ):
             results = generate_all(source)
 
         assert claude_path.exists()
@@ -268,3 +379,14 @@ class TestEndToEnd:
         for plugin in cursor["plugins"]:
             assert "displayName" in plugin
             assert "source" in plugin
+
+        # Generate Codex
+        codex = generate_codex(source)
+        assert codex["interface"]["displayName"]
+        assert len(codex["plugins"]) == len(source["plugins"])
+
+        # Codex has no github source type and silently skips such entries
+        for plugin in codex["plugins"]:
+            assert plugin["source"]["source"] != "github"
+            assert plugin["policy"]["installation"] == "AVAILABLE"
+            assert plugin["category"]

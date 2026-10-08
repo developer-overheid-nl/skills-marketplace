@@ -29,7 +29,9 @@ cd skills-marketplace
 
 ### Stap 2: Voeg je plugin toe aan marketplace.json
 
-Open `marketplace.json` (in de root van het project) en voeg je plugin toe aan de `plugins` array:
+Open `marketplace.json` (in de root van het project) en voeg je plugin toe aan de `plugins` array.
+
+De `name` moet exact gelijk zijn aan de `name` in de `.plugin/plugin.json` van je eigen repository. Codex vergelijkt die twee en weigert de plugin te installeren als ze verschillen.
 
 ```json
 {
@@ -67,7 +69,7 @@ Open `marketplace.json` (in de root van het project) en voeg je plugin toe aan d
 git checkout -b add-jouw-plugin
 # Genereer platform-bestanden na het wijzigen van marketplace.json
 python .github/scripts/generate_marketplace.py
-git add marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json
+git add marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json .agents/plugins/marketplace.json
 git commit -m "Voeg jouw-plugin toe aan marketplace"
 git push origin add-jouw-plugin
 gh pr create --title "Voeg jouw-plugin toe" --body "Beschrijving van de plugin en wat deze doet."
@@ -89,7 +91,13 @@ claude plugin marketplace add developer-overheid-nl/skills-marketplace
 claude plugin install jouw-plugin@overheid-plugins
 ```
 
-**Cursor:** Importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL.
+**Codex:**
+```bash
+codex plugin marketplace add developer-overheid-nl/skills-marketplace
+codex plugin add jouw-plugin@overheid-plugins
+```
+
+**Cursor:** Importeer de marketplace via **Plugins & MCPs → Team Marketplaces → Add Marketplace → Import from Repo** in het dashboard. Dit vereist een Teams- of Enterprise-plan.
 
 ## Plugin updaten
 
@@ -102,3 +110,10 @@ Als je een nieuwe versie van je plugin uitbrengt:
    of automatisch als ze auto-update aan hebben staan voor de marketplace. Let op:
    `claude plugin marketplace update` ververst alleen de index met beschikbare versies,
    het werkt de geïnstalleerde plugin zelf niet bij
+5. In Codex werkt bijwerken niet automatisch. Gebruikers draaien
+   `codex plugin marketplace upgrade overheid-plugins` en daarna
+   `codex plugin add <plugin>@overheid-plugins`, wat de nieuwe versie over de oude
+   heen installeert
+6. In Cursor ververst de marketplace zichzelf alleen met **Enable Auto Refresh**
+   aan, en dan hooguit eens per tien minuten na een push; anders moeten gebruikers
+   zelf op **Refresh** klikken

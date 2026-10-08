@@ -4,7 +4,7 @@ Deze handleiding beschrijft hoe je een AI-assistant plugin bouwt die via de mark
 
 ## Wat is een plugin?
 
-Een plugin is een verzameling skills, commands, agents, hooks en/of MCP servers die een AI-assistant uitbreiden met domeinkennis of tooling. Plugins worden gedistribueerd via een marketplace en werken in meerdere platformen (Claude Code, Cursor).
+Een plugin is een verzameling skills, commands, agents, hooks en/of MCP servers die een AI-assistant uitbreiden met domeinkennis of tooling. Plugins worden gedistribueerd via een marketplace en werken in meerdere platformen (Claude Code, Codex, Cursor).
 
 ## Stap 1: Directory-structuur
 
@@ -42,9 +42,11 @@ Maak `.plugin/plugin.json`:
 
 De `name` wordt de **namespace-prefix** voor je skills. Gebruikers roepen skills aan als `/mijn-plugin:skill-naam`. Kies een unieke, beschrijvende naam in kebab-case.
 
+Deze `name` moet exact gelijk zijn aan de naam waaronder je plugin in de marketplace staat. Codex vergelijkt die twee en weigert de installatie bij een verschil; Claude Code is er toleranter in, maar dan verandert de prefix van je skills zodra de namen alsnog gelijkgetrokken worden.
+
 ## Stap 3: Skills schrijven
 
-Maak een `SKILL.md` in `skills/<skill-naam>/`:
+Maak een `SKILL.md` in `skills/<skill-naam>/`. Zet hem niet in de root van je repository: die wordt niet gevonden, en je plugin installeert dan met nul skills.
 
 ```markdown
 ---
@@ -122,6 +124,10 @@ Zie [zad-actions](https://github.com/RijksICTGilde/zad-actions) voor een werkend
 python scripts/generate_plugin.py          # genereer platform-bestanden
 python scripts/generate_plugin.py --check  # controleer of alles in sync is
 ```
+
+Codex heeft geen eigen plugin-manifest nodig: het leest `.claude-plugin/plugin.json` en de `skills/`-map. Alleen de marketplace zelf heeft voor Codex een apart bestand.
+
+Zie ook de documentatie van OpenAI over [plugins bouwen](https://developers.openai.com/plugins/build/plugins) en [skills in Codex](https://developers.openai.com/codex/skills).
 
 `SKILL.md` bestanden met YAML frontmatter zijn al cross-platform en werken in zowel Claude Code als Cursor.
 

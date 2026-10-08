@@ -4,7 +4,7 @@
 [![plugins](https://img.shields.io/badge/plugins-9-green.svg)](#beschikbare-plugins)
 [![CI](https://github.com/developer-overheid-nl/skills-marketplace/actions/workflows/validate.yml/badge.svg)](https://github.com/developer-overheid-nl/skills-marketplace/actions/workflows/validate.yml)
 
-Centrale catalogus van plugins voor AI-assisted coding door developers bij de Nederlandse overheid. Ondersteunt meerdere platformen: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) en [Cursor](https://www.cursor.com/). Via deze marketplace kunnen overheidsteams hun plugins publiceren en ontdekken.
+Centrale catalogus van plugins voor AI-assisted coding door developers bij de Nederlandse overheid. Ondersteunt meerdere platformen: [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex](https://developers.openai.com/codex) en [Cursor](https://www.cursor.com/). Via deze marketplace kunnen overheidsteams hun plugins publiceren en ontdekken.
 
 > **CONCEPT** — Deze marketplace is in ontwikkeling. De plugins zijn informatieve samenvattingen — niet de officiële standaarden zelf. Zie onze [verantwoording](docs/verantwoording.md) en [disclaimer](DISCLAIMER.md) voor meer informatie.
 
@@ -51,9 +51,48 @@ draait:
 claude plugin update <plugin>@overheid-plugins
 ```
 
+### Codex
+
+```bash
+# 1. Voeg de marketplace toe
+codex plugin marketplace add developer-overheid-nl/skills-marketplace
+
+# 2. Installeer een plugin
+codex plugin add standaarden@overheid-plugins
+```
+
+Installeren kan ook met `/plugins` in een sessie, of via de Plugins-tab in de
+app. Start daarna een nieuwe sessie: Codex laadt de skills bij het opstarten.
+
+Zeven van de negen plugins werken nu in Codex. `developer-overheid` en
+`developer-overheid-open-source-repo` volgen zodra de fixes in hun eigen
+repository zijn gemerged: de eerste heeft een `name` die afwijkt van de
+marketplace, de tweede heeft dat probleem en bewaart zijn skill in de root in
+plaats van in `skills/`.
+
+Codex werkt plugins niet zelf bij. Haal eerst de nieuwe versies van de
+marketplace op en installeer daarna de plugin opnieuw:
+
+```bash
+codex plugin marketplace upgrade overheid-plugins
+codex plugin add <plugin>@overheid-plugins
+```
+
+Dat tweede commando installeert de nieuwe versie over de oude heen.
+
 ### Cursor
 
-Importeer de marketplace via **Dashboard → Settings → Plugins → Import** met de repository URL `developer-overheid-nl/skills-marketplace`. Zie de [Cursor plugin documentatie](https://cursor.com/docs/plugins) voor meer informatie.
+Importeer de marketplace via **Plugins & MCPs → Team Marketplaces → Add
+Marketplace → Import from Repo** in het Cursor-dashboard, met de repository
+`developer-overheid-nl/skills-marketplace`.
+
+Dit werkt alleen op een Teams- of Enterprise-plan, en op Enterprise kan alleen
+een admin een marketplace toevoegen.
+
+Zet **Enable Auto Refresh** aan. Cursor ververst de marketplace dan na een push,
+hooguit eens per tien minuten; zonder die instelling gebeurt het alleen als je
+zelf op **Refresh** klikt. Zie de [Cursor plugin
+documentatie](https://cursor.com/docs/plugins) voor meer informatie.
 
 ## Demo
 
@@ -84,8 +123,10 @@ Heb je een plugin die relevant is voor de Nederlandse overheid? Voeg hem toe aan
 
 - Open-source licentie (EUPL-1.2, Apache-2.0, MIT, of vergelijkbaar)
 - Publieke GitHub repository
-- Geldige `.plugin/plugin.json`
-- Minimaal 1 werkende skill, command of agent
+- Geldige `.plugin/plugin.json`, met een `name` die gelijk is aan de naam in de
+  marketplace (Codex weigert de plugin als die twee verschillen)
+- Minimaal 1 werkende skill, command of agent, in `skills/<naam>/SKILL.md` (een
+  `SKILL.md` in de root wordt niet gevonden)
 - Nederlandse of tweetalige documentatie
 
 Zie [CONTRIBUTING.md](CONTRIBUTING.md) voor het volledige review-proces.
@@ -98,6 +139,8 @@ marketplace.json              # Neutraal formaat (single source of truth)
   marketplace.json            # Gegenereerd voor Claude Code
 .cursor-plugin/
   marketplace.json            # Gegenereerd voor Cursor
+.agents/plugins/
+  marketplace.json            # Gegenereerd voor Codex
 .github/scripts/
   generate_marketplace.py     # Genereert platform-bestanden
 docs/
@@ -116,6 +159,8 @@ uv run python .github/scripts/generate_marketplace.py
 # Controleer of alles in sync is
 uv run python .github/scripts/generate_marketplace.py --check
 ```
+
+Codex krijgt een eigen bestand in plaats van het Claude Code-bestand te hergebruiken. Codex leest `.agents/plugins/marketplace.json` namelijk eerst, en kent het source-type `github` niet: een plugin die zo'n source gebruikt wordt zonder melding overgeslagen. In het Codex-bestand staan daarom clone-URL's, plus de velden `policy` en `category` die Codex verwacht. CI controleert dat er geen source-type in staat dat Codex stil negeert.
 
 Een nieuw platform toevoegen (bijv. Windsurf, Copilot) vereist alleen een nieuwe `generate_<platform>()` functie in het script.
 
