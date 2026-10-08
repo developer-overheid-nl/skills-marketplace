@@ -64,11 +64,9 @@ codex plugin add standaarden@overheid-plugins
 Installeren kan ook met `/plugins` in een sessie, of via de Plugins-tab in de
 app. Start daarna een nieuwe sessie: Codex laadt de skills bij het opstarten.
 
-Zeven van de negen plugins werken nu in Codex. `developer-overheid` en
-`developer-overheid-open-source-repo` volgen zodra de fixes in hun eigen
-repository zijn gemerged: de eerste heeft een `name` die afwijkt van de
-marketplace, de tweede heeft dat probleem en bewaart zijn skill in de root in
-plaats van in `skills/`.
+Acht van de negen plugins werken nu in Codex. `developer-overheid` volgt zodra
+de fix in zijn eigen repository is gemerged: de `name` in het manifest wijkt af
+van de naam in deze marketplace, en Codex weigert de installatie dan.
 
 Codex werkt plugins niet zelf bij. Haal eerst de nieuwe versies van de
 marketplace op en installeer daarna de plugin opnieuw:
