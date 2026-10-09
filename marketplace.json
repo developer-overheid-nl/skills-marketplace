@@ -10,7 +10,7 @@
     {
       "name": "standaarden",
       "description": "CONCEPT — Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, Logboek Dataverwerkingen, CloudEvents, BOMOS, E-Government en Publicatie-tooling. Bevat 10 skills voor 77 GitHub repositories verdeeld over 9 domeinen.",
-      "version": "0.8.3",
+      "version": "0.9.0",
       "author": {
         "name": "developer-overheid-nl"
       },
@@ -89,7 +89,7 @@
     {
       "name": "nerds",
       "description": "Plugin voor de Nederlandse Richtlijn Digitale Systemen (NeRDS). Bevat skills voor 13 richtlijnen die richting geven aan het ontwerpen, ontwikkelen en inkopen van digitale systemen binnen de Nederlandse overheid: gebruikersbehoeften, toegankelijkheid, open source, open standaarden, cloud, veiligheid, privacy, samenwerking, integratie, data, algoritmen, inkoop en duurzaamheid.",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "author": {
         "name": "MinBZK"
       },
