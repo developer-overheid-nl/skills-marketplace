@@ -218,6 +218,30 @@
         "enterprise-architecture",
         "nldd"
       ]
+    },
+    {
+      "name": "geonovum-nl-sbb",
+      "displayName": "Geonovum Nl Sbb",
+      "description": "Skills van Geonovum voor NL-SBB, de Nederlandse standaard voor het beschrijven van begrippen: review van begrippenkaders op termen, definities, bronnen en relaties, met optionele SHACL-validatie en bronnencontrole.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Geonovum"
+      },
+      "source": {
+        "source": "github",
+        "repo": "Geonovum/skills-nl-sbb"
+      },
+      "repository": "https://github.com/Geonovum/skills-nl-sbb",
+      "keywords": [
+        "productivity",
+        "nl-sbb",
+        "begrippenkader",
+        "begrippen",
+        "skos",
+        "shacl",
+        "thesaurus",
+        "review"
+      ]
     }
   ]
 }
