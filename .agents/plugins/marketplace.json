@@ -120,6 +120,19 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity"
+    },
+    {
+      "name": "geonovum-nl-sbb",
+      "description": "Skills van Geonovum voor NL-SBB, de Nederlandse standaard voor het beschrijven van begrippen: review van begrippenkaders op termen, definities, bronnen en relaties, met optionele SHACL-validatie en bronnencontrole.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Geonovum/skills-nl-sbb.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
     }
   ]
 }
