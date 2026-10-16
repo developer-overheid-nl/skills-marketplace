@@ -198,7 +198,7 @@
       "name": "nldd-design-system",
       "displayName": "NLDD Designsysteem",
       "description": "Bouw applicaties met het NLDD Designsysteem (@nldd/design-system). Vijf skills: nldd-design om componenten, attributen, iconen en releases op te zoeken, nldd-design-build om een applicatie te bouwen, nldd-design-migrate om een bestaande frontend om te zetten, nldd-design-upgrade om een versie te verhogen, en nldd-design-contribute om een wijziging voor te stellen. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
-      "version": "0.8.99",
+      "version": "0.8.100",
       "author": {
         "name": "Nederlandse Digitale Dienst"
       },
