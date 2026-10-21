@@ -114,6 +114,7 @@ hand. Zie [Tabel bijwerken](#tabel-bijwerken).
 | [developer-overheid-open-source-repo](https://github.com/developer-overheid-nl/repo-docs-generator) | 1 | Maak een repository klaar voor open source: vul input.json en genereer README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, CHANGELOG en publiccode.yml met de repo-docs-generator CLI | [developer.overheid.nl](https://github.com/developer-overheid-nl) |
 | [nldd-design-system](https://github.com/NederlandseDigitaleDienst/design-system) | 6 | Bouw applicaties met het NLDD Designsysteem (@nldd/design-system) | [Nederlandse Digitale Dienst](https://github.com/NederlandseDigitaleDienst) |
 | [nldd-archi](https://github.com/NederlandseDigitaleDienst/ai-assisted-architecting) | 3 | Werk aan native ArchiMate-modellen (.archimate) met de archi-CLI | [Nederlandse Digitale Dienst](https://github.com/NederlandseDigitaleDienst) |
+| [geonovum-nl-sbb](https://github.com/Geonovum/skills-nl-sbb) | 1 | Skills van Geonovum voor NL-SBB, de Nederlandse standaard voor het beschrijven van begrippen: review van begrippenkaders op termen, definities, bronnen en relaties, met optionele SHACL-validatie en bronnencontrole | [Geonovum](https://github.com/Geonovum) |
 
 <!-- END PLUGIN TABLE -->
 

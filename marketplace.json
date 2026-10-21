@@ -246,6 +246,33 @@
         "name": "Nederlandse Digitale Dienst"
       },
       "skills": 3
+    },
+    {
+      "name": "geonovum-nl-sbb",
+      "description": "Skills van Geonovum voor NL-SBB, de Nederlandse standaard voor het beschrijven van begrippen: review van begrippenkaders op termen, definities, bronnen en relaties, met optionele SHACL-validatie en bronnencontrole.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Geonovum"
+      },
+      "source": {
+        "source": "github",
+        "repo": "Geonovum/skills-nl-sbb"
+      },
+      "category": "productivity",
+      "tags": [
+        "nl-sbb",
+        "begrippenkader",
+        "begrippen",
+        "skos",
+        "shacl",
+        "thesaurus",
+        "review"
+      ],
+      "maintainer": {
+        "login": "Geonovum",
+        "name": "Geonovum"
+      },
+      "skills": 1
     }
   ]
 }
