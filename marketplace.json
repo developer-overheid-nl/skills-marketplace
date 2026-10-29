@@ -10,7 +10,7 @@
     {
       "name": "standaarden",
       "description": "CONCEPT — Skills voor Nederlandse overheidsstandaarden (beheerd door Logius): API Design Rules, Digikoppeling, OAuth NL, FSC, Logboek Dataverwerkingen, CloudEvents, BOMOS, E-Government en Publicatie-tooling. Bevat 10 skills voor 77 GitHub repositories verdeeld over 9 domeinen.",
-      "version": "0.9.1",
+      "version": "0.9.2",
       "author": {
         "name": "developer-overheid-nl"
       },
@@ -35,7 +35,7 @@
     {
       "name": "zad-actions",
       "description": "Skills voor ZAD deployment: linting, releases, action validatie, workflow generatie en deployment debugging voor Zelfservice voor Applicatie Deployment.",
-      "version": "4.3.2",
+      "version": "4.4.0",
       "author": {
         "name": "Rijks ICT Gilde"
       },
@@ -198,7 +198,7 @@
       "name": "nldd-design-system",
       "displayName": "NLDD Designsysteem",
       "description": "Bouw applicaties met het NLDD Designsysteem (@nldd/design-system). Vijf skills: nldd-design om componenten, attributen, iconen en releases op te zoeken, nldd-design-build om een applicatie te bouwen, nldd-design-migrate om een bestaande frontend om te zetten, nldd-design-upgrade om een versie te verhogen, en nldd-design-contribute om een wijziging voor te stellen. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
-      "version": "0.8.99",
+      "version": "0.13.1",
       "author": {
         "name": "Nederlandse Digitale Dienst"
       },
