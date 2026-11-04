@@ -197,8 +197,8 @@
     {
       "name": "nldd-design-system",
       "displayName": "NLDD Designsysteem",
-      "description": "Bouw applicaties met het NLDD Designsysteem (@nldd/design-system). Vijf skills: nldd-design om componenten, attributen, iconen en releases op te zoeken, nldd-design-build om een applicatie te bouwen, nldd-design-migrate om een bestaande frontend om te zetten, nldd-design-upgrade om een versie te verhogen, en nldd-design-contribute om een wijziging voor te stellen. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
-      "version": "0.13.2",
+      "description": "Bouw applicaties met het NLDD Designsysteem (@nldd/design-system). Zes skills: nldd-design om componenten, attributen, iconen en releases op te zoeken, nldd-design-build om een applicatie te bouwen, nldd-design-validate om het resultaat te controleren met nldd lint, nldd-design-migrate om een bestaande frontend om te zetten, nldd-design-upgrade om een versie te verhogen, en nldd-design-contribute om een wijziging voor te stellen. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
+      "version": "0.15.0",
       "author": {
         "name": "Nederlandse Digitale Dienst"
       },
@@ -219,7 +219,7 @@
         "login": "NederlandseDigitaleDienst",
         "name": "Nederlandse Digitale Dienst"
       },
-      "skills": 6
+      "skills": 7
     },
     {
       "name": "nldd-archi",
