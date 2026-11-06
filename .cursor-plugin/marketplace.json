@@ -253,9 +253,9 @@
       },
       "source": {
         "source": "github",
-        "repo": "developer-overheid-nl/skill-sbom"
+        "repo": "developer-overheid-nl/skills-sbom"
       },
-      "repository": "https://github.com/developer-overheid-nl/skill-sbom",
+      "repository": "https://github.com/developer-overheid-nl/skills-sbom",
       "keywords": [
         "productivity",
         "sbom",
