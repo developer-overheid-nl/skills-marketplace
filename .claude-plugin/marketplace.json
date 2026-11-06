@@ -229,7 +229,7 @@
       "name": "geonovum-sbom",
       "displayName": "Geonovum SBOM",
       "description": "Skill van Geonovum voor het maken van een SBOM volgens de CISA Minimum Elements 2026: CycloneDX 1.7 met VEX en SPDX 2.3, ook voor repositories zonder lockfile, met meegeleverde bestanden, CDN-links en componenten uit de omgeving.",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "author": {
         "name": "Geonovum"
       },
