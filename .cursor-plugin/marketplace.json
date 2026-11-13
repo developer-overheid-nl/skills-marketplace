@@ -242,6 +242,31 @@
         "thesaurus",
         "review"
       ]
+    },
+    {
+      "name": "geonovum-sbom",
+      "displayName": "Geonovum Sbom",
+      "description": "Skill van Geonovum voor het maken van een SBOM volgens de CISA Minimum Elements 2026: CycloneDX 1.7 met VEX en SPDX 2.3, ook voor repositories zonder lockfile, met meegeleverde bestanden, CDN-links en componenten uit de omgeving.",
+      "version": "0.0.1",
+      "author": {
+        "name": "Geonovum"
+      },
+      "source": {
+        "source": "github",
+        "repo": "developer-overheid-nl/skills-sbom"
+      },
+      "repository": "https://github.com/developer-overheid-nl/skills-sbom",
+      "keywords": [
+        "productivity",
+        "sbom",
+        "cyclonedx",
+        "spdx",
+        "vex",
+        "cra",
+        "cisa",
+        "supply-chain",
+        "kwetsbaarheden"
+      ]
     }
   ]
 }
