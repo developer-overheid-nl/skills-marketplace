@@ -145,7 +145,7 @@
     {
       "name": "geo",
       "description": "CONCEPT — Skills voor Nederlandse geo-standaarden (beheerd door Geonovum): OGC API services (WMS, WFS, WMTS, OGC API Features), metadata (ISO 19115, NGR), informatiemodellen (NEN 3610, MIM), INSPIRE implementatie en 3D standaarden (CityGML, 3D Tiles).",
-      "version": "0.4.6",
+      "version": "0.4.7",
       "author": {
         "name": "developer-overheid-nl"
       },
@@ -198,7 +198,7 @@
       "name": "nldd-design-system",
       "displayName": "NLDD Designsysteem",
       "description": "Bouw applicaties met het NLDD Designsysteem (@nldd/design-system). Zes skills: nldd-design om componenten, attributen, iconen en releases op te zoeken, nldd-design-build om een applicatie te bouwen, nldd-design-validate om het resultaat te controleren met nldd lint, nldd-design-migrate om een bestaande frontend om te zetten, nldd-design-upgrade om een versie te verhogen, en nldd-design-contribute om een wijziging voor te stellen. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
-      "version": "0.26.4",
+      "version": "0.26.5",
       "author": {
         "name": "Nederlandse Digitale Dienst"
       },
